@@ -19,7 +19,7 @@ const VehicleList = () => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/vehicle/vehicles');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`);
       setVehicles(response.data);
     } catch (error) {
       console.error('Error fetching vehicles:', error);
@@ -28,7 +28,7 @@ const VehicleList = () => {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost:8080/vehicle/vehiclesdelete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/vehicle/vehiclesdelete/${id}`);
       setVehicles(vehicles.filter(vehicle => vehicle._id !== id));
     } catch (err) {
       console.error(err);

@@ -17,7 +17,7 @@ export default function SignInDash() {
 
     async function fetchVehiDetail() {
         try {
-            const response = await axios.get('http://localhost:8080/vehicle/vehicles');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`);
             setItems(response.data);
         } catch (error) {
             console.error(error);

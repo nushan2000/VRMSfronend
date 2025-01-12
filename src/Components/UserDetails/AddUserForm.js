@@ -22,7 +22,7 @@ const AddUserForm = ({ onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/user/signup', formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, formData);
       onClose();
       
      // setUsers(response.data);
@@ -87,6 +87,7 @@ const AddUserForm = ({ onClose }) => {
               <option value="head">Head</option>
               <option value="ar">AR</option>
               <option value="dean">Dean</option>
+              <option value="security">Security</option>
               {/* Add more options as needed */}
             </select>
             </div>

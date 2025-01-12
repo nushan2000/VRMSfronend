@@ -32,7 +32,7 @@ const [formData, setFormData] = useState({
 });
 const [passengerList, setPassengerList] = useState([]);
 useEffect(()=>{
-  axios.get('http://localhost:8080/vehicle/vehicles')
+  axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`)
           .then(response => {
               setVehicleList(response.data); // Assuming response.data is an array of vehicle names
           })
@@ -110,9 +110,9 @@ const submitHeadForm = async () => {
     }
 
     const formDataWithId = { ...formData, _id: String(formData._id) };
-    const response = await axios.put(`http://localhost:8080/request/updateRequest1/${formData._id}`, formDataWithId);
-    console.log("Server Response:", response.data);
-
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`, formDataWithId);
+    //console.log("Server Response:", response.data);
+    alert("Request submitted successfully!");
     setFormData({
       name: "",
       date: "",
@@ -132,7 +132,7 @@ const submitHeadForm = async () => {
       approveHead: ""
     });
 
-    alert("Request submitted successfully!");
+    //alert("Request submitted successfully!");
   } catch (error) {
     console.error("Error submitting form:", error);
     alert("Error submitting form. Please try again later.");

@@ -22,17 +22,25 @@ export default function ReservationDash() {
     
             // If the user's email is available, extract the domain
             const loggedInUserDomain = userEmail ? userEmail.split('@')[1] : null;
+            console.log("logged",loggedInUserDomain);
+            
     
-            const response = await axios.get('http://localhost:8080/request/requests');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
+            console.log("response",response.data);
+            
             const filteredRequests = response.data.filter(request => {
                 // Extract the domain from the applier's email address
                 const applierDomain = request.applier.split('@')[1];
+                console.log("applierDomain",applierDomain);
+
+                
                 // Check if the applier's domain matches the logged-in user's domain
                 return applierDomain === loggedInUserDomain;
             }).filter(request => !request.approveHead);
-    
+            console.log("filter data",filteredRequests);
             // Sort the filteredRequests array by applyDate in descending order
             filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
+    
     
             setRequest(filteredRequests);
         } catch (error) {
@@ -55,6 +63,7 @@ export default function ReservationDash() {
             return 'Invalid date'; // Handle case where applyDate is not a valid Date object
         }
         
+
         const now = new Date();
         
         if (isNaN(now.getTime())) {

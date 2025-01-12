@@ -11,7 +11,7 @@ const CostUpdate = ({ costDetail, onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-         await axios.put(`http://localhost:8080/costDetails/updatecost/${costDetail._id}`);
+         await axios.put(`${process.env.REACT_APP_API_URL}/costDetails/updatecost/${costDetail._id}`);
        
       onClose();
     } catch (err) {

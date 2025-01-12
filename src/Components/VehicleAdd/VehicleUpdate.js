@@ -16,7 +16,7 @@ const VehicleUpdate = ({ vehicle, onClose }) => {
     e.preventDefault();
     console.log("Submitting formData:", formData); // Debug: log formData before submitting
     try {
-      const response = await axios.put(`http://localhost:8080/vehicle/updateVeh/${vehicle._id}`, formData);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/vehicle/updateVeh/${vehicle._id}`, formData);
       console.log("Response from server:", response.data); // Debug: log response data from server
       if (response.status === 200) {
         alert("Vehicle updated successfully!");
@@ -29,7 +29,6 @@ const VehicleUpdate = ({ vehicle, onClose }) => {
       alert("An error occurred while updating the vehicle.");
     }
   };
-  
 
   const addStatusDate = () => {
     const newStatusDate = {

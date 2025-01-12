@@ -44,7 +44,7 @@ const SecurityPage = () => {
     // Fetch PDF documents from the server when the component mounts
     const fetchPDFs = async () => { 
       try {
-        const response = await axios.get("http://localhost:8080/request/requests");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
         const filteredRequests = response.data.filter(request => request.approveDeenAr && request.approveHead);
         setPDFs(filteredRequests);
       } catch (error) {

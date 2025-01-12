@@ -19,7 +19,7 @@ const AddCostDetails = () => {
   useEffect(() => {
     const fetchVehicleNumbers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/vehicle/vehicles');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`);
         setVehicleNumbers(response.data.map(vehicle => vehicle.vehicleNo)); // Assuming vehicleNo is the property name
       } catch (error) {
         console.error('Error fetching vehicle numbers:', error);
@@ -35,7 +35,7 @@ const AddCostDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/costDetails/add', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/costDetails/add`, formData);
       console.log('Cost details added:', response.data);
       // Redirect to another page or show a success message
     } catch (error) {

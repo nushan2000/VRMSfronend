@@ -17,19 +17,17 @@ export default function RequestForm() {
         setUserEmail(email);
     }
 
-    axios.get('http://localhost:8080/vehicle/vehicles')
+    axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`)
             .then(response => {
-                setVehicleList(response.data); // Assuming response.data is an array of vehicle names
+                setVehicleList(response.data);
+                console.log("respose",response);
+                 // Assuming response.data is an array of vehicle names
             })
             .catch(error => {
                 console.error("Error fetching vehicle list:", error);
             });
 }, []); // Run only once after component mount
 
-useEffect(() => {
-    // Log user data whenever it changes
-    console.log('User Data:', userEmail);
-}, [userEmail]); // Run whenever userData changes
 
 const [vehicleList, setVehicleList] = useState([]);
 
@@ -104,8 +102,8 @@ const [vehicleList, setVehicleList] = useState([]);
           };
           
           // Replace the URL with your actual endpoint
-          const response = await axios.post("http://localhost:8080/request/addrequest", formData);
-          
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}/request/addrequest`, formData);
+          alert("Request submitted successfully!");
           // Handle the server response if needed
           console.log("Server Response:", response.data);
     
@@ -119,7 +117,7 @@ const [vehicleList, setVehicleList] = useState([]);
           setcomeBack("");
           setdistance("");
           setPassengerList([]);
-          alert("Request submitted successfully!");
+          
 
 
         } catch (error) {

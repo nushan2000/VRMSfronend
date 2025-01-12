@@ -16,7 +16,7 @@ export default function BarChart() {
                 const selectedVehicleNo = {
                     vehicleNumber : selectedVehicleDetails,
                 }
-                const response = await fetch('http://localhost:8080/user/feedback/vehicleNo', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/feedback/vehicleNo`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

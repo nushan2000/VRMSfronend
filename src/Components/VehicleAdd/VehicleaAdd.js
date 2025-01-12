@@ -24,7 +24,7 @@ const AddVehicleForm = ({ onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/vehicle/addVehicle', formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/vehicle/addVehicle`, formData);
       onClose();
     } catch (err) {
       console.error(err);

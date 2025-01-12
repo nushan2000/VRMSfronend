@@ -14,7 +14,7 @@ const CostList = () => {
 
   const fetchCostDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/costDetails');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/costDetails`);
       setCostDetails(response.data);
     } catch (error) {
       console.error('Error fetching cost details:', error);
@@ -23,7 +23,7 @@ const CostList = () => {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost:8080/costDetails/costdelete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/costDetails/costdelete/${id}`);
       setCostDetails(costDetails.filter(cost => cost._id !== id));
     } catch (err) {
       console.error(err);

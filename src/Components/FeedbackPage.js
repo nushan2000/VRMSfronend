@@ -52,7 +52,7 @@ export default function FeedbackPage() {
     console.log("Restaurant ID:", selectedVehicleNo);
 
         try {
-            const response = await fetch("http://localhost:8080/user/feedback/feedback-submit", {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/user/feedback/feedback-submit`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

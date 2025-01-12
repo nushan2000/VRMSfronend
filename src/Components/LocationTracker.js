@@ -27,7 +27,7 @@ function LocationTracker() {
   const fetchData = async () => {
     try {
         
-      const response = await axios.get('http://localhost:8080/location-details/get-location');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/location-details/get-location`);
       console.log("Backend response:", response.data); // Make a GET request to your backend endpoint
       const { latitude, longitude } = response.data;
       setCurrentPosition({ lat: latitude, lng: longitude });

@@ -40,11 +40,11 @@ export default function CalendarGfg({ vehicle }) {
       
       const month = (value.getMonth() + 1).toString().padStart(2, '0'); // Add padding if needed
       const selectedDate = `${value.getFullYear()}-${month}-${value.getDate()}`;
-      console.log('Request URL:', `http://localhost:8080/request/requests`);
+      console.log('Request URL:', `${process.env.REACT_APP_API_URL}/request/requests`);
       console.log('Request Parameters:', { date: selectedDate, vehicle: vehicleName });
       console.log('Selected Date:', selectedDate);
       console.log('Vehicle Name:', vehicleName);
-      const response = await axios.get(`http://localhost:8080/request/requests`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`, {
         params: {
           vehicle: vehicleName,
           date: selectedDate
@@ -55,7 +55,7 @@ export default function CalendarGfg({ vehicle }) {
   
       console.log('Fetched reservations for vehicle:', filteredReservations);
   
-      const availableSeatsResponse = await axios.get(`http://localhost:8080/availableSeats/getAvailableSeats`, {
+      const availableSeatsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/availableSeats/getAvailableSeats`, {
         params: {
           date: selectedDate,
           vehicle: vehicleName

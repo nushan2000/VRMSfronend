@@ -22,7 +22,7 @@ const UpdateUserForm = ({ user, onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8080/user/update/${user._id}`, formData);
+      await axios.put(`${process.env.REACT_APP_API_URL}/user/update/${user._id}`, formData);
       onClose();
     } catch (err) {
       console.error(err);
@@ -86,6 +86,7 @@ const UpdateUserForm = ({ user, onClose }) => {
               <option value="head">Head</option>
               <option value="ar">AR</option>
               <option value="dean">Dean</option>
+              <option value="security">Security</option>
               {/* Add more options as needed */}
             </select>
           </div>

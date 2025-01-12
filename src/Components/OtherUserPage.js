@@ -82,7 +82,7 @@ export default function OtherUserPage(){
         }
         
 
-        axios.post("http://localhost:8080/request/addrequest",newDetails).then(()=>{
+        axios.post(`${process.env.REACT_APP_API_URL}/request/addrequest`,newDetails).then(()=>{
             alert("New details Added")
         }).catch((err)=>{
             console.error("error",err)

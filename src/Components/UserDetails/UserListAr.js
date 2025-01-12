@@ -17,7 +17,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/user/users');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/users`);
       setUsers(response.data.filter(user => user.designation === 'user')); // Filter users with designation 'user'
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -26,7 +26,7 @@ const UserList = () => {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost:8080/user/usersdelete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/user/usersdelete/${id}`);
       setUsers(users.filter(user => user._id !== id));
     } catch (err) {
       console.error(err);

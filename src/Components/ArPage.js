@@ -30,7 +30,7 @@ export default function ArPage() {
   const [passengerList, setPassengerList] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/vehicle/vehicles')
+    axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`)
       .then(response => {
         setVehicleList(response.data);
       })
@@ -97,7 +97,7 @@ export default function ArPage() {
       }
 
       const formDataWithId = { ...formData, _id: String(formData._id) };
-      const response = await axios.put(`http://localhost:8080/request/updateRequest1/${formData._id}`, formDataWithId);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`, formDataWithId);
       console.log("Server Response:", response.data);
 
  
