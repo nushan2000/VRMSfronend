@@ -1,0 +1,52 @@
+.calendar-container {
+  display: flex;
+}
+
+.calendar-column {
+  flex: 1;
+  transition: flex 0.5s ease;
+}
+
+.details-column {
+  flex: 1;
+  padding-left: 20px; /* Adjust spacing between calendar and details */
+  transition: flex 0.5s ease, width 0.5s ease;
+}
+
+/* Calendar styles */
+.react-calendar {
+  width: 100%;
+  max-width: 320px; /* Set the maximum width of the calendar */
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+}
+
+/* Reserved date styles */
+.reserved-date {
+  background-color: #ffa07a;
+  color: white;
+  border-radius: 20%; /* Make reserved dates circular */
+}
+/* Calender.css */
+
+
+
+.status-date {
+  background-color: rgb(255, 0, 0) !important;
+  color: white !important;
+  border-radius: 20%;
+}
+
+/* Message box styles */
+.message-box {
+  width: max-content;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+.show-details .details-column {
+  flex: 1;
+  width: auto;
+}

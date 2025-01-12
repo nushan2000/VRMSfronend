@@ -1,0 +1,121 @@
+.background {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-name: changeBackground;
+    animation-duration: 10s; /* Set the duration of the animation */
+    animation-iteration-count: infinite; /* Set the animation to repeat infinitely */
+  
+  }
+
+  @keyframes changeBackground {
+    0% {
+      background-image: url('https://0a411afb0c598242cc95-1df470064133d6bc5c471837468f475c.ssl.cf3.rackcdn.com/publish/wp-content/uploads/2016/11/Nissan_celebrates_75000_electric_vehicle_sales_in_Europe-scaled.jpg'); /* Initial background image */
+    }
+    50% {
+      background-image: url('https://th.bing.com/th/id/OIP.gm3FQ-NuJln2p7UHYTJRlAHaE7?w=4928&h=3280&rs=1&pid=ImgDetMain'); /* Background image halfway through the animation */
+    }
+    100% {
+      background-image: url('https://www.motoringresearch.com/wp-content/uploads/2019/01/09_safest_new_cars.jpg'); /* Final background image */
+    }
+  }
+  
+  .feedbackFormContainer {
+    background-color: rgba(255, 255, 255, 0.9); /* Adding some opacity to the background color */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feedbackTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .feedbackTable th,
+  .feedbackTable td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .feedbackTable th {
+    font-weight: bold;
+  }
+  
+  .feedbackTable th:first-child,
+  .feedbackTable td:first-child {
+    text-align: left;
+  }
+  
+  .feedbackTable th:not(:first-child),
+  .feedbackTable td:not(:first-child) {
+    background-color: #f9f9f9;
+  }
+  
+  .feedbackTable input[type="radio"] {
+    margin-right: 5px;
+  }
+  
+
+  .typeFeedback {
+    margin-top: 20px;
+  }
+  
+  .typeFeedback label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .typeFeedback input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .typeFeedback input[type="text"]:focus {
+    border-color: #007bff;
+  }
+
+  
+  .feedbackSubmitbtn {
+    margin-top: 20px;
+    background-color: #5d091e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .feedbackSubmitbtn:hover {
+    background-color: #0056b3;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .topic {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  

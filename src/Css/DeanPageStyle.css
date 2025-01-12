@@ -1,0 +1,176 @@
+
+  /* Create three equal columns that floats next to each other */
+  .column1 {
+    float: left;
+    width: 25% ;
+    padding: 10px;
+  /* Should be removed. Only for demonstration */
+    background-color:#7900d922;
+  }
+/* RequestForm.css */
+
+.vehicleRequestFormm {
+  max-width: 1000px;
+  width: 70%;
+  margin:  auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  height: 1300px;
+  
+}
+
+.form-label {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.RequestVehicle {
+  margin-bottom: 20px;
+}
+.addPassenger{
+  display: flex;
+  align-items: flex-start;
+  
+}
+
+.dateInput,
+.vehicleInput,
+.startTimeInput,
+.endTimeInput,
+.selectSectionInput,
+.reasonInput,
+.departureFromInput,
+.destinatonInput,
+.approximateDistanceInput,
+.passengerNameInput,
+.selectpositionInput,
+.pickupLocationInput,
+.dropLocationInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.set-comeback-input {
+  margin-right: 5px;
+}
+
+.approximateDistance {
+  margin-left: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+.submitf{
+  
+ float: right;
+  
+}
+  .requestbutton{
+    width:300%;
+    padding-left: 20px;
+    padding-top: 100px;
+  }
+  
+  .column21 {
+      float: left;
+      width: 60% ;
+      padding: 10px;
+       /* Should be removed. Only for demonstration */
+      font-size:larger;
+      font-weight: 700;
+      align-items: center;
+      height: 2400px;
+      
+    }
+  
+  .Addresevation{
+    width: 15%;
+      font-weight: 700;
+      border: none;
+      background-color: #fff;
+      justify-items: center;
+      align-items: center;
+  }
+  
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  .row .chekbox {
+      margin-left: 20px;
+  
+  }
+  
+  .row .checkboxcls{
+      display: flex;
+      
+  }
+  
+  .proceeedbutton{
+    background-color:#8F00FF ;
+    padding: 7px;
+    width: 150px;
+    color: white;
+    border-radius: 10px;
+    border: 0cap;
+    margin-left: 30px;
+  }
+  .column3 {
+    float: left;
+    width: 10% ;
+    padding-top: 10px;
+    
+  
+  }
+  .formdeen{
+    height: 700px;
+  }
+  .checkgroup{
+    padding: 30px;
+  }
+  .deenrequwst{
+    background-color:#8F00FF ;
+    padding: 7px;
+    width: 150px;
+    color: white;
+    border-radius: 10px;
+    border: 0cap;
+    margin-left: 10px;
+    margin: 5px;
+  }

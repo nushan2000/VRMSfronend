@@ -1,0 +1,33 @@
+/* BarChart container */
+.card {
+    border: 1px solid #812205;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 5);
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(239, 250, 39, 0.24);
+    align-items: center;
+  }
+  
+  /* BarChart title */
+  .card .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: aliceblue;
+   
+  }
+  
+  /* BarChart canvas */
+  .card canvas {
+    width: auto;
+    height: 100px;
+    margin-top: 20px;
+    
+  }
+  
+ 
+

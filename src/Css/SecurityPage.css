@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+  }
+  
+  .pdf-list-container {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .pdf-viewer-container {
+    flex: 2;
+  }
+  
+  .pdf-list {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .pdf-item {
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+  .pdf-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .pdf-viewer {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 800px;
+  }
+  

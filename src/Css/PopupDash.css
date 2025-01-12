@@ -1,0 +1,134 @@
+.popup1 {
+    position: fixed;
+    top: 0;
+    right: 0; /* Changed from left: 0 to right: 0 */
+    width: 45%; /* Changed from width: -80% to width: 80% */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* Change to column layout */
+    align-items: center; /* Center the content horizontally */
+    justify-content: center;
+    
+    animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
+}
+
+.popup-inner1 {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #ffffff;
+  align-items:self-end; /* Center the content horizontally */
+  justify-content:center;
+  
+    padding: 25px;
+    width: 320px;
+    height: 320px;
+    margin: 20px;
+    
+    border-radius: 20px;
+    animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100%); /* Changed from translateX(-100%) to translateX(100%) */
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: aliceblue;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+}
+.rowpop{
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center the columns horizontally */
+    margin-top: 20px;
+}
+.rowpop2{
+    width: 780px;
+    padding: 30px;
+    
+}
+.popup-inner2 {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #ffffff;
+  align-items:self-end; /* Center the content horizontally */
+  justify-content:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    padding: 30px;
+    width: 680px;
+    height: 320px;
+    margin: 20px;
+    
+    border-radius: 20px;
+    animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
+}
+.columnpop {
+
+    float: left;
+    width: 40%;
+    padding: 20px;
+    margin: 10px;
+   
+    height: 300px; /* Should be removed. Only for demonstration */
+  }
+ 
+  /* Clear floats after the columns */
+  .rowpop:after {
+    content: "";
+   
+    clear: both;
+  }/* Responsive adjustments */
+@media (max-width: 768px) {
+    .popup1 {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .popup-inner1, .popup-inner2 {
+      width: 100%;
+      max-width: 100%;
+      margin: 10px;
+      padding: 10px;
+    }
+  
+    .close-button {
+      top: 5px;
+      right: 5px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .popup1 {
+      padding: 5px;
+      height: 10%;
+    }
+  
+    .popup-inner1, .popup-inner2 {
+      margin: 5px;
+      padding: 5px;
+      height: 10px;
+    }
+  
+    .columnpop {
+      padding: 10px;
+      margin: 5px;
+    }
+  }

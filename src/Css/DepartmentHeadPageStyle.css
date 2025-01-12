@@ -1,0 +1,126 @@
+/* Base styles for the form and layout */
+.vehicleRequestForm1 {
+  max-width: 1000px;
+  width: 70%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.column1,
+.column21,
+.column3 {
+  padding: 10px;
+}
+
+/* Create three equal columns that float next to each other */
+.column1 {
+  float: left;
+  width: 25%;
+  background-color: #f4cdd4;
+  width: fit-content;
+}
+
+.requestbutton {
+  padding-left: 20px;
+  padding-top: 100px;
+}
+
+.column21 {
+  float: left;
+  width:60%;
+  font-size: larger;
+  font-weight: 700;
+  align-items: center;
+}
+
+.column3 {
+  float: left;
+  width: 15%;
+  padding-top: 10px;
+}
+
+.deenrequwst {
+  background-color: #8f00ff;
+  padding: 7px;
+  width: 150px;
+  color: white;
+  border-radius: 10px;
+  border: 0;
+  margin-left: 10px;
+  margin: 5px;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .column1,
+  .column21,
+  .column3 {
+    width: 100%;
+    float: none;
+    padding: 10px 0;
+  }
+
+  .vehicleRequestForm1 {
+    width: 90%;
+  }
+
+  .requestbutton {
+    padding-left: 0;
+    padding-top: 20px;
+  }
+
+  .column21 {
+    font-size: medium;
+  }
+}
+
+@media (max-width: 768px) {
+  .column1,
+  .column21,
+  .column3 {
+    width: 100%;
+    float: none;
+    padding: 5px 0;
+  }
+
+  .vehicleRequestForm1 {
+    width: 95%;
+  }
+
+  .requestbutton {
+    padding-left: 0;
+    padding-top: 10px;
+  }
+
+  .column21 {
+    font-size: small;
+  }
+}
+
+@media (max-width: 576px) {
+  .column1,
+  .column21,
+  .column3 {
+    width: 100%;
+    float: none;
+    padding: 5px 0;
+  }
+
+  .vehicleRequestForm1 {
+    width: 100%;
+  }
+
+  .requestbutton {
+    padding-left: 0;
+    padding-top: 5px;
+  }
+
+  .column21 {
+    font-size: small;
+  }
+}

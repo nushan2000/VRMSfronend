@@ -1,0 +1,144 @@
+/* Basic styles for the page */
+.historydetails {
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.historydetails:hover {
+  background-color: #ffffff;
+  color: rgb(117, 11, 30);
+  box-shadow: 0 5px 15px rgba(95, 22, 22, 0.1);
+  transform: translateY(-5px);
+}
+
+.request-row {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.request-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.detail {
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: bold;
+  color: #f6f0f0;
+}
+
+.expanded-request {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-image: url("../Images/ticket3.png");
+  min-height: 300px;
+  background-color: #750B1E;
+}
+
+.historyBtn {
+  border-radius: 5px;
+  margin-left: 5px;
+  background-color: rgb(205, 163, 170);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.historyBtn:hover {
+  background-color: #f9f9f9;
+  color: rgb(0, 0, 0);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px);
+}
+
+.historyList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.columnticket1, .columnticket2 {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.columnticket1 {
+  padding-left: 50px;
+}
+
+.columnticket2 {
+  padding-left: 150px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.table-borderless tbody tr td div {
+  text-align: left;
+}
+
+.cost {
+  text-align: left;
+}
+
+.value {
+  text-align: right;
+}
+
+.columnHistory {
+  float: right;
+  width: 60%;
+  margin-top: 30px;
+  padding: 5%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .columnHistory {
+    float: none;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .columnticket1 {
+    padding-left: 20px;
+  }
+
+  .columnticket2 {
+    padding-left: 20px;
+  }
+
+  .historyList {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .request-row {
+    display: block;
+    text-align: center;
+  }
+
+  .request-row div {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .columnticket1, .columnticket2 {
+    padding-left: 10px;
+  }
+
+  .historyBtn {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
