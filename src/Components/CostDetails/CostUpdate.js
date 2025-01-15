@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const CostUpdate = ({ costDetail, onClose }) => {
+  const token = localStorage.getItem("token"); 
   const [formData, setFormData] = useState(costDetail);
   const [costDetails, setCostDetails] = useState(null); 
   const handleChange = e => {
@@ -11,7 +12,12 @@ const CostUpdate = ({ costDetail, onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-         await axios.put(`http://localhost:8080/costDetails/updatecost/${costDetail._id}`);
+         await axios.put(`${process.env.REACT_APP_API_URL}/costDetails/updatecost/${costDetail._id}`,{
+          headers: {
+            Authorization: `Bearer ${token}`
+            
+          },
+        });
        
       onClose();
     } catch (err) {

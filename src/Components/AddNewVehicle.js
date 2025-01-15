@@ -38,21 +38,28 @@ export default function AddNewVehicle() {
             vehicleName
         }
 
-        axios.post("http://localhost:8080/vehicle/addVehicle", addNewVehicle)
-            .then(() => {
-                setMessage("New vehicle added successfully");
-                setVehicleNo("");
-                setVehicleType("");
-                setSheatCapacity("");
-                setDriverName("");
-                setVehicleImg("");
-                setDriverEmail("");
-                setVehicleName("");
-            })
-            .catch((err) => {
-                console.error("Error", err);
-                setMessage(`Error adding new vehicle: ${err.message}`);
-            });
+        const token = JSON.parse(localStorage.getItem("token"));
+        axios.post(`${process.env.REACT_APP_API_URL}/vehicle/addVehicle`, addNewVehicle,{
+            headers: {
+              Authorization: `Bearer ${token}`
+              
+            },
+          })
+    .then(() => {
+        setMessage("New vehicle added successfully");
+        setVehicleNo("");
+        setVehicleType("");
+        setSheatCapacity("");
+        setDriverName("");
+        setVehicleImg("");
+        setDriverEmail("");
+        setVehicleName("");
+    })
+    .catch((err) => {
+        console.error("Error", err);
+        setMessage(`Error adding new vehicle: ${err.message}`);
+    });
+
     }
 
     return (

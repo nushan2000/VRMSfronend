@@ -31,12 +31,12 @@ export default function Signin() {
           "content-type":"application/json",//not must
         },
       };
-      const{data}=await axios.post('http://localhost:8080/user/login',
+      const{data}=await axios.post(`${process.env.REACT_APP_API_URL}/user/login`,
     {
       email,password,
     },config
     );
-    
+    localStorage.setItem('token', data.token);
     Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
     if (data.designation=="user") {
       navigate('/user'); // Redirect to the admin page
@@ -46,6 +46,8 @@ export default function Signin() {
       navigate('/ar');
     }else if (data.designation=="dean"){
       navigate('/dean');
+    }else if (data.designation=="security"){
+      navigate('/security');
     }else{
       alert("wrong email or password")
     }

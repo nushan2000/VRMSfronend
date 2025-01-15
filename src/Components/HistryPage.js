@@ -13,7 +13,7 @@ export default function HistryPage() {
   const [costs, setCosts] = useState({});
   const [co2, setCo2] = useState({});
   const [loading, setLoading] = useState(false); // Add loading state
-
+  const token = localStorage.getItem("token"); 
   useEffect(() => {
     // Retrieve user data from cookie
     const userInfoFromCookie = Cookies.get('userInfo');
@@ -29,7 +29,12 @@ export default function HistryPage() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/request/requests");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                  
+                },
+              });
         setRequests(response.data);
       } catch (error) {
         console.error("Error fetching requests:", error);
@@ -72,12 +77,22 @@ export default function HistryPage() {
 
     try {
       // Fetch vehicle data for the selected vehicle name
-      const vehicleResponse = await axios.get("http://localhost:8080/vehicle/vehicles");
+      const vehicleResponse = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`,{
+              headers: {
+                Authorization: `Bearer ${token}`
+                
+              },
+            });
       const vehicle = vehicleResponse.data.find(v => v.vehicleName === selectedRequest.vehicle);
 
       if (vehicle) {
         console.log("Vehicle data fetched:", vehicle.vehicleNo);
-        const costResponse = await axios.get("http://localhost:8080/costDetails/");
+        const costResponse = await axios.get(`${process.env.REACT_APP_API_URL}/costDetails/`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                  
+                },
+              });
         const cost = costResponse.data.find(v => v.vehicleNo === vehicle.vehicleNo);
         console.log("Cost data fuelPrice:", cost.fuelPrice);
         console.log("Cost data serviceCharge :", cost.serviceCharge);

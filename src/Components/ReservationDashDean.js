@@ -16,7 +16,7 @@ export default function ReservationDashDean() {
             const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
             const userEmail = parsedUserInfo ? parsedUserInfo.email : null;
 
-            const response = await axios.get('http://localhost:8080/request/requests');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
             const filteredRequests = response.data.filter(request => {
                 // Include the condition for distance greater than 7
                 return request.distance > 7 && !request.approveDeenAr && request.approveHead;

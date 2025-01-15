@@ -28,7 +28,7 @@ function Navbar() {
     // Update state
     setUserEmail(null);
     setUserName(null);
-
+    localStorage.removeItem("token");
     // Redirect to the login page
     navigate('/');
   };

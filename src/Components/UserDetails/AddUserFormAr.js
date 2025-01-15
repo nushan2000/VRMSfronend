@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../Css/UserDetails/AddUserForm.css'; 
 const AddUserFormAr = ({ onClose }) => {
+  const token = localStorage.getItem("token"); 
   const [formData, setFormData] = useState({
     fristName: '',
     lastName: '',
@@ -21,7 +22,12 @@ const AddUserFormAr = ({ onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/user/signup', formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, formData,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       onClose();
       
     //  setUsers(response.data);
@@ -83,6 +89,8 @@ const AddUserFormAr = ({ onClose }) => {
             >
               <option value="">Select Designation</option>
               <option value="user">User</option>
+              <option value="security">Security</option>
+              
               {/* Add more options as needed */}
             </select>
             </div>

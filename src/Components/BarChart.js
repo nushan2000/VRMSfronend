@@ -9,17 +9,19 @@ export default function BarChart() {
     const[selectedFeedbackData, setSelectedFeedbackData] = useState(null);
     const[selectedOtherFeedback,setSelectedOtherFeedback]= useState("");
     const selectedVehicleDetails = localStorage.getItem('selectedVehicleDetails');
-
+    const token = localStorage.getItem("token"); 
     useEffect(()=>{
         const fetchData = async () =>{
+            
             try{
                 const selectedVehicleNo = {
                     vehicleNumber : selectedVehicleDetails,
                 }
-                const response = await fetch('http://localhost:8080/user/feedback/vehicleNo', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/feedback/vehicleNo`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
                     },
                     body: JSON.stringify(selectedVehicleNo)
                 });

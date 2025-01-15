@@ -16,7 +16,7 @@ export default function ReservationDash() {
 
     async function fetchReserDetail() {
       try {
-        const response = await axios.get('http://localhost:8080/request/requests'); // Replace with the correct URL
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`); // Replace with the correct URL
         const filteredRequests = response.data.filter(request => !request.approveDeenAr && request.approveHead);
         setRequest(filteredRequests);
       

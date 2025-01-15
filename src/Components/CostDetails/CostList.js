@@ -4,6 +4,7 @@ import AddCostDetails from './AddCostDetails';
 import CostUpdate from './CostUpdate';
 import '../../Css/VehicelDetails/VehicleList.css';
 const CostList = () => {
+  const token = localStorage.getItem("token"); 
   const [costDetails, setCostDetails] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -14,7 +15,12 @@ const CostList = () => {
 
   const fetchCostDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/costDetails');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/costDetails`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       setCostDetails(response.data);
     } catch (error) {
       console.error('Error fetching cost details:', error);
@@ -23,7 +29,12 @@ const CostList = () => {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`http://localhost:8080/costDetails/costdelete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/costDetails/costdelete/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       setCostDetails(costDetails.filter(cost => cost._id !== id));
     } catch (err) {
       console.error(err);
