@@ -36,7 +36,7 @@ export default function Signin() {
       email,password,
     },config
     );
-    
+    localStorage.setItem('token', data.token);
     Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
     if (data.designation=="user") {
       navigate('/user'); // Redirect to the admin page

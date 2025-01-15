@@ -3,11 +3,31 @@ import "../Css/DepartmentHeadPageStyle.css";
 import ReservationDash from "./ReservationDash";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import {
+  TextField,
+  Select,
+  MenuItem,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Checkbox,
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  Button,
+  FormControl,
+  InputLabel,
+  FormLabel,
+} from "@mui/material";
 export default function Head() {
   
   
 
 const [vehicleList, setVehicleList] = useState([]);
+const token = localStorage.getItem("token"); 
 const [formData, setFormData] = useState({
   name: "",
   date: "",
@@ -32,7 +52,12 @@ const [formData, setFormData] = useState({
 });
 const [passengerList, setPassengerList] = useState([]);
 useEffect(()=>{
-  axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`)
+  axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+      
+    },
+  })
           .then(response => {
               setVehicleList(response.data); // Assuming response.data is an array of vehicle names
           })
@@ -110,7 +135,12 @@ const submitHeadForm = async () => {
     }
 
     const formDataWithId = { ...formData, _id: String(formData._id) };
-    const response = await axios.put(`${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`, formDataWithId);
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`, formDataWithId,{
+      headers: {
+        Authorization: `Bearer ${token}`
+        
+      },
+    });
     //console.log("Server Response:", response.data);
     alert("Request submitted successfully!");
     setFormData({
@@ -153,155 +183,183 @@ const submitHeadForm = async () => {
       <div className="column21" style={{ backgroundColor: "#ccc" }}>
 
 
-        <div className="formhead">
-        <form class="vehicleRequestForm1" title="Vehicle Request Form" >
-            <label for="Vehicle Request Forme" class="form-label"  >Vehicle Request Form </label>
+      <div className="formhead">
+      <form className="vehicleRequestForm1" title="Vehicle Request Form">
+        <h3>Vehicle Request Form</h3>
 
-            <div class="RequestVehicle">
-              <label for="date" class="date">Date :</label>
-              <input type="date" class="dateInput" id="date" placeholder="yyyy-mm-dd" value={formData.date}
-              onChange={handleChange} />
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Date"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={formData.date}
+            onChange={handleChange}
+            id="date"
+            disabled
+          />
+        </FormControl>
 
-              <label for="vehicleSelect" class="vehicle">Select Vehicle :</label>
-              <select id="vehicleSelect" className="vehicleInput" value={formData.vehicle}
-              onChange={handleChange}>
-                    <option>Select</option>
-                    {/* Mapping over the vehicleList state to populate dropdown options */}
-                    {vehicleList.map((vehicle, index) => (
-                        <option key={index}>{vehicle.vehicleName}</option>
-                    ))}
-                </select>
-            </div>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="vehicle-label">Select Vehicle</InputLabel>
+          <Select
+            labelId="vehicle-label"
+            id="vehicle"
+            value={formData.vehicle}
+            onChange={handleChange}
+            disabled
+          >
+            <MenuItem value="">Select</MenuItem>
+            {vehicleList.map((vehicle, index) => (
+              <MenuItem key={index} value={vehicle.vehicleName}>
+                {vehicle.vehicleName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="time" class="startTime">Start Time :</label>
-              <input type="time" class="startTimeInput" id="startTime"  placeholder="hh-mm" value={formData.startTime}
-              onChange={handleChange} />
-              <label for="time" class="endTime">End Time :</label>
-              <input type="time" class="endTimeInput" id="endTime"  placeholder="hh-mm" value={formData.endTime}
-              onChange={handleChange} />
-            </div>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Start Time"
+            type="time"
+            InputLabelProps={{ shrink: true }}
+            value={formData.startTime}
+            onChange={handleChange}
+            id="startTime"
+            disabled
+          />
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="sectiondSelect" class="section">Select Section :</label>
-              <input type="text" class="selectSectionInput" id="section"  placeholder="hh-mm" value={formData.section}
-              onChange={handleChange} />
-            </div>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="End Time"
+            type="time"
+            InputLabelProps={{ shrink: true }}
+            value={formData.endTime}
+            onChange={handleChange}
+            id="endTime"
+            disabled
+          />
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="reason" class="reason">Reason :</label>
-              <input type="text" class="reasonInput" id="reason"  placeholder="Enter Reason For Vehicle Resevation" value={formData.reason}
-              onChange={handleChange} />
-            </div>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Section"
+            value={formData.section}
+            onChange={handleChange}
+            id="section"
+            disabled
+          />
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="depatureFrom" class="depatureLocation">Departure From :</label>
-              <input type="text" class="departureFromInput" id="depatureFrom"  placeholder="Enter Depature Location"
-                value={formData.depatureLocation}
-                onChange={handleChange} />
-            </div>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Reason"
+            value={formData.reason}
+            onChange={handleChange}
+            id="reason"
+            disabled
+          />
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="destination" class="destinationLocation">Destination :</label>
-              <input type="text" class="destinatonInput" id="Destination"  placeholder="Enter Destination Location"
-                value={formData.destination}
-                onChange={handleChange}/>
-            </div>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Departure From"
+            value={formData.depatureLocation}
+            onChange={handleChange}
+            id="depatureLocation"
+            disabled
+          />
+        </FormControl>
 
-            <div class="RequestVehicle">
-            <label htmlFor="comeBack">Do you want to come back in same vehicle:</label>
-            <input
-              type="radio"
-              id="comeBack"
-              checked={formData.comeBack}
-              onChange={() => setFormData({ ...formData, comeBack: true })}
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Destination"
+            value={formData.destination}
+            onChange={handleChange}
+            id="destination"
+            disabled
+          />
+        </FormControl>
+
+        <FormControl component="fieldset" margin="normal">
+        <FormLabel>Do you want to come back in the same vehicle?</FormLabel>
+          <RadioGroup
+            row
+            value={formData.comeBack}
+            onChange={(e) =>
+              setFormData({ ...formData, comeBack: e.target.value === "true" })
+            }
+          >
+            <FormControlLabel value={true} control={<Radio />} label="Yes" disabled/>
+            <FormControlLabel value={false} control={<Radio />} label="No" disabled/>
+          </RadioGroup>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Approximate Distance (km)"
+            type="number"
+            value={formData.distance}
+            onChange={handleChange}
+            id="distance"
+            disabled
+          />
+        </FormControl>
+
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>No</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Position</TableCell>
+                <TableCell>Pickup From</TableCell>
+                <TableCell>Drop To</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {passengerList.map((passenger, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{passenger.name}</TableCell>
+                  <TableCell>{passenger.position}</TableCell>
+                  <TableCell>{passenger.pickup}</TableCell>
+                  <TableCell>{passenger.drop}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <FormControl component="fieldset" margin="normal">
+          <RadioGroup
+            row
+            value={formData.approveHead}
+            onChange={handleApproveChange}
+          >
+            <FormControlLabel
+              value={true}
+              control={<Radio />}
+              label="Approved"
             />
-            <label htmlFor="comeBack">Yes</label>
-            <input
-              type="radio"
-              id="notComeBack"
-              checked={!formData.comeBack}
-              onChange={() => setFormData({ ...formData, comeBack: false })}
+            <FormControlLabel
+              value={false}
+              control={<Radio />}
+              label="Rejected by Department Head"
             />
-            <label htmlFor="notComeBack">No</label>
-            </div>
+          </RadioGroup>
+        </FormControl>
 
-            <div class="RequestVehicle">
-              <label for="approximateDistance" class="distance">Approximate Distance :</label>
-              <input type="number" class="approximateDistanceInput" id="approximateDistance"
-                value={formData.distance}
-                onChange={handleChange}></input>
-              <span class="approximateDistance">km</span>
-            </div>
-            
-
-
-
-            <div>
-            
-              <table className="table">
-                <thead className="table-light">
-                  <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Pickup From</th>
-                    <th scope="col">Drop to</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {passengerList.map((passenger, index) => (
-            <tr key={index}>
-              <td>{index+1}</td>
-              <td>{passenger.name}</td>
-              <td>{passenger.position}</td>
-              <td>{passenger.pickup}</td>
-              <td>{passenger.drop}</td>
-            </tr>
-          ))}
-                </tbody>
-              </table>
-            </div>
-            <div class="RequestVehicle">
-              <label for="approve" class="approve">The Request is &ensp; </label>
-              <input
-                class="set-approve-input"
-                type="radio"
-                name="setApprove"
-                id="setApprove1"
-                value={true}
-                checked={formData.approveHead === true}
-                onChange={handleApproveChange}
-              />
-              <label class="set-approve-label" for="setApprove1">
-                Approved &ensp;
-              </label>
-              <input
-                class="set-approve-input"
-                type="radio"
-                name="setApprove"
-                id="setApprove2"
-                value={false}
-                checked={formData.approveHead === false}
-                onChange={handleApproveChange}
-              />
-              <label class="set-approve-label" for="setApprove2">
-                Rejected ; by Department Head
-              </label>
-              <button type="submit" class="btn btn-primary submitf" onClick={submitHeadForm} >Proceed</button>
-
-            </div>
-            <div class="RequestVehicle">
-
-           
-            </div>
-
-
-          </form>
-
-
-
-        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={submitHeadForm}
+        >
+          Proceed
+        </Button>
+      </form>
+    </div>
         
 
       </div>

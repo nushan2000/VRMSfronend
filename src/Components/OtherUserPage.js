@@ -23,7 +23,7 @@ export default function OtherUserPage(){
     const [position, setPosition]=useState("");
     const [pickup, setPickup]=useState("");
     const [drop, setDrop]=useState("");
-
+    const token = localStorage.getItem("token"); 
     const [requestVehicle,setRequestVehicle]=useState([])
 
     // // useEffect(()=>{
@@ -82,7 +82,12 @@ export default function OtherUserPage(){
         }
         
 
-        axios.post(`${process.env.REACT_APP_API_URL}/request/addrequest`,newDetails).then(()=>{
+        axios.post(`${process.env.REACT_APP_API_URL}/request/addrequest`,newDetails,{
+            headers: {
+              Authorization: `Bearer ${token}`
+              
+            },
+          }).then(()=>{
             alert("New details Added")
         }).catch((err)=>{
             console.error("error",err)

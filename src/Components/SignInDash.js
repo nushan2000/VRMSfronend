@@ -15,14 +15,17 @@ export default function SignInDash() {
         fetchVehiDetail();
     }, []);
 
-    async function fetchVehiDetail() {
+    const fetchVehiDetail = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`);
+            const apiBaseUrl = process.env.REACT_APP_API_URL;
+            console.log("API Base URL:", apiBaseUrl); // Debugging
+            const response = await axios.get(`${apiBaseUrl}/vehicle/vehicles`);
             setItems(response.data);
         } catch (error) {
-            console.error(error);
+            console.error("Error fetching vehicle details:", error);
         }
-    }
+    };
+    
 
     const handleLabelClick = (vehicle) => {
         setSelectedVehicle(vehicle);

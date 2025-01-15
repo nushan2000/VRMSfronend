@@ -3,6 +3,7 @@ import axios from "axios";
 import '../../Css/AddNewVehicle.css'; // Import CSS file for styling
 
 const VehicleUpdate = ({ vehicle, onClose }) => {
+  const token = localStorage.getItem("token"); 
   const [formData, setFormData] = useState({ ...vehicle, statusList: vehicle.statusList || [] });
   const [vehicleImg, setVehicleImg] = useState(vehicle.vehicleImg || ""); // Initialize with existing image if available
   const [statusDate, setStatusDate] = useState(""); // Define statusDate state
@@ -16,7 +17,12 @@ const VehicleUpdate = ({ vehicle, onClose }) => {
     e.preventDefault();
     console.log("Submitting formData:", formData); // Debug: log formData before submitting
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/vehicle/updateVeh/${vehicle._id}`, formData);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/vehicle/updateVeh/${vehicle._id}`, formData,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       console.log("Response from server:", response.data); // Debug: log response data from server
       if (response.status === 200) {
         alert("Vehicle updated successfully!");

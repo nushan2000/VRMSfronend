@@ -6,6 +6,7 @@ import VehicleUpdate from './VehicleUpdate';
 import QrCodeComponent from '../QrCodeComponent';
 
 const VehicleList = () => {
+  const token = localStorage.getItem("token"); 
   const [vehicles, setVehicles] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -19,7 +20,12 @@ const VehicleList = () => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       setVehicles(response.data);
     } catch (error) {
       console.error('Error fetching vehicles:', error);
@@ -28,7 +34,12 @@ const VehicleList = () => {
 
   const handleDelete = async id => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/vehicle/vehiclesdelete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/vehicle/vehiclesdelete/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       setVehicles(vehicles.filter(vehicle => vehicle._id !== id));
     } catch (err) {
       console.error(err);

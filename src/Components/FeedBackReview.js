@@ -7,8 +7,8 @@ export default function FeedBackReview() {
     const [vehicleDetails, setVehicleDetails] = useState("");
     const [vehicleNumbers, setVehicleNumbers] = useState([]);
     const [loading, setLoading] = useState(true);
-
-
+    const token = localStorage.getItem("token"); 
+    
     useEffect(()=>{
         const fetchVehicleData = async () => {
 
@@ -17,6 +17,7 @@ export default function FeedBackReview() {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                         Authorization: `Bearer ${token}`
                     },
                 })
 

@@ -9,9 +9,10 @@ export default function BarChart() {
     const[selectedFeedbackData, setSelectedFeedbackData] = useState(null);
     const[selectedOtherFeedback,setSelectedOtherFeedback]= useState("");
     const selectedVehicleDetails = localStorage.getItem('selectedVehicleDetails');
-
+    const token = localStorage.getItem("token"); 
     useEffect(()=>{
         const fetchData = async () =>{
+            
             try{
                 const selectedVehicleNo = {
                     vehicleNumber : selectedVehicleDetails,
@@ -20,6 +21,7 @@ export default function BarChart() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
                     },
                     body: JSON.stringify(selectedVehicleNo)
                 });

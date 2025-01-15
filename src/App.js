@@ -32,6 +32,7 @@ import FeedBackReview from './Components/FeedBackReview';
 const AppContent = () => {
   const location = useLocation();
   const showNavBar = location.pathname !== '/';
+  console.log('API URL:', process.env.REACT_APP_API_URL);
 
   return (
     <>

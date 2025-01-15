@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../../Css/UserDetails/AddUserForm.css'; // Import CSS file for styling
 
 const UpdateUserFormAr = ({ user, onClose }) => {
+  const token = localStorage.getItem("token"); 
   const [formData, setFormData] = useState({
     fristName: user.fristName,
     lastName: user.lastName,
@@ -22,7 +23,12 @@ const UpdateUserFormAr = ({ user, onClose }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/user/update/${user._id}`, formData);
+      await axios.put(`${process.env.REACT_APP_API_URL}/user/update/${user._id}`, formData,{
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
       onClose();
     } catch (err) {
       console.error(err);

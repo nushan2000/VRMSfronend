@@ -39,12 +39,17 @@ const styles = StyleSheet.create({
 const SecurityPage = () => {
   const [pdfs, setPDFs] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
-
+  const token = localStorage.getItem("token"); 
   useEffect(() => {
     // Fetch PDF documents from the server when the component mounts
     const fetchPDFs = async () => { 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`,{
+          headers: {
+            Authorization: `Bearer ${token}`
+            
+          },
+        });
         const filteredRequests = response.data.filter(request => request.approveDeenAr && request.approveHead);
         setPDFs(filteredRequests);
       } catch (error) {

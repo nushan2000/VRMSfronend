@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const CostPage = () => {
+  const token = localStorage.getItem("token"); 
   const [vehicleNumbers, setVehicleNumbers] = useState([]);
   const [selectedVehicleNumber, setSelectedVehicleNumber] = useState("");
   const [costDetails, setCostDetails] = useState(null);

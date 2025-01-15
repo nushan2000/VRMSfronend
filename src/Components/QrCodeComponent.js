@@ -4,7 +4,7 @@ import QRCode from 'react-qr-code'; // Importing from react-qr-code
 const QrCodeComponent = ({ vehicleNumber }) => {
   const [qrCodeData, setQRCodeData] = useState('');
   const [qrCodeURL, setQRCodeURL] = useState("");
-
+  const token = localStorage.getItem("token"); 
   const frontEndURL = `http://localhost:3001/user/feedback?vehicle=${vehicleNumber}`
 
   useEffect(()=>{

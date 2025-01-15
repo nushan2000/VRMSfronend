@@ -38,8 +38,13 @@ export default function AddNewVehicle() {
             vehicleName
         }
 
-        
-        axios.post(`${process.env.REACT_APP_API_URL}/vehicle/addVehicle`, addNewVehicle)
+        const token = JSON.parse(localStorage.getItem("token"));
+        axios.post(`${process.env.REACT_APP_API_URL}/vehicle/addVehicle`, addNewVehicle,{
+            headers: {
+              Authorization: `Bearer ${token}`
+              
+            },
+          })
     .then(() => {
         setMessage("New vehicle added successfully");
         setVehicleNo("");
