@@ -13,7 +13,7 @@ export default function FeedBackReview() {
         const fetchVehicleData = async () => {
 
             try{
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/feedback/dropdown/vehileNo`,{
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/feedback/feedbacks`,{
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

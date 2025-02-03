@@ -10,7 +10,6 @@
     flex-direction: column; /* Change to column layout */
     align-items: center; /* Center the content horizontally */
     justify-content: center;
-    
     animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
 }
 
@@ -21,11 +20,12 @@
   background-color: #ffffff;
   align-items:self-end; /* Center the content horizontally */
   justify-content:center;
+  margin: 20px;
   
-    padding: 25px;
+    
     width: 320px;
     height: 320px;
-    margin: 20px;
+    
     
     border-radius: 20px;
     animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
@@ -58,13 +58,14 @@
     margin-top: 20px;
 }
 .rowpop2{
-    width: 780px;
-    padding: 30px;
+  width: 100%;  
+  display: flex; /* Use flexbox for layout */
+  justify-content: center;
     
 }
 .popup-inner2 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
+  
   text-align: center;
   background-color: #ffffff;
   align-items:self-end; /* Center the content horizontally */
@@ -72,24 +73,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
-    padding: 30px;
-    width: 680px;
-    height: 320px;
-    margin: 20px;
+  padding:10px;
+    
+    
+   
     
     border-radius: 20px;
     animation: slideInRight 0.5s ease-in-out; /* Changed from slideInLeft to slideInRight */
 }
 .columnpop {
-
-    float: left;
-    width: 40%;
-    padding: 20px;
-    margin: 10px;
+  display: flex;
+  justify-content: space-between;
+gap:20px;
+    
+    width: 60%;
+    
    
-    height: 300px; /* Should be removed. Only for demonstration */
+     /* Should be removed. Only for demonstration */
   }
- 
+  .columnpop2 {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    
+   height: 100px;
+   
+     /* Should be removed. Only for demonstration */
+  }
   /* Clear floats after the columns */
   .rowpop:after {
     content: "";

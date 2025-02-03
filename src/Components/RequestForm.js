@@ -23,6 +23,7 @@ import {
   Checkbox,
   FormLabel
 } from "@mui/material";
+import { toast } from 'react-toastify';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 export default function RequestForm() {
@@ -158,7 +159,8 @@ export default function RequestForm() {
 
         },
       });
-      alert("Request submitted successfully!");
+      toast.success('Request submitted successfully!');
+      //alert("Request submitted successfully!");
       // Handle the server response if needed
       console.log("Server Response:", response.data);
 
@@ -179,7 +181,8 @@ export default function RequestForm() {
     } catch (error) {
 
       console.error("Error submitting form:", error);
-      alert("Error submitting form. Please try again later.");
+      toast.error('Error submitting form. Please try again later!');
+      //alert("Error submitting form. Please try again later.");
     }
   };
 

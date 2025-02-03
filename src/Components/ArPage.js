@@ -21,7 +21,7 @@ import {
   TableCell,
   Typography,
 } from '@mui/material';
-
+import { toast } from 'react-toastify';
 
 export default function ArPage() {
   const [vehicleList, setVehicleList] = useState([]);
@@ -116,7 +116,8 @@ export default function ArPage() {
   const submitArForm = async () => {
     try {
       if (formData.approveDeenAr === "") {
-        alert("Please select whether you accept the request or not.");
+        toast.error('Please select whether you accept the request or not!');
+        //alert("Please select whether you accept the request or not.");
         return;
       }
 
@@ -153,13 +154,31 @@ export default function ArPage() {
         approveDeenAr: ""
       });
 
-      alert("Request submitted successfully!");
+      //alert("Request submitted successfully!");
+      toast.success('Request submitted successfully!');
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Error submitting form. Please try again later.");
+      toast.error('Error submitting form. Please try again later!');
+
+      //alert("Error submitting form. Please try again later.");
     }
   };
 
+   const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        // If the date is valid, return it in YYYY-MM-DD format
+        return date.toISOString().split("T")[0];
+      }
+      return ""; // Fallback for invalid dates
+    } catch (error) {
+      return ""; // Fallback for any errors during formatting
+    }
+  };
+
+  // Format the date safely
+  const formattedDate = formatDate(formData.date);
   return (
     <div className="row min-vh-100">
       <div className="column1">
@@ -180,9 +199,9 @@ export default function ArPage() {
         <TextField
           label="Date"
           type="date"
-          value={formData.date}
+           value={formattedDate}
           onChange={handleChange}
-          InputLabelProps={{ shrink: true }}
+          
           disabled
         />
       </FormControl>
@@ -325,16 +344,7 @@ export default function ArPage() {
           ))}
         </TableBody>
       </Table>
-      <div className="RequestVehicle">
-                <Typography variant="body1" gutterBottom>
-                  Head Approved
-                </Typography>
-                <img
-                  src={require("../Images/yes1.png")}
-                  alt="Yes"
-                  style={{ color: "green", width: "24px", height: "24px" }}
-                />
-              </div>
+      
       <FormControl component="fieldset" margin="normal">
         <FormLabel component="legend">Approval</FormLabel>
         <RadioGroup

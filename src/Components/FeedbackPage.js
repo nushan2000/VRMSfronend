@@ -1,7 +1,7 @@
 import React, { useState }  from "react";
 import '../Css/FeedbackPageStyle.css'
 import { useParams } from "react-router-dom";
-
+import { toast } from 'react-toastify';
 export default function FeedbackPage() {
 
     const [errors, setErrors] = useState({});
@@ -36,7 +36,8 @@ export default function FeedbackPage() {
         });
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            alert("Feedback not Submited, Fill all the details and try again")
+            toast.error('Feedback not Submited, Fill all the details and try again!');
+           // alert("Feedback not Submited, Fill all the details and try again")
             return;
         }
 
@@ -73,11 +74,13 @@ export default function FeedbackPage() {
             
             const data = await response.json();
             console.log(data);
-            alert("Feedback Submited")
+            toast.success('Feedback Submited!');
+            //alert("Feedback Submited")
             // Optionally, show success message or redirect user
         } catch (error) {
             console.error("Error submitting feedback:", error);
-            alert("Something went wrong")
+            toast.error('Something went wrong!');
+            //alert("Something went wrong")
             // Optionally, show error message to the user
         }
     };

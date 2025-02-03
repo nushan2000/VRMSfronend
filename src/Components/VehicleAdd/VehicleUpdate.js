@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../../Css/AddNewVehicle.css'; // Import CSS file for styling
-
+import { toast } from 'react-toastify';
 const VehicleUpdate = ({ vehicle, onClose }) => {
   const token = localStorage.getItem("token"); 
   const [formData, setFormData] = useState({ ...vehicle, statusList: vehicle.statusList || [] });
@@ -25,14 +25,17 @@ const VehicleUpdate = ({ vehicle, onClose }) => {
       });
       console.log("Response from server:", response.data); // Debug: log response data from server
       if (response.status === 200) {
-        alert("Vehicle updated successfully!");
+        toast.success('Vehicle updated successfully!');
+        //alert("Vehicle updated successfully!");
         onClose();
       } else {
-        alert("Failed to update vehicle.");
+        toast.error('Failed to update vehicle!');
+        //alert("Failed to update vehicle.");
       }
     } catch (err) {
       console.error("Error updating vehicle:", err);
-      alert("An error occurred while updating the vehicle.");
+      toast.error('An error occurred while updating the vehicle!');
+      //alert("An error occurred while updating the vehicle.");
     }
   };
 

@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 
 export default function ReservationDash() {
     const [requests, setRequest] = useState([]);
-
+    const token = localStorage.getItem("token"); 
     useEffect(() => {
         // Fetch customer data from the backend  
         fetchReserDetail();
@@ -16,8 +16,13 @@ export default function ReservationDash() {
 
     async function fetchReserDetail() {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`); // Replace with the correct URL
-        const filteredRequests = response.data.filter(request => !request.approveDeenAr && request.approveHead);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`,{
+            headers: {
+              Authorization: `Bearer ${token}`
+              
+            },
+      }); // Replace with the correct URL
+        const filteredRequests = response.data.filter(request =>  request.approveHead && !request.approveDeenAr );
         setRequest(filteredRequests);
       
       } catch (error) {

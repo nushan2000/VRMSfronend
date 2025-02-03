@@ -22,6 +22,7 @@ import {
   InputLabel,
   FormLabel,
 } from "@mui/material";
+import { toast } from 'react-toastify';
 export default function Head() {
   
   
@@ -130,7 +131,8 @@ const handleApproveChange = (e) => {
 const submitHeadForm = async () => {
   try {
     if (formData.approveHead === "") {
-      alert("Please select whether you accept the request or not.");
+      toast.error('Please select whether you accept the request or not!');
+      //alert("Please select whether you accept the request or not.");
       return;
     }
 
@@ -142,7 +144,8 @@ const submitHeadForm = async () => {
       },
     });
     //console.log("Server Response:", response.data);
-    alert("Request submitted successfully!");
+    toast.success('Request submitted successfully!');
+    //alert("Request submitted successfully!");
     setFormData({
       name: "",
       date: "",
@@ -165,10 +168,11 @@ const submitHeadForm = async () => {
     //alert("Request submitted successfully!");
   } catch (error) {
     console.error("Error submitting form:", error);
-    alert("Error submitting form. Please try again later.");
+    toast.error('Error submitting form. Please try again later!');
+    //alert("Error submitting form. Please try again later.");
   }
 };
-
+const formattedDate = new Date(formData.date).toISOString().split("T")[0];
 
 
   return (
@@ -192,7 +196,7 @@ const submitHeadForm = async () => {
             label="Date"
             type="date"
             InputLabelProps={{ shrink: true }}
-            value={formData.date}
+            value={formattedDate}
             onChange={handleChange}
             id="date"
             disabled
