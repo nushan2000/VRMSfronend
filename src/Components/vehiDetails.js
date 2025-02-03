@@ -54,7 +54,7 @@ export default function VehiDetails({ vehicle, onClose }) {
           </div>
         </div>
         <div className="rowpop2">
-          <div className="columnpop">
+          <div className="columnpop2">
             <div className="popup-inner2">
               <section>
                 <CalendarGfg vehicle={vehicle} />
