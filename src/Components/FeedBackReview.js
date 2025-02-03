@@ -24,6 +24,7 @@ export default function FeedBackReview() {
                 if(response.ok){
                     const data = await response.json();
                     setVehicleNumbers(data);
+                    
                 }else {
                     console.log("data fetching error")
                 }

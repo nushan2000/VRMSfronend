@@ -24,7 +24,7 @@ const AddVehicleForm = ({ onClose }) => {
   };
 
   const handleSubmit = async e => {
-    e.preventDefault();
+        e.preventDefault();
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/vehicle/addVehicle`, formData,{
         headers: {
@@ -33,7 +33,6 @@ const AddVehicleForm = ({ onClose }) => {
         },
       });
       console.log("created");
-      
       onClose();
       toast.success('Request submitted successfully!');
     } catch (err) {
