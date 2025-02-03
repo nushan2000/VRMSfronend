@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../../Css/AddNewVehicle.css';
+import { toast } from "react-toastify";
 // AddVehicleForm.js
  // Import CSS file for styling
 
@@ -31,7 +32,10 @@ const AddVehicleForm = ({ onClose }) => {
           
         },
       });
+      console.log("created");
+      
       onClose();
+      toast.success('Request submitted successfully!');
     } catch (err) {
       console.error(err);
     }

@@ -4,7 +4,7 @@ import axios from "axios";
 import DeenArDash from "./DeenArDash";
 import { Link } from 'react-router-dom';
 import { TextField, Select, MenuItem, FormControl, InputLabel, Radio, RadioGroup, FormControlLabel, Button, Typography, Table, TableBody, TableCell, TableHead, TableRow, FormLabel } from '@mui/material';
-
+import { toast } from 'react-toastify';
 export default function ArPage() {
   const token = localStorage.getItem("token"); 
   const [vehicleList, setVehicleList] = useState([]);
@@ -90,7 +90,8 @@ export default function ArPage() {
     e.preventDefault();
     try {
       if (formData.approveDeenAr === "") {
-        alert("Please select whether you accept the request or not.");
+        toast.error('Please select whether you accept the request or not!');
+        //alert("Please select whether you accept the request or not.");
         return;
       }
 
@@ -122,13 +123,29 @@ export default function ArPage() {
         passengers: []
       });
 
-      alert("Request submitted successfully!");
+      //alert("Request submitted successfully!");
+      toast.success('Request submitted successfully!');
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Error submitting form. Please try again later.");
+      toast.error('Error submitting form. Please try again later!');
+      //alert("Error submitting form. Please try again later.");
+    }
+  };
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        // If the date is valid, return it in YYYY-MM-DD format
+        return date.toISOString().split("T")[0];
+      }
+      return ""; // Fallback for invalid dates
+    } catch (error) {
+      return ""; // Fallback for any errors during formatting
     }
   };
 
+  // Format the date safely
+  const formattedDate = formatDate(formData.date);
   return (
     <div className="row min-vh-100">
       <div className="column1 ">
@@ -152,7 +169,7 @@ export default function ArPage() {
             fullWidth
             InputLabelProps={{ shrink: true }}
             name="date"
-            value={formData.date}
+            value={formattedDate}
             onChange={handleChange}
             margin="normal"
             disabled
@@ -304,16 +321,7 @@ export default function ArPage() {
           </TableBody>
         </Table>
 
-        <div className="RequestVehicle">
-          <Typography variant="body1" gutterBottom>
-            Head Approved
-          </Typography>
-          <img
-            src={require("../Images/yes1.png")}
-            alt="Yes"
-            style={{ color: "green", width: "24px", height: "24px" }}
-          />
-        </div>
+        
 
         <FormControl component="fieldset" margin="normal">
           <FormLabel component="legend">The Request is</FormLabel>
@@ -354,6 +362,11 @@ export default function ArPage() {
         <Link to="/userlistar">
           <button className="deenrequwst">
             Add User
+          </button>
+        </Link>
+        <Link to="/user/feedback/review">
+          <button className="deenrequwst">
+            Driver Reviews
           </button>
         </Link>
       </div>

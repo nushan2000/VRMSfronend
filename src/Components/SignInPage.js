@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import PopUp from './Popup';
 import Navbar from './NavBar';
-
+import { toast } from 'react-toastify';
 export default function Signin() {
 
   const [showPopUp, setShowPopUp] = useState(true);
@@ -37,6 +37,7 @@ export default function Signin() {
     },config
     );
     localStorage.setItem('token', data.token);
+    
     Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
     if (data.designation=="user") {
       navigate('/user'); // Redirect to the admin page
@@ -49,7 +50,7 @@ export default function Signin() {
     }else if (data.designation=="security"){
       navigate('/security');
     }else{
-      alert("wrong email or password")
+      toast.error('cant login!');
     }
 
 
@@ -62,7 +63,7 @@ const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : nul
 // Now 'parsedUserInfo' contains the user information retrieved from the cookie
 console.log(parsedUserInfo);
     }catch(error){
-
+      toast.error('cant login!');
     }
   };
  

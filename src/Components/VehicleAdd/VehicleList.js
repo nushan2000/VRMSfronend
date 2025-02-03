@@ -4,6 +4,8 @@ import '../../Css/VehicelDetails/VehicleList.css'; // Import CSS file for stylin
 import VehicleaAdd from './VehicleaAdd';
 import VehicleUpdate from './VehicleUpdate';
 import QrCodeComponent from '../QrCodeComponent';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 const VehicleList = () => {
   const token = localStorage.getItem("token"); 
@@ -73,47 +75,81 @@ const VehicleList = () => {
   const closeQrModal = () => {
     setShowQrModal(false);
   };
+  const [checked, setChecked] = useState({});
 
+  const handleCheckboxChange = (vehicleNo) => {
+    setChecked((prev) => ({
+      ...prev,
+      [vehicleNo]: !prev[vehicleNo]
+    }));
+    if (!checked[vehicleNo]) {
+      openQrModal(vehicleNo);
+    } else{
+      closeQrModal();
+    }
+  };
   return (
     <div className="vehicle-list-container">
-      <h1>Vehicle List</h1>
-      <button className="add-button" onClick={openAddModal}>Add Vehicle</button>
-      <table className="vehicle-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Vehicle No</th>
-            <th>Vehicle Type</th>
-            <th>Seat Capacity</th>
-            <th>Status</th>
-            <th>Driver Name</th>
-            <th>Driver Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vehicles.map(vehicle => (
-            <tr key={vehicle._id}>
-              <td> {vehicle.vehicleImg === "" || vehicle.vehicleImg === null ? "" : <img className='vehicleDe' src={`data:image/png;base64,${vehicle.vehicleImg}`} alt="Vehicle" />}</td>
-              <td>{vehicle.vehicleNo}</td>
-              <td>{vehicle.vehicleType}</td>
-              <td>{vehicle.sheatCapacity}</td>
-              <td>{vehicle.status}</td>
-              <td>{vehicle.driverName}</td>
-              <td>{vehicle.driverEmail}</td>
-              <td>
-                <button className="update-button" onClick={() => openUpdateModal(vehicle)}>Update</button>
-                <button className="delete-button" onClick={() => handleDelete(vehicle._id)}>Delete</button>
-                <button className="show-qr-button" onClick={() => openQrModal(vehicle.vehicleNo)}>Show QR</button>
-              </td>
-            </tr>
+    <Typography variant="h4" gutterBottom>
+      Vehicle List
+    </Typography>
+    <Button variant="contained" color="primary" onClick={openAddModal}>
+      Add Vehicle
+    </Button>
+    <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>Vehicle No</TableCell>
+            <TableCell>Vehicle Type</TableCell>
+            <TableCell>Seat Capacity</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Driver Name</TableCell>
+            <TableCell>Driver Email</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {vehicles.map((vehicle) => (
+            <TableRow key={vehicle._id}>
+              <TableCell>
+                {vehicle.vehicleImg === "" || vehicle.vehicleImg === null ? "" : 
+                  <img className='vehicleDe' src={`data:image/png;base64,${vehicle.vehicleImg}`} alt="Vehicle" style={{ width: 50, height: 50 }} />
+                }
+              </TableCell>
+              <TableCell>{vehicle.vehicleNo}</TableCell>
+              <TableCell>{vehicle.vehicleType}</TableCell>
+              <TableCell>{vehicle.sheatCapacity}</TableCell>
+              <TableCell>{vehicle.status}</TableCell>
+              <TableCell>{vehicle.driverName}</TableCell>
+              <TableCell>{vehicle.driverEmail}</TableCell>
+              <TableCell>
+                <Button variant="outlined" color="primary" onClick={() => openUpdateModal(vehicle)} sx={{ mr: 1 }}>
+                  Update
+                </Button>
+                <Button variant="outlined" color="secondary" onClick={() => handleDelete(vehicle._id)} sx={{ mr: 1 }}>
+                  Delete
+                </Button>
+                <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checked[vehicle.vehicleNo] || false}
+                        onChange={() => handleCheckboxChange(vehicle.vehicleNo)}
+                      />
+                    }
+                    label="Show QR"
+                  />
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-      {showAddModal && <VehicleaAdd onClose={closeAddModal} />}
-      {showUpdateModal && <VehicleUpdate vehicle={selectedVehicle} onClose={closeUpdateModal} />}
-      {showQrModal && <QrCodeComponent vehicleNumber={selectedVehicleNo} onClose={closeQrModal} />}
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
+    {showAddModal && <VehicleaAdd onClose={closeAddModal} />}
+    {showUpdateModal && <VehicleUpdate vehicle={selectedVehicle} onClose={closeUpdateModal} />}
+    {showQrModal && <QrCodeComponent vehicleNumber={selectedVehicleNo} onClose={closeQrModal} />}
+  </div>
   );
 };
 

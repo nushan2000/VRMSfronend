@@ -4,6 +4,7 @@ import axios from "axios";
 import "../Css/HistryPageStyle.css";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function HistryPage() {
   const navigate = useNavigate();
@@ -34,10 +35,14 @@ export default function HistryPage() {
                   Authorization: `Bearer ${token}`
                   
                 },
-              });
+              })
         setRequests(response.data);
+        console.log("res",response.data);
+        
+        toast.success('This is a success message!');
       } catch (error) {
         console.error("Error fetching requests:", error);
+        toast.error('This is an error message!');
       }
     };
 
@@ -82,6 +87,10 @@ export default function HistryPage() {
                 Authorization: `Bearer ${token}`
                 
               },
+            }).then(() => {
+              toast.success('This is a success message!');
+            }).catch(()=>{
+              toast.error('This is an error message!');
             });
       const vehicle = vehicleResponse.data.find(v => v.vehicleName === selectedRequest.vehicle);
 
@@ -128,6 +137,7 @@ export default function HistryPage() {
               request.applier === userEmail && (
                 <div className="historydetails" key={request._id}>
                   <div className="request-row">
+                  
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", height: "100%" }}>
                       <div> {request.date}</div>
                       <div>{request.depatureLocation} to {request.destination}</div>

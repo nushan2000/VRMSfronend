@@ -9,44 +9,80 @@
 
 .details-column {
   flex: 1;
-  padding-left: 20px; /* Adjust spacing between calendar and details */
+   /* Adjust spacing between calendar and details */
   transition: flex 0.5s ease, width 0.5s ease;
 }
 
 /* Calendar styles */
 .react-calendar {
   width: 100%;
+  color: #212529;
+  background-color: #635d5d;
   max-width: 320px; /* Set the maximum width of the calendar */
   border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.212); /* Add shadow effect */
 }
 
 /* Reserved date styles */
-.reserved-date {
-  background-color: #ffa07a;
-  color: white;
-  border-radius: 20%; /* Make reserved dates circular */
-}
+
 /* Calender.css */
+.react-calendar__tile:hover {
+  background-color: #e9ecef; /* Light gray on hover */
+  color: #000000; /* Black text on hover */
+}
+.react-calendar__tile--now {
+  background-color: #ff5722; /* Orange background for today's date */
+  color: #ffffff; /* White text for today's date */
+  border-radius: 4px; /* Optional: Add rounded corners for consistency */
+  font-weight: bold; /* Optional: Make the text bold for emphasis */
+}
+
+.react-calendar__tile--now:hover {
+  background-color: #e64a19; /* Slightly darker orange on hover */
+  color: #ffffff; /* Keep text white on hover */
+}
+.react-calendar__tile--active {
+  background-color: #007bff; /* Blue background for selected date */
+  color: #ffffff; /* White text for selected date */
+  border-radius: 4px;
+}
 
 
+.reserved-date {
+  background-color: #ffc107; /* Yellow background for reserved dates */
+  color: #212529; 
+  border-radius: 4px;/* Dark text for reserved dates */
+}
 
 .status-date {
-  background-color: rgb(255, 0, 0) !important;
-  color: white !important;
-  border-radius: 20%;
+  background-color: #ff2820; /* Green background for status dates */
+  color: #ffffff;
+  border-radius: 4px; /* White text for status dates */
 }
 
 /* Message box styles */
 .message-box {
-  width: max-content;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+  background-color: #f8f9fa; /* Light background for reservation details */
+  color: #212529; /* Dark text for reservation details */
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .show-details .details-column {
   flex: 1;
   width: auto;
+}
+.dateTypes{
+  display: flex;
+  justify-content: space-between; /* Adjusts spacing between elements */
+    
+}
+.box {
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: lightblue;
+  text-align: left;
+  
 }
