@@ -36,7 +36,10 @@ export default function Signin() {
       email,password,
     },config
     );
+
+    console.log(data)
     localStorage.setItem('token', data.token);
+    localStorage.setItem('userId', data._id);
     
     Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
     if (data.designation=="user") {
@@ -70,7 +73,6 @@ console.log(parsedUserInfo);
 
   return (
     <div className='sign'>
-      <Navbar></Navbar>
       
       
     <div >
