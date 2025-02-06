@@ -9,12 +9,15 @@ export default function ReservationDash() {
     useEffect(() => {
         // Fetch customer data from the backend  
         fetchReserDetail();
-    }, []);
+    },[]);
 
     async function fetchReserDetail() {
         try {
+            
             // Retrieve the user information from the cookie
             const userInfoFromCookie = Cookies.get('userInfo');
+            console.log(userInfoFromCookie);
+            
             // Parse the user information if available
             const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
             // Extract the user's email from the parsed user information

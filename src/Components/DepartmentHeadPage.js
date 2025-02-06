@@ -28,6 +28,7 @@ export default function Head() {
   
 
 const [vehicleList, setVehicleList] = useState([]);
+const [vehicle, setVehicle] = useState({})
 const token = localStorage.getItem("token"); 
 const [formData, setFormData] = useState({
   name: "",
@@ -77,6 +78,18 @@ useEffect(() => {
     //////////////////////////////////////////////
     
     setPassengerList(requestData.passengers || []);
+
+    axios.get(`${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${requestData.vehicle}`, {
+      
+    })
+      .then(response => {
+        setVehicle(response.data);
+        console.log("resposeVehi", response);
+        // Assuming response.data is an array of vehicle names
+      })
+      .catch(error => {
+        console.error("Error fetching vehicle list:", error);
+      });
   };
 
   // Listen for the custom event to trigger a re-render
@@ -172,7 +185,7 @@ const submitHeadForm = async () => {
     //alert("Error submitting form. Please try again later.");
   }
 };
-const formattedDate = new Date(formData.date).toISOString().split("T")[0];
+//const formattedDate = new Date(formData.date).toISOString().split("T")[0];
 
 
   return (
@@ -196,7 +209,7 @@ const formattedDate = new Date(formData.date).toISOString().split("T")[0];
             label="Date"
             type="date"
             InputLabelProps={{ shrink: true }}
-            value={formattedDate}
+            value={formData.date}
             onChange={handleChange}
             id="date"
             disabled
@@ -204,21 +217,16 @@ const formattedDate = new Date(formData.date).toISOString().split("T")[0];
         </FormControl>
 
         <FormControl fullWidth margin="normal">
-          <InputLabel id="vehicle-label">Select Vehicle</InputLabel>
-          <Select
-            labelId="vehicle-label"
-            id="vehicle"
-            value={formData.vehicle}
+          
+          
+          <TextField
+            label="Vehicle"
+            value={vehicle.vehicleName}
+            InputLabelProps={{ shrink: true }}
             onChange={handleChange}
+            id={vehicle._id}
             disabled
-          >
-            <MenuItem value="">Select</MenuItem>
-            {vehicleList.map((vehicle, index) => (
-              <MenuItem key={index} value={vehicle.vehicleName}>
-                {vehicle.vehicleName}
-              </MenuItem>
-            ))}
-          </Select>
+          />
         </FormControl>
 
         <FormControl fullWidth margin="normal">

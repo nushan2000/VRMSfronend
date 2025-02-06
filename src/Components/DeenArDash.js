@@ -12,9 +12,13 @@ export default function ReservationDash() {
     useEffect(() => {
         // Fetch customer data from the backend  
         fetchReserDetail();
+        console.log(1);
+        
     }, []);
 
     async function fetchReserDetail() {
+        console.log(2);
+        
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`,{
             headers: {
@@ -22,6 +26,9 @@ export default function ReservationDash() {
               
             },
       }); // Replace with the correct URL
+
+      console.log(response);
+      
         const filteredRequests = response.data.filter(request =>  request.approveHead && !request.approveDeenAr );
         setRequest(filteredRequests);
       

@@ -25,7 +25,8 @@ import {
 } from "@mui/material";
 import { toast } from 'react-toastify';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 export default function RequestForm() {
 
   const [vehicleList, setVehicleList] = useState([]);
@@ -34,7 +35,7 @@ export default function RequestForm() {
   const [userEmail, setUserEmail] = useState(null);
   const [approveHead, setApproveHead] = useState(false);
   const [approveDeenAr, setApproveDeenAr] = useState(false);
-
+//const [requests, setRequest] = useState([]);
   useEffect(() => {
     // Retrieve user data from cookie
     const userInfoFromCookie = Cookies.get('userInfo');
@@ -72,7 +73,7 @@ export default function RequestForm() {
       .catch(error => {
         console.error("Error fetching vehicle list:", error);
       });
-
+      fetchReserDetail();
   }, [date]); // Run only once after component mount
 
 
@@ -186,8 +187,75 @@ export default function RequestForm() {
     }
   };
 
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      passengerList.map((passenger, index) => ({
+        No: index + 1,
+        Name: passenger.name,
+        Position: passenger.position,
+        "Pickup From": passenger.pickup,
+        "Drop To": passenger.drop
+      }))
+    );
 
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Passengers");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const dataBlob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(dataBlob, "PassengerData.xlsx");
+  };
   //Availabel sheets for every vehicle for according to date
+
+  async function fetchReserDetail() {
+    try {
+        // Retrieve the user information from the cookie
+        const userInfoFromCookie = Cookies.get('userInfo');
+        // Parse the user information if available
+        const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
+        // Extract the user's email from the parsed user information
+        const userEmail = parsedUserInfo ? parsedUserInfo.email : null;
+
+        // If the user's email is available, extract the domain
+        const loggedInUserDomain = userEmail ? userEmail.split('@')[1] : null;
+        console.log("logged",loggedInUserDomain);
+        
+
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
+        console.log("response",response.data);
+        
+
+        if(loggedInUserDomain==="engug.ruh.ac.lk"){
+          setApproveHead(true);
+          console.log("engug............");
+          
+        }
+        // const filteredRequests = response.data.filter(request => {
+        //     // Extract the domain from the applier's email address
+        //     const applierDomain = request.applier.split('@')[1];
+        //     console.log("applierDomain",applierDomain);
+
+            
+        //     // Check if the applier's domain matches the logged-in user's domain
+        //     return applierDomain === loggedInUserDomain;
+        // }).filter(request => !request.approveHead);
+      //onsole.log("filter data",filteredRequests);
+        // Sort the filteredRequests array by applyDate in descending order
+       // filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
+
+
+        //setRequest(filteredRequests);
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 
   return (
@@ -215,7 +283,7 @@ export default function RequestForm() {
           getOptionLabel={(option) =>
             `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
           }
-          onChange={(e, option) => setVehicle(option ? option.vehicleName : "")}
+          onChange={(e, option) => setVehicle(option ? option.id : "")}
           renderInput={(params) => <TextField {...params} label="Select Vehicle" />
         }
         />
@@ -340,6 +408,9 @@ export default function RequestForm() {
       </FormControl>
       <Button variant="contained" color="primary" onClick={addPassenger}>
         Add Passenger
+      </Button>
+      <Button variant="contained" color="primary" onClick={exportToExcel} style={{ marginLeft: "10px" }}>
+        Export to Excel
       </Button>
       <TableContainer component={Paper} margin="normal">
         <Table>
