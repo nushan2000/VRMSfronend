@@ -39,7 +39,7 @@ export default function HistryPage() {
         setRequests(response.data);
         console.log("res",response.data);
         
-        toast.success('This is a success message!');
+        //toast.success('This is a success message!');
       } catch (error) {
         console.error("Error fetching requests:", error);
         toast.error('This is an error message!');

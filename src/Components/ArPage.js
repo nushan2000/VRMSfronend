@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 
 export default function ArPage() {
   const [vehicleList, setVehicleList] = useState([]);
+  const [vehicle, setVehicle] = useState({})
   const [formData, setFormData] = useState({
     name: "",
     date: "",
@@ -70,6 +71,18 @@ export default function ArPage() {
       console.log("Request Data:", requestData);
       setFormData(requestData);
       setPassengerList(requestData.passengers || []);
+
+      axios.get(`${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${requestData.vehicle}`, {
+      
+      })
+        .then(response => {
+          setVehicle(response.data);
+          console.log("resposeVehi", response);
+          // Assuming response.data is an array of vehicle names
+        })
+        .catch(error => {
+          console.error("Error fetching vehicle list:", error);
+        });
     };
 
     document.addEventListener("forceUpdateHead", handleForceUpdate);
@@ -182,7 +195,7 @@ export default function ArPage() {
   // Format the date safely
   const formattedDate = formatDate(formData.date);
   return (
-    <div className="row min-vh-100">
+    <div className="row mainpage min-vh-100">
       <div className="column1">
         <div className="requestbutton">
           <div>
@@ -208,20 +221,14 @@ export default function ArPage() {
             </FormControl>
 
             <FormControl fullWidth margin="normal">
-              <InputLabel id="vehicle-label">Select Vehicle</InputLabel>
-              <Select
-                labelId="vehicle-label"
-                value={formData.vehicle}
-                onChange={handleChange}
-                disabled
-              >
-                <MenuItem value="">Select</MenuItem>
-                {vehicleList.map((vehicle, index) => (
-                  <MenuItem key={index} value={vehicle.vehicleName}>
-                    {vehicle.vehicleName}
-                  </MenuItem>
-                ))}
-              </Select>
+              
+              <TextField
+                          label="Vehicle"
+                          id="vehicle"
+                          value={vehicle.vehicleName}
+                          onChange={handleChange}
+                          disabled
+                        />
             </FormControl>
 
             <FormControl fullWidth margin="normal">

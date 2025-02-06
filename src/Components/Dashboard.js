@@ -8,6 +8,7 @@ export default function Dashboard() {
     const [vehicles, setItems] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [showPopup, setShowPopUp] = useState(false);
+    const today = new Date().toISOString().split("T")[0];
     const handleClosePopUp = () => {
         setShowPopUp(false);
       };
@@ -48,14 +49,30 @@ export default function Dashboard() {
                         </div>
                         <div className="columnbuttonright ">
                             <p>
-                                <span className="tabbed-text">Available:</span>
+                                {/* <span className="tabbed-text">Available:</span>
                                 {vehicle.availability === "yes" ? (
                                     <img src={require('../Images/yes1.png')} alt="Yes" style={{ color: 'green', width: '24px', height: '24px' }} />
                                 ) : (
                                     <img src={require('../Images/no4.png')} alt="No" style={{ width: '24px', height: '24px' }} />
-                                )} <br />
+                                )} <br /> */}
                                 <span className="tabbed-text">Available seats:</span>{vehicle.avilableSheat} <br />
-                                <span className="tabbed-text">Status:</span>{vehicle.status}
+                                <span className="tabbed-text">Status:</span>{vehicle.statusList.find((status) =>
+                      status.statusDate.startsWith(today)
+                    ) ? (
+                      vehicle.statusList.find((status) =>
+                        status.statusDate.startsWith(today)
+                      )?.newStatus
+                    ) : (
+                      <img
+                        src={require("../Images/yes1.png")}
+                        alt="Yes"
+                        style={{
+                          color: "green",
+                          width: "24px",
+                          height: "24px",
+                        }}
+                      />
+                    )}
                             </p>
                         </div>
                     </div>

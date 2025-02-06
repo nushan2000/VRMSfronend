@@ -1,4 +1,9 @@
 /* Base styles for the form and layout */
+
+.mainpage{
+  display: flex;
+}
+
 .vehicleRequestForm1 {
   max-width: 1000px;
   width: 70%;
@@ -9,11 +14,13 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   margin-bottom: 20px;
+  
 }
 
 .column1,
 .column21,
 .column3 {
+  
   padding: 10px;
 }
 
