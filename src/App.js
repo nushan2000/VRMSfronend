@@ -28,6 +28,7 @@ import CostList from './Components/CostDetails/CostList';
 import { AuthProvider } from './context/AuthContext';
 import FeedbackPage from './Components/FeedbackPage';
 import FeedBackReview from './Components/FeedBackReview';
+import { ReservationProvider } from './context/ReservationContext';
 
 const AppContent = () => {
   const location = useLocation();
@@ -38,7 +39,8 @@ const AppContent = () => {
     <>
       {showNavBar && <NavBar />}
       <Routes>
-        <Route path="/" exact Component={Signin} />
+
+        <Route path="/"  element={<Signin/>} />
         <Route path="/user" element={<HistryPage />} />
         <Route path="/dean" element={<Dean />} />
         <Route path="/ar" element={<ArPage />} />
@@ -80,9 +82,11 @@ const AppContent = () => {
 function App() {
   return (
     <AuthProvider>
+      <ReservationProvider>
       <Router>
         <AppContent />
       </Router>
+      </ReservationProvider>
     </AuthProvider>
   );
 }

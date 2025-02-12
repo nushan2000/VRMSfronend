@@ -20,8 +20,10 @@ import {
   TableHead,
   TableRow,
   FormLabel,
+  TextareaAutosize,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { useReservation } from "../context/ReservationContext";
 export default function ArPage() {
   const token = localStorage.getItem("token");
   const [vehicleList, setVehicleList] = useState([]);
@@ -44,8 +46,11 @@ export default function ArPage() {
     applier: "",
     applyDate: "",
     passengers: [],
+    arDeanNote: "",
   });
-
+  const [passengerList, setPassengerList] = useState([]);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+  const { selectedRequest } = useReservation();
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
@@ -62,46 +67,26 @@ export default function ArPage() {
   }, []);
 
   useEffect(() => {
-    const handleForceUpdate = () => {
-      // When the custom event is triggered, update the form data
-      const requestData =
-        JSON.parse(localStorage.getItem("selectedRequest")) || [];
-      console.log("Request Data:", requestData);
-      setFormData(requestData);
-
+    if (selectedRequest) {
+      setFormData((prevFormData) => ({
+        ...selectedRequest, // Copy selectedRequest data
+        driverStatus: "reject", // Override driverStatus
+      }));
+      setPassengerList(selectedRequest.passengers);
+      console.log("Updated form data:", {
+        ...selectedRequest,
+        driverStatus: "reject",
+      });
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${requestData.vehicle}`,
-          {}
+          `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
         )
         .then((response) => {
           setVehicle(response.data);
-          console.log("resposeVehi", response);
-          // Assuming response.data is an array of vehicle names
         })
-        .catch((error) => {
-          console.error("Error fetching vehicle list:", error);
-        });
-    };
-
-    // Listen for the custom event to trigger a re-render
-    document.addEventListener("forceUpdateHead", handleForceUpdate);
-
-    return () => {
-      // Clean up the event listener on component unmount
-      document.removeEventListener("forceUpdateHead", handleForceUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Update driver status based on approveHead
-    if (formData.approveHead) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        driverStatus: "approved",
-      }));
+        .catch((error) => console.error("Error fetching vehicle:", error));
     }
-  }, [formData.approveHead]);
+  }, [selectedRequest]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,18 +101,23 @@ export default function ArPage() {
     setFormData({
       ...formData,
       approveDeenAr: value,
+      driverStatus: value ? "approved" : "reject",
     });
   };
-
-  const submitArForm = async (e) => {
+  const formValidation = () => {
+    if (formData.date) {
+      return true;
+    } else {
+      console.log("validation", formData.date);
+      toast.error("Please select a resevation!");
+      return false;
+    }
+  };
+  const submitDeanForm = async (e) => {
     e.preventDefault();
     try {
-      if (formData.approveDeenAr === "") {
-        toast.error("Please select whether you accept the request or not!");
-        //alert("Please select whether you accept the request or not.");
-        return;
-      }
-
+      if (!formValidation()) return;
+      const formDataWithId = { ...formData, _id: String(formData._id) };
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`,
         formData,
@@ -137,6 +127,11 @@ export default function ArPage() {
           },
         }
       );
+      if (updateTrigger == false) {
+        setUpdateTrigger(true);
+      } else {
+        setUpdateTrigger(false);
+      }
       console.log("Server Response:", response.data);
 
       setFormData({
@@ -157,6 +152,8 @@ export default function ArPage() {
         applier: "",
         applyDate: "",
         passengers: [],
+        departmentHeadNote: "",
+        arDeanNote: "",
       });
 
       //alert("Request submitted successfully!");
@@ -187,7 +184,7 @@ export default function ArPage() {
       <div className="column1 ">
         <div className="requestbutton">
           <div>
-            <DeenArDash />
+            <DeenArDash updateTrigger={updateTrigger} />
           </div>
         </div>
       </div>
@@ -196,7 +193,7 @@ export default function ArPage() {
           <form
             className="vehicleRequestForm1"
             title="Vehicle Request Form"
-            onSubmit={submitArForm}
+            onSubmit={submitDeanForm}
           >
             <Typography variant="h5" gutterBottom>
               Vehicle Request Form
@@ -218,9 +215,9 @@ export default function ArPage() {
               <FormControl fullWidth margin="normal">
                 <TextField
                   label="Vehicle"
-                  id="vehicle"
                   value={vehicle.vehicleName}
                   onChange={handleChange}
+                  id={vehicle._id}
                   disabled
                 />
               </FormControl>
@@ -370,9 +367,47 @@ export default function ArPage() {
                 ))}
               </TableBody>
             </Table>
-
+            <FormControl fullWidth margin="normal">
+              <TextareaAutosize
+                placeholder="Department Head Note..."
+                onChange={handleChange}
+                value={formData.departmentHeadNote}
+                minRows={2}
+                size="md"
+                id="departmentHeadNote"
+                name="departmentHeadNote"
+                disabled
+                style={{
+                  color: "#d3d3d3", // Change text color
+                  backgroundColor: "#f0f0f0", // Light gray background
+                  cursor: "not-allowed", // Optional: Show disabled cursor
+                  border: "1px solid #ccc", // Optional: Add border
+                  padding: "8px", // Improve spacing
+                  fontSize: "16px", // Adjust text size
+                }}
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <Typography
+                component="label"
+                htmlFor="Vehicle Request Forme"
+                color="red"
+              >
+                * Add a note
+              </Typography>
+              <TextareaAutosize
+                placeholder="Dean Note..."
+                color="primary"
+                onChange={handleChange}
+                value={formData.arDeanNote}
+                minRows={2}
+                size="md"
+                id="arDeanNote"
+                name="arDeanNote"
+                disabled={!formData.date}
+              />
+            </FormControl>
             <FormControl component="fieldset" margin="normal">
-              <FormLabel component="legend">The Request is</FormLabel>
               <RadioGroup
                 row
                 name="setApprove"
@@ -387,16 +422,16 @@ export default function ArPage() {
                 <FormControlLabel
                   value="false"
                   control={<Radio />}
-                  label="Rejected by AR"
+                  label="Rejected"
                 />
               </RadioGroup>
             </FormControl>
 
             <Button
-              type="submit"
               variant="contained"
               color="primary"
-              onClick={submitArForm}
+              onClick={submitDeanForm}
+              fullWidth
             >
               Proceed
             </Button>

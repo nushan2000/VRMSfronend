@@ -20,12 +20,14 @@ import {
   TableRow,
   TableCell,
   Typography,
+  TextareaAutosize,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { useReservation } from "../context/ReservationContext";
 
 export default function ArPage() {
   const [vehicleList, setVehicleList] = useState([]);
-  const [vehicle, setVehicle] = useState({})
+  const [vehicle, setVehicle] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     date: "",
@@ -46,9 +48,12 @@ export default function ArPage() {
     passengerList: [],
     approveHead: "",
     approveDeenAr: "",
+    arDeanNote: "",
   });
   const [passengerList, setPassengerList] = useState([]);
   const token = localStorage.getItem("token");
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+  const { selectedRequest } = useReservation();
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
@@ -65,41 +70,26 @@ export default function ArPage() {
   }, []);
 
   useEffect(() => {
-    const handleForceUpdate = () => {
-      const requestData =
-        JSON.parse(localStorage.getItem("selectedRequest")) || [];
-      console.log("Request Data:", requestData);
-      setFormData(requestData);
-      setPassengerList(requestData.passengers || []);
-
-      axios.get(`${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${requestData.vehicle}`, {
-      
-      })
-        .then(response => {
-          setVehicle(response.data);
-          console.log("resposeVehi", response);
-          // Assuming response.data is an array of vehicle names
-        })
-        .catch(error => {
-          console.error("Error fetching vehicle list:", error);
-        });
-    };
-
-    document.addEventListener("forceUpdateHead", handleForceUpdate);
-
-    return () => {
-      document.removeEventListener("forceUpdateHead", handleForceUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (formData.approveHead) {
+    if (selectedRequest) {
       setFormData((prevFormData) => ({
-        ...prevFormData,
-        driverStatus: "approved",
+        ...selectedRequest, // Copy selectedRequest data
+        driverStatus: "reject", // Override driverStatus
       }));
+      setPassengerList(selectedRequest.passengers);
+      console.log("Updated form data:", {
+        ...selectedRequest,
+        driverStatus: "reject",
+      });
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
+        )
+        .then((response) => {
+          setVehicle(response.data);
+        })
+        .catch((error) => console.error("Error fetching vehicle:", error));
     }
-  }, [formData.approveHead]);
+  }, [selectedRequest]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,32 +99,37 @@ export default function ArPage() {
     });
   };
 
-  const addPassenger = () => {
-    const newPassenger = {
-      passengerName: formData.passengerName,
-      position: formData.position,
-      pickup: formData.pickup,
-      drop: formData.drop,
-    };
-    setPassengerList([...passengerList, newPassenger]);
-  };
+  // const addPassenger = () => {
+  //   const newPassenger = {
+  //     passengerName: formData.passengerName,
+  //     position: formData.position,
+  //     pickup: formData.pickup,
+  //     drop: formData.drop,
+  //   };
+  //   setPassengerList([...passengerList, newPassenger]);
+  // };
 
   const handleApproveChange = (e) => {
     const value = e.target.value === "true";
     setFormData({
       ...formData,
       approveDeenAr: value,
+      driverStatus: value ? "approved" : "reject",
     });
   };
-
+  const formValidation = () => {
+    if (formData.date) {
+      return true;
+    } else {
+      console.log("validation", formData.date);
+      toast.error("Please select a resevation!");
+      return false;
+    }
+  };
   const submitArForm = async () => {
     try {
-      if (formData.approveDeenAr === "") {
-        toast.error("Please select whether you accept the request or not!");
-        //alert("Please select whether you accept the request or not.");
-        return;
-      }
-
+      if (!formValidation()) return;
+      console.log(formData);
       const formDataWithId = { ...formData, _id: String(formData._id) };
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/request/updateRequest1/${formData._id}`,
@@ -145,6 +140,11 @@ export default function ArPage() {
           },
         }
       );
+      if (updateTrigger == false) {
+        setUpdateTrigger(true);
+      } else {
+        setUpdateTrigger(false);
+      }
       console.log("Server Response:", response.data);
 
       setFormData({
@@ -167,6 +167,8 @@ export default function ArPage() {
         passengerList: [],
         approveHead: "",
         approveDeenAr: "",
+        departmentHeadNote: "",
+        arDeanNote: "",
       });
 
       //alert("Request submitted successfully!");
@@ -199,7 +201,7 @@ export default function ArPage() {
       <div className="column1">
         <div className="requestbutton">
           <div>
-            <DeenArDash />
+            <DeenArDash updateTrigger={updateTrigger} />
           </div>
         </div>
       </div>
@@ -221,14 +223,14 @@ export default function ArPage() {
             </FormControl>
 
             <FormControl fullWidth margin="normal">
-              
               <TextField
-                          label="Vehicle"
-                          id="vehicle"
-                          value={vehicle.vehicleName}
-                          onChange={handleChange}
-                          disabled
-                        />
+                label="Vehicle"
+                value={vehicle.vehicleName}
+                InputLabelProps={{ shrink: true }}
+                onChange={handleChange}
+                id={vehicle._id}
+                disabled
+              />
             </FormControl>
 
             <FormControl fullWidth margin="normal">
@@ -355,7 +357,7 @@ export default function ArPage() {
                 {passengerList.map((passenger, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{passenger.passengerName}</TableCell>
+                    <TableCell>{passenger.name}</TableCell>
                     <TableCell>{passenger.position}</TableCell>
                     <TableCell>{passenger.pickup}</TableCell>
                     <TableCell>{passenger.drop}</TableCell>
@@ -363,9 +365,47 @@ export default function ArPage() {
                 ))}
               </TableBody>
             </Table>
-
+            <FormControl fullWidth margin="normal">
+              <TextareaAutosize
+                placeholder="Department Head Note..."
+                onChange={handleChange}
+                value={formData.departmentHeadNote}
+                minRows={2}
+                size="md"
+                id="departmentHeadNote"
+                name="departmentHeadNote"
+                disabled
+                style={{
+                  color: "#d3d3d3", // Change text color
+                  backgroundColor: "#f0f0f0", // Light gray background
+                  cursor: "not-allowed", // Optional: Show disabled cursor
+                  border: "1px solid #ccc", // Optional: Add border
+                  padding: "8px", // Improve spacing
+                  fontSize: "16px", // Adjust text size
+                }}
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <Typography
+                component="label"
+                htmlFor="Vehicle Request Forme"
+                color="red"
+              >
+                * Add a note
+              </Typography>
+              <TextareaAutosize
+                placeholder="AR Note..."
+                color="primary"
+                onChange={handleChange}
+                value={formData.arDeanNote}
+                minRows={2}
+                size="md"
+                id="arDeanNote"
+                name="arDeanNote"
+                disabled={!formData.date}
+              />
+            </FormControl>
             <FormControl component="fieldset" margin="normal">
-              <FormLabel component="legend">Approval</FormLabel>
               <RadioGroup
                 row
                 value={formData.approveDeenAr}
@@ -379,7 +419,7 @@ export default function ArPage() {
                 <FormControlLabel
                   value={false}
                   control={<Radio />}
-                  label="Rejected by AR"
+                  label="Rejected"
                 />
               </RadioGroup>
             </FormControl>

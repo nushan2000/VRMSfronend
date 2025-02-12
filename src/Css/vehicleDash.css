@@ -179,10 +179,10 @@
 
 .columnbuttonleft1 {
   border-radius: 7px;
- width: 30%;
+ width: 40%;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  background-color: #c2c1c1;
+  /* background-color: #c2c1c1; */
   background-color: rgb(255, 255, 255);
 }
 /* .vehiclebutton1 {
@@ -196,8 +196,10 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    margin-top: 10%;
+    width: 70%;
+    border-radius: 10px;
+    /* margin-top: 10%; */
+    background-color: #ffffff;
   }
 
 .sidetails1:hover {
@@ -210,7 +212,8 @@
 rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .sidetails1 {
-  background-color: white;
+  
+  background-color: rgb(145, 145, 145);
   transition: background-color 0.3s ease;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   margin-right: 10px;
