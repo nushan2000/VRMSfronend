@@ -28,23 +28,33 @@ import CostList from './Components/CostDetails/CostList';
 import { AuthProvider } from './context/AuthContext';
 import FeedbackPage from './Components/FeedbackPage';
 import FeedBackReview from './Components/FeedBackReview';
+import ProtectedRoute from './utils/ProtectedRoute';
 import { ReservationProvider } from './context/ReservationContext';
 
 const AppContent = () => {
-  const location = useLocation();
-  const showNavBar = location.pathname !== '/';
-  console.log('API URL:', process.env.REACT_APP_API_URL);
+  // const location = useLocation();
+  // const showNavBar = location.pathname !== '/';
+  // console.log('API URL:', process.env.REACT_APP_API_URL);
 
   return (
     <>
-      {showNavBar && <NavBar />}
+
+    </>
+  );
+};
+
+function App() {
+  return (
+
+      <Router>
+      <NavBar />
       <Routes>
 
         <Route path="/"  element={<Signin/>} />
         <Route path="/user" element={<HistryPage />} />
-        <Route path="/dean" element={<Dean />} />
+        
         <Route path="/ar" element={<ArPage />} />
-        <Route path="/head" element={<Head />} />
+
         <Route path="/request" element={<RequestForm />} />
         <Route path="/vehidetail" element={<VehiDetailPage />} />
         <Route path="/reser" element={<ReservationDash />} />
@@ -59,11 +69,27 @@ const AppContent = () => {
         <Route path="/costlist" element={<CostList />} />
         <Route path='/user/feedback' element ={<FeedbackPage/>}/>
         <Route path='/user/feedback/review' element ={<FeedBackReview/>}/>
+
+        <Route element={<ProtectedRoute allowedRole="dean"/>}>
+        <Route path="/dean" element={<Dean />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRole="head"/>}>
+        <Route path="/head" element={<Head />} />
+        </Route>
         
        
       </Routes>
       <Footer />
-      <ToastContainer 
+      </Router>
+      
+      
+    
+  );
+}
+
+
+<ToastContainer 
         position="top-right" 
         autoClose={5000} 
         hideProgressBar={false} 
@@ -75,9 +101,6 @@ const AppContent = () => {
         pauseOnHover 
         theme="light" 
       />
-    </>
-  );
-};
 
 function App() {
   return (
