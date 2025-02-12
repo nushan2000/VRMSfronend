@@ -15,7 +15,7 @@
 
 /* Calendar styles */
 .react-calendar {
-  width: 100%;
+  width: 200%;
   color: #212529;
   background-color: #635d5d;
   max-width: 320px; /* Set the maximum width of the calendar */

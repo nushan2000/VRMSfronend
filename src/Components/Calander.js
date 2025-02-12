@@ -157,13 +157,14 @@ export default function CalendarGfg({ vehicle }) {
 
   return (
     <div className={`calendar-container ${showDetails ? "show-details" : ""}`}>
-      <div className="calendar-column" ref={calendarRef}>
+      <div className="calendar-column" ref={calendarRef} style={{ fontSize: '1.5em', width: '80%', margin: 'auto' }}>
       
         <Calendar
           onChange={onChange}
           value={value}
           tileClassName={tileClassName}
           onClickDay={onClickDay}
+          style={{ width: '100%', height: 'auto' }}
         />
        < div className="dateTypes">
        

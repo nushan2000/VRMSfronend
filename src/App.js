@@ -29,6 +29,7 @@ import { AuthProvider } from './context/AuthContext';
 import FeedbackPage from './Components/FeedbackPage';
 import FeedBackReview from './Components/FeedBackReview';
 import ProtectedRoute from './utils/ProtectedRoute';
+import { ReservationProvider } from './context/ReservationContext';
 
 const AppContent = () => {
   // const location = useLocation();
@@ -48,7 +49,8 @@ function App() {
       <Router>
       <NavBar />
       <Routes>
-        <Route path="/" exact Component={Signin} />
+
+        <Route path="/"  element={<Signin/>} />
         <Route path="/user" element={<HistryPage />} />
         
         <Route path="/ar" element={<ArPage />} />
@@ -86,7 +88,7 @@ function App() {
   );
 }
 
-export default App;
+
 <ToastContainer 
         position="top-right" 
         autoClose={5000} 
@@ -99,3 +101,17 @@ export default App;
         pauseOnHover 
         theme="light" 
       />
+
+function App() {
+  return (
+    <AuthProvider>
+      <ReservationProvider>
+      <Router>
+        <AppContent />
+      </Router>
+      </ReservationProvider>
+    </AuthProvider>
+  );
+}
+
+export default App;

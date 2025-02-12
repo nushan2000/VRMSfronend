@@ -7,7 +7,7 @@ import axios from 'axios';
 import PopUp from './Popup';
 import Navbar from './NavBar';
 import { toast } from 'react-toastify';
-export default function Signin() {
+ function Signin() {
 
   const [showPopUp, setShowPopUp] = useState(true);
 
@@ -151,3 +151,4 @@ console.log(parsedUserInfo);
     </div>
   )
 }
+export default Signin;

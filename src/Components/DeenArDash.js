@@ -4,17 +4,19 @@ import React, { useState, useEffect } from 'react';
 import '../Css/ReservationDash.css';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useReservation } from '../context/ReservationContext';
 
 
-export default function ReservationDash() {
+export default function ReservationDash({updateTrigger}) {
     const [requests, setRequest] = useState([]);
     const token = localStorage.getItem("token"); 
+    const { setSelectedRequest } = useReservation();
     useEffect(() => {
         // Fetch customer data from the backend  
         fetchReserDetail();
         console.log(1);
         
-    }, []);
+    }, [updateTrigger]);
 
     async function fetchReserDetail() {
         console.log(2);
@@ -29,7 +31,7 @@ export default function ReservationDash() {
 
       console.log(response);
       
-        const filteredRequests = response.data.filter(request =>  request.approveHead && !request.approveDeenAr );
+        const filteredRequests = response.data.filter(request =>  request.approveHead && !request.approveDeenAr && request.driverStatus!=="reject"&& request.driverStatus!=="approved");
         setRequest(filteredRequests);
       
       } catch (error) {
@@ -37,8 +39,9 @@ export default function ReservationDash() {
       }
     }
     function handleItemClick(request) {
-        localStorage.setItem('selectedRequest', JSON.stringify(request));
-        document.dispatchEvent(new Event('forceUpdateHead'));
+        // localStorage.setItem('selectedRequest', JSON.stringify(request));
+        // document.dispatchEvent(new Event('forceUpdateHead'));
+        setSelectedRequest(request);
     }
 
     function getFormattedDate(applyDate) {

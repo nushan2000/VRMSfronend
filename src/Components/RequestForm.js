@@ -263,6 +263,9 @@ export default function RequestForm() {
       <label for="Vehicle Request Forme" class="form-label">Vehicle Request Form </label>
 
 
+      <Typography component="label" htmlFor="Vehicle Request Forme" color="red">
+  * Select Date First
+</Typography>
 
       <FormControl fullWidth margin="normal">
         <TextField
@@ -276,10 +279,10 @@ export default function RequestForm() {
 
       <FormControl fullWidth margin="normal">
 
-
+      
         <Autocomplete
           options={vehicleList}
-
+          disabled={!date}
           getOptionLabel={(option) =>
             `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
           }
@@ -287,7 +290,7 @@ export default function RequestForm() {
           renderInput={(params) => <TextField {...params} label="Select Vehicle" />
         }
         />
-
+      
 
       </FormControl>
 

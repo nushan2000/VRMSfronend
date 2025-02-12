@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import '../Css/ReservationDash.css';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useReservation } from '../context/ReservationContext';
 
-export default function ReservationDash() {
+export default function ReservationDash({updateTrigger}) {
     const [requests, setRequest] = useState([]);
-
+    const { setSelectedRequest } = useReservation();
     useEffect(() => {
         // Fetch customer data from the backend  
         fetchReserDetail();
-    },[]);
+    },[updateTrigger]);
 
     async function fetchReserDetail() {
         try {
             
             // Retrieve the user information from the cookie
             const userInfoFromCookie = Cookies.get('userInfo');
-            console.log(userInfoFromCookie);
+            ////console.log(userInfoFromCookie);
             
             // Parse the user information if available
             const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
@@ -25,44 +26,43 @@ export default function ReservationDash() {
     
             // If the user's email is available, extract the domain
             const loggedInUserDomain = userEmail ? userEmail.split('@')[1] : null;
-            console.log("logged",loggedInUserDomain);
+            //console.log("logged",loggedInUserDomain);
             
     
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
-            console.log("response",response.data);
+            //console.log("response",response.data);
             
             const filteredRequests = response.data.filter(request => {
                 // Extract the domain from the applier's email address
                 const applierDomain = request.applier.split('@')[1];
-                console.log("applierDomain",applierDomain);
+                //console.log("applierDomain",applierDomain);
 
                 
                 // Check if the applier's domain matches the logged-in user's domain
                 return applierDomain === loggedInUserDomain;
-            }).filter(request => !request.approveHead);
-            console.log("filter data",filteredRequests);
+            }).filter(request => !request.approveHead&&request.driverStatus!=="reject");
+            //console.log("filter data",filteredRequests);
             // Sort the filteredRequests array by applyDate in descending order
             filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
     
     
             setRequest(filteredRequests);
         } catch (error) {
-            console.error(error);
+            //console.error(error);
         }
     }
 
     function handleItemClick(request) {
-        localStorage.setItem('selectedRequest', JSON.stringify(request));
-        document.dispatchEvent(new Event('forceUpdateHead'));
+        setSelectedRequest(request);
     }
 
     function getFormattedDate(applyDate) {
-        console.log('applyDate:', applyDate); // Log applyDate value
+        //console.log('applyDate:', applyDate); // Log applyDate value
   
         const dateObject = new Date(applyDate); // Convert applyDate to a Date object
   
         if (!dateObject || isNaN(dateObject.getTime())) {
-            console.log('applyDate is not a valid Date object');
+            //console.log('applyDate is not a valid Date object');
             return 'Invalid date'; // Handle case where applyDate is not a valid Date object
         }
         
@@ -70,14 +70,14 @@ export default function ReservationDash() {
         const now = new Date();
         
         if (isNaN(now.getTime())) {
-            console.log('Current date is invalid');
+            //console.log('Current date is invalid');
             return 'Current date not available'; // Handle case where current date is invalid
         }
   
         const diffInMs = now - dateObject;
-        console.log('diffInMs:', diffInMs); // Log difference in milliseconds
+        //console.log('diffInMs:', diffInMs); // Log difference in milliseconds
         const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        console.log('diffInDays:', diffInDays); // Log difference in days
+        //console.log('diffInDays:', diffInDays); // Log difference in days
         return `${diffInDays} days ago`;
     }
 

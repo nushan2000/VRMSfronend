@@ -25,9 +25,22 @@ export default function VehiDetails({ vehicle, onClose }) {
   return (
     <div>
       <div className="popup1" id="popup1">
-        <button className="close-button" onClick={onClose}>Close</button>
+        <div className="popup-close">
+        <button className="close-button1" onClick={onClose}>Close</button>
+        </div>
+       
+        <div className="popup-body">
         <div className="rowpop">
           <div className="columnpop">
+            <div className="popup-inner2">
+              <section>
+                <CalendarGfg vehicle={vehicle} />
+              </section>
+            </div>
+          </div>
+        </div>
+        {/* <div className="rowpop"> */}
+          {/* <div className="columnpop">
             <div className="popup-inner1">
               <div>
                 {vehicle.vehicleImg ? (
@@ -39,8 +52,8 @@ export default function VehiDetails({ vehicle, onClose }) {
                 ) : null}
               </div>
             </div>
-          </div>
-          <div className="columnpop">
+          </div> */}
+          {/* <div className="columnpop">
             <div className="popup-inner1">
               <h2>Vehicle Details</h2>
               <div className="vehicleDetailsShow">
@@ -50,18 +63,13 @@ export default function VehiDetails({ vehicle, onClose }) {
                 <p>Driver: {vehicle.driverName}</p>
                 <p>Seats Capacity: {vehicle.sheatCapacity}</p>
               </div>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
+        {/* </div> */}
+
         </div>
-        <div className="rowpop2">
-          <div className="columnpop2">
-            <div className="popup-inner2">
-              <section>
-                <CalendarGfg vehicle={vehicle} />
-              </section>
-            </div>
-          </div>
-        </div>
+        
+        
       </div>
     </div>
   );

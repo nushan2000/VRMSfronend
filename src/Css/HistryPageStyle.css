@@ -58,6 +58,41 @@
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
   transform: translateY(-4px);
 }
+.historyLabel {
+  padding: 6px 12px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+  min-width: 80px;
+}
+
+/* Updated Brown-Red Palette */
+.running {
+  background-color: #9C6644; /* Lighter Saddle Brown */
+}
+
+.feedback {
+  background-color: #C06C5A; /* Lighter Brown */
+}
+
+.pending {
+  background-color: #E8C1A0; /* Lighter Chocolate */
+  color: #5E3D1F; /* Dark Brown text */
+}
+
+.approved {
+  background-color: rgb(27, 218, 27);
+   /* Lighter Firebrick */
+}
+
+.reject {
+  background-color: #ff0000; /* Lighter Dark Red */
+}
+
+
 
 .historyList {
   max-height: 400px;

@@ -38,8 +38,12 @@ export default function Dashboard() {
             {vehicles.map(vehicle=>(
                 <li key={vehicle._id}>
                 <label
-                    className= {`form-label sidetails ${vehicle.availability === "no" ? 'blinking' : ''}`}
-                    style={vehicle.availability === "yes" ? { backgroundColor: '#E8F5E9' } : { backgroundColor: '#FFEBEE' }}
+                    className= {`form-label sidetails ${vehicle.statusList.find((status) =>
+                      status.statusDate.startsWith(today)
+                    )? 'blinking' : ''}`}
+                    style={vehicle.statusList.find((status) =>
+                      status.statusDate.startsWith(today)
+                    ) ? { backgroundColor: '#FFEBEE' } : { backgroundColor: '#E8F5E9' }}
                     onClick={() => handleLabelClick(vehicle)}>
                     <div className="rowbutton" >
                         <div className="columnbuttonleft ">
