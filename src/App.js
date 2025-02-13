@@ -45,7 +45,8 @@ const AppContent = () => {
 
 function App() {
   return (
-
+<AuthProvider>
+<ReservationProvider>
       <Router>
       <NavBar />
       <Routes>
@@ -81,15 +82,7 @@ function App() {
        
       </Routes>
       <Footer />
-      </Router>
-      
-      
-    
-  );
-}
-
-
-<ToastContainer 
+      <ToastContainer 
         position="top-right" 
         autoClose={5000} 
         hideProgressBar={false} 
@@ -101,17 +94,15 @@ function App() {
         pauseOnHover 
         theme="light" 
       />
-
-function App() {
-  return (
-    <AuthProvider>
-      <ReservationProvider>
-      <Router>
-        <AppContent />
       </Router>
       </ReservationProvider>
     </AuthProvider>
+      
+    
   );
 }
+
+
+
 
 export default App;
