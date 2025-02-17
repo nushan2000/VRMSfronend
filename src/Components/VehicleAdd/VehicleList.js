@@ -126,7 +126,7 @@ const VehicleList = () => {
               <TableCell>{vehicle.driverEmail}</TableCell>
               <TableCell>
                 <Button variant="outlined" color="primary" onClick={() => openUpdateModal(vehicle)} sx={{ mr: 1 }}>
-                  Update
+                  Fuck
                 </Button>
                 <Button variant="outlined" color="secondary" onClick={() => handleDelete(vehicle._id)} sx={{ mr: 1 }}>
                   Delete

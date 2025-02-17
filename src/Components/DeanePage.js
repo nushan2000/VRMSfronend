@@ -446,12 +446,12 @@ export default function ArPage() {
         <Link to="/user">
           <button className="deenrequwst">Your History</button>
         </Link>
-        <Link to="/vehiclelist">
+        {/* <Link to="/vehiclelist">
           <button className="deenrequwst">Add Vehicle</button>
         </Link>
         <Link to="/userlistar">
           <button className="deenrequwst">Add User</button>
-        </Link>
+        </Link> */}
         <Link to="/user/feedback/review">
           <button className="deenrequwst">Driver Reviews</button>
         </Link>

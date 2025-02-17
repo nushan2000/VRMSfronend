@@ -30,6 +30,8 @@ import FeedbackPage from './Components/FeedbackPage';
 import FeedBackReview from './Components/FeedBackReview';
 import ProtectedRoute from './utils/ProtectedRoute';
 import { ReservationProvider } from './context/ReservationContext';
+import OperatorPage from './Components/OperatorPage';
+import FormHandlerPage from './Components/FormHandlerPage';
 
 const AppContent = () => {
   // const location = useLocation();
@@ -70,6 +72,9 @@ function App() {
         <Route path="/costlist" element={<CostList />} />
         <Route path='/user/feedback' element ={<FeedbackPage/>}/>
         <Route path='/user/feedback/review' element ={<FeedBackReview/>}/>
+        <Route path="/operator" element={<OperatorPage/>} />
+        <Route path="/formHandler" element={<FormHandlerPage/>} />
+
 
         <Route element={<ProtectedRoute allowedRole="dean"/>}>
         <Route path="/dean" element={<Dean />} />
