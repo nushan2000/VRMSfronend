@@ -18,7 +18,7 @@ export default function CalendarGfg({ vehicle }) {
 
   useEffect(() => {
     if (vehicle && vehicle.vehicleName) {
-      fetchReservations(vehicle.vehicleName);
+      fetchReservations(vehicle._id);
     }
   }, [vehicle, value]);
 
@@ -168,28 +168,42 @@ export default function CalendarGfg({ vehicle }) {
         />
        < div className="dateTypes">
        
-       <div className="box"><div><CircleIcon sx={{ color: "#ffc107" }}/></div>Reservation </div>
+       <div className="box"><div><CircleIcon sx={{ color: "#fddb74" }}/></div>Reservation </div>
         <div className="box"><div><CircleIcon sx={{ color:"#ff2222" }}/></div>Not Available </div>
-        <div className="box"><div><CircleIcon sx={{ color:"#007bff" }}/></div>Selected Date</div></div>
+        {/* <div className="box"><div>
+          <CircleIcon sx={{ color:"#007bff" }}/>
+        </div>Selected Date</div> */}
+        
+        </div>
         
       </div>
       <div className="details-column">
-        {clickedDate && selectedReservation && (
-          <div className="message-box">
-            <h2>Reservation Details</h2>
-            <p>Date: {selectedReservation.date}</p>
-            <p>Available Seats: {availableSeats}</p>{" "}
-            {/* Display available seats here */}
-            <p>Start From: {selectedReservation.depatureLocation}</p>
-            <p>End: {selectedReservation.destination}</p>
-            <p>
-              Time Duration: {selectedReservation.startTime} to{" "}
-              {selectedReservation.endTime}
-            </p>
-            {/* Add more details as needed */}
-          </div>
-        )}
+  {clickedDate && selectedReservation && (
+    <div className="message-box">
+      <h2>Reservation Details</h2>
+      <div className="details-grid">
+        <span className="label1">Date:</span>
+        <span className="value">{selectedReservation.date}</span>
+
+        <span className="label1">Available Seats:</span>
+        <span className="value">{availableSeats}</span>
+
+        <span className="label1">Start From:</span>
+        <span className="value">{selectedReservation.depatureLocation}</span>
+
+        <span className="label1">End:</span>
+        <span className="value">{selectedReservation.destination}</span>
+
+        <span className="label1">Time Duration:</span>
+        <span className="value">
+          {selectedReservation.startTime} to {selectedReservation.endTime}
+        </span>
       </div>
+    </div>
+  )}
+</div>
+
+
     </div>
   );
 }

@@ -26,40 +26,43 @@
 /* Reserved date styles */
 
 /* Calender.css */
-.react-calendar__tile:hover {
-  background-color: #e9ecef; /* Light gray on hover */
-  color: #000000; /* Black text on hover */
-}
+/* .react-calendar__tile:hover {
+  background-color: #3f97eeec; 
+  color: #000000;
+} */
 .react-calendar__tile--now {
-  background-color: #ff5722; /* Orange background for today's date */
-  color: #ffffff; /* White text for today's date */
+  background-color: #ffffff62; /* Orange background for today's date */
+  color: #000000; /* White text for today's date */
   border-radius: 4px; /* Optional: Add rounded corners for consistency */
   font-weight: bold; /* Optional: Make the text bold for emphasis */
 }
 
-.react-calendar__tile--now:hover {
-  background-color: #e64a19; /* Slightly darker orange on hover */
-  color: #ffffff; /* Keep text white on hover */
-}
-.react-calendar__tile--active {
-  background-color: #007bff; /* Blue background for selected date */
-  color: #ffffff; /* White text for selected date */
-  border-radius: 4px;
-}
+
+.react-calendar__tile--active { 
+ 
+   background-color: #ff583300 !important;
+   border-radius: 4px; 
+ }
 
 
 .reserved-date {
-  background-color: #ffc107; /* Yellow background for reserved dates */
+  background-color: #fddb74; /* Yellow background for reserved dates */
   color: #212529; 
   border-radius: 4px;/* Dark text for reserved dates */
 }
-
+.reserved-date.react-calendar__tile--active {
+  background-color: #fddb74 !important; /* Green background on selection */
+  color: white !important;
+}
 .status-date {
-  background-color: #ff2820; /* Green background for status dates */
+  background-color: #a80802; /* Green background for status dates */
   color: #ffffff;
   border-radius: 4px; /* White text for status dates */
 }
-
+.status-date.react-calendar__tile--active {
+  background-color: rgb(204, 4, 4) !important; /* Green background on selection */
+  color: white !important;
+}
 /* Message box styles */
 .message-box {
   background-color: #f8f9fa; /* Light background for reservation details */
@@ -78,11 +81,31 @@
     
 }
 .box {
-  width: 100px;
-  height: 50px;
+  width: 120px;
+  height: 60px;
   border-radius: 5px;
   margin: 5px;
+  padding: 10px;
   background-color: lightblue;
   text-align: left;
+  font-size: medium;
   
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: 50px auto; /* Two columns: label and value */
+  gap: 10px;
+  align-items: center;
+  
+}
+
+.label1 {
+  font-weight: bold;
+  text-align: left;
+  color: #b62828;
+}
+
+.value {
+  text-align: right;
+  color: #000000;
 }

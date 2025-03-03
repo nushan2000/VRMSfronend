@@ -52,7 +52,12 @@ import { toast } from 'react-toastify';
       navigate('/dean');
     }else if (data.designation=="security"){
       navigate('/security');
-    }else{
+    }else if (data.designation=="operator"){
+      navigate('/operator');
+    }else if (data.designation=="formHandler"){
+      navigate('/formHandler');
+    }
+    else{
       toast.error('cant login!');
     }
 

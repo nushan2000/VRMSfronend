@@ -185,7 +185,7 @@ export default function HistryPage() {
                                 {request.driverStatus === "start"
                                   ? "Running"
                                   : request.driverStatus === "end"
-                                  ? "Feedback"
+                                  ? "Completed"
                                   : request.driverStatus === "notStart"
                                   ? "Pending"
                                   : request.driverStatus === "approved"
