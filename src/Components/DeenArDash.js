@@ -1,9 +1,6 @@
-
-
 import React, { useState, useEffect } from 'react';
 import '../Css/ReservationDash.css';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useReservation } from '../context/ReservationContext';
 
 
