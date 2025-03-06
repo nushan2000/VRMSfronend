@@ -95,7 +95,8 @@ export default function RequestForm() {
   const [drop, setDrop] = useState("");
   const [passengerList, setPassengerList] = useState([]);
   const [isChecked, setIsChecked] = useState(false); // Default value for checkbox
-  
+  const [selectedVehicle, setSelectedVehicle] = React.useState(null);
+
   
   
 
@@ -172,13 +173,13 @@ export default function RequestForm() {
       setReason("");
       setSection("");
       setVehicle("");
-      setComeBack("");
+      setComeBack(false);
       setDistance("");
       setPassengerList([]);
       setDepatureLocation("")
       setDestination("")
       setVehicleList(null)
-
+setSelectedVehicle(null);
     } catch (error) {
 
       console.error("Error submitting form:", error);
@@ -281,12 +282,14 @@ export default function RequestForm() {
 
       
         <Autocomplete
-          options={vehicleList}
+          options={vehicleList||[]}
           disabled={!date}
           getOptionLabel={(option) =>
             `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
           }
-          onChange={(e, option) => setVehicle(option ? option.id : "")}
+          value={selectedVehicle}
+          onChange={(e, option) => {setSelectedVehicle(option);setVehicle(option ? option.id : "")}}
+          
           renderInput={(params) => <TextField {...params} label="Select Vehicle" />
         }
         />
@@ -457,7 +460,7 @@ export default function RequestForm() {
         onClick={submitForm}
         margin="normal"
       >
-        Submit Form
+        Send To Head For Approval
       </Button>
     </form>
   )

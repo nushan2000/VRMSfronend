@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../Css/DepartmentHeadPageStyle.css";
-import ReservationDash from "./ReservationDash";
+import CheckerDash from "./CheckerDash";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useReservation } from "../context/ReservationContext";
-export default function Head() {
+export default function Checker() {
   const { selectedRequest } = useReservation();
   const [vehicleList, setVehicleList] = useState([]);
   const [vehicle, setVehicle] = useState({});
@@ -162,8 +162,8 @@ export default function Head() {
     
     setFormData({
       ...formData,
-      approveHead: value,
-      approveStatus:value ? "headApproved" : "reject",
+      approveChecker: value,
+      approveStatus:value ? "driverAssigned" : "reject",
       driverStatus: value ? "notStart" : "reject"
     });
   };
@@ -223,7 +223,7 @@ export default function Head() {
         destination: "",
         passengerList: [],
         approveHead: "",
-        departmentHeadNote: "",
+        checkerNote: "",
         
       });
 
@@ -243,7 +243,7 @@ export default function Head() {
     <div className="row min-vh-100">
       <div className="column1 ">
         <div className="requestbutton">
-          <ReservationDash updateTrigger={updateTrigger} />
+          <CheckerDash updateTrigger={updateTrigger} />
         </div>
       </div>
       <div className="column21" style={{ backgroundColor: "#ccc" }}>
@@ -412,21 +412,21 @@ export default function Head() {
                 * Add a note
               </Typography>
               <TextareaAutosize
-                placeholder="Department Head Note..."
+                placeholder="Checker Note..."
                 color="primary"
                 onChange={handleChange}
-                value={formData.departmentHeadNote}
+                value={formData.checkerNote}
                 minRows={2}
                 size="md"
-                id="departmentHeadNote"
-                name="departmentHeadNote"
+                id="checkerNote"
+                name="checkerNote"
                 disabled={!formData.date}
               />
             </FormControl>
             <FormControl component="fieldset" margin="normal">
               <RadioGroup
                 row
-                value={formData.approveHead}
+                value={formData.approveChecker}
                 onChange={handleApproveChange}
               >
                 <FormControlLabel
@@ -448,7 +448,7 @@ export default function Head() {
                 // type="submit"
                 onClick={submitHeadForm}
               >
-                Proceed
+                Send To The AR
               </Button>
             </FormControl>
           </form>
