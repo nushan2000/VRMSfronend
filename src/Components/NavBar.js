@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import '../Css/NavBar.css';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar() {
-  const [userEmail, setUserEmail] = useState(null);
-  const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const userInfoFromCookie = Cookies.get('userInfo');
+  const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
+
+  const [userEmail, setUserEmail] = useState(parsedUserInfo ? parsedUserInfo.email : null);
+  const [userName, setUserName] = useState(parsedUserInfo ? parsedUserInfo.firstName : null);
 
   useEffect(() => {
-    // Retrieve user data from cookie
-    const userInfoFromCookie = Cookies.get('userInfo');
 
-    // If user data exists in the cookie, parse it and set the state
     if (userInfoFromCookie) {
-      const parsedUserInfo = JSON.parse(userInfoFromCookie);
-      const { email, firstName } = parsedUserInfo; // Extract name from user data
+ 
+      const { email, firstName } = parsedUserInfo; 
       setUserEmail(email);
       setUserName(firstName);     
     }
-  }, []);
+  }, [location]);
 
   const handleLogout = () => {
     // Clear user info from cookies
