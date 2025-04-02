@@ -19,7 +19,7 @@ function Navbar() {
  
       const { email, firstName } = parsedUserInfo; 
       setUserEmail(email);
-      setUserName(firstName);
+      setUserName(firstName);     
     }
   }, [location]);
 

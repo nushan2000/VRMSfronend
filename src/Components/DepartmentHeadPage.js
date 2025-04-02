@@ -163,7 +163,7 @@ export default function Head() {
     setFormData({
       ...formData,
       approveHead: value,
-      
+      approveStatus:value ? "headApproved" : "reject",
       driverStatus: value ? "notStart" : "reject"
     });
   };

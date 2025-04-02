@@ -89,6 +89,12 @@ export default function ArPage() {
         })
         .catch((error) => console.error("Error fetching vehicle:", error));
     }
+    // if (selectedRequest.distance>45) {
+    //   setFormData((prevFormData) => ({
+    //     ...selectedRequest, // Copy selectedRequest data
+    //     appoveDeen: true, // Override driverStatus
+    //   }));
+    // }
   }, [selectedRequest]);
 
   const handleChange = (e) => {
@@ -111,12 +117,22 @@ export default function ArPage() {
 
   const handleApproveChange = (e) => {
     const value = e.target.value === "true";
-    setFormData({
-      ...formData,
-      approveDeenAr: value,
-      driverStatus: value ? "approved" : "reject",
+  
+    setFormData((prevFormData) => {
+      const isShortDistance = prevFormData.distance < 45;
+      
+      return {
+        ...prevFormData,
+        approveDeenAr: value,
+        approveStatus: value ? "arApproved" : "reject",
+        driverStatus: value
+          ? (isShortDistance ? "approved" : "arApproved")
+          : "reject",
+        approveDeen: value ? isShortDistance : false,  // Fixed typo
+      };
     });
   };
+  
   const formValidation = () => {
     if (formData.date) {
       return true;
@@ -366,6 +382,9 @@ export default function ArPage() {
               </TableBody>
             </Table>
             <FormControl fullWidth margin="normal">
+            <Typography variant="h6" gutterBottom>
+            Department Head Note
+            </Typography>
               <TextareaAutosize
                 placeholder="Department Head Note..."
                 onChange={handleChange}
@@ -374,6 +393,30 @@ export default function ArPage() {
                 size="md"
                 id="departmentHeadNote"
                 name="departmentHeadNote"
+                disabled
+                style={{
+                  color: "#d3d3d3", // Change text color
+                  backgroundColor: "#f0f0f0", // Light gray background
+                  cursor: "not-allowed", // Optional: Show disabled cursor
+                  border: "1px solid #ccc", // Optional: Add border
+                  padding: "8px", // Improve spacing
+                  fontSize: "16px", // Adjust text size
+                }}
+              />
+            </FormControl>
+            
+            <FormControl fullWidth margin="normal">
+            <Typography variant="h6" gutterBottom>
+            Ckecker Note
+            </Typography>
+              <TextareaAutosize
+                placeholder="Ckecker Note..."
+                onChange={handleChange}
+                value={formData.checkerNote}
+                minRows={2}
+                size="md"
+                id="checkerNote"
+                name="checkerNote"
                 disabled
                 style={{
                   color: "#d3d3d3", // Change text color

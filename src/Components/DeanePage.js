@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../Css/DepartmentHeadPageStyle.css";
 import axios from "axios";
-import DeenArDash from "./DeenArDash";
+import DeenDash from "./DeenDash";
 import { Link } from "react-router-dom";
 import {
   TextField,
@@ -42,11 +42,12 @@ export default function ArPage() {
     distance: 0,
     approveHead: false,
     approveDeenAr: false,
+    approveDeen:false,
     driverStatus: "notStart",
     applier: "",
     applyDate: "",
     passengers: [],
-    arDeanNote: "",
+    deanNote: "",
   });
   const [passengerList, setPassengerList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -100,7 +101,8 @@ export default function ArPage() {
     const value = e.target.value === "true"; // Convert string to boolean
     setFormData({
       ...formData,
-      approveDeenAr: value,
+      approveDeen: value,
+      approveStatus:value ? "deanApproved" : "reject",
       driverStatus: value ? "approved" : "reject",
     });
   };
@@ -148,6 +150,7 @@ export default function ArPage() {
         distance: 0,
         approveHead: false,
         approveDeenAr: false,
+        approveDeen:false,
         driverStatus: "notStart",
         applier: "",
         applyDate: "",
@@ -184,7 +187,7 @@ export default function ArPage() {
       <div className="column1 ">
         <div className="requestbutton">
           <div>
-            <DeenArDash updateTrigger={updateTrigger} />
+            <DeenDash updateTrigger={updateTrigger} />
           </div>
         </div>
       </div>
@@ -216,6 +219,7 @@ export default function ArPage() {
                 <TextField
                   label="Vehicle"
                   value={vehicle.vehicleName}
+                  InputLabelProps={{ shrink: true }}
                   onChange={handleChange}
                   id={vehicle._id}
                   disabled
@@ -368,6 +372,9 @@ export default function ArPage() {
               </TableBody>
             </Table>
             <FormControl fullWidth margin="normal">
+              <Typography variant="h6" gutterBottom>
+                          Department Head Note
+                          </Typography>
               <TextareaAutosize
                 placeholder="Department Head Note..."
                 onChange={handleChange}
@@ -376,6 +383,52 @@ export default function ArPage() {
                 size="md"
                 id="departmentHeadNote"
                 name="departmentHeadNote"
+                disabled
+                style={{
+                  color: "#d3d3d3", // Change text color
+                  backgroundColor: "#f0f0f0", // Light gray background
+                  cursor: "not-allowed", // Optional: Show disabled cursor
+                  border: "1px solid #ccc", // Optional: Add border
+                  padding: "8px", // Improve spacing
+                  fontSize: "16px", // Adjust text size
+                }}
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <Typography variant="h6" gutterBottom>
+                          Ckecker Note
+                          </Typography>
+              <TextareaAutosize
+                placeholder="Checker Note..."
+                onChange={handleChange}
+                value={formData.checkerNote}
+                minRows={2}
+                size="md"
+                id="checkerNote"
+                name="checkerNote"
+                disabled
+                style={{
+                  color: "#d3d3d3", // Change text color
+                  backgroundColor: "#f0f0f0", // Light gray background
+                  cursor: "not-allowed", // Optional: Show disabled cursor
+                  border: "1px solid #ccc", // Optional: Add border
+                  padding: "8px", // Improve spacing
+                  fontSize: "16px", // Adjust text size
+                }}
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+            <Typography variant="h6" gutterBottom>
+                          Ar Note
+                          </Typography>
+              <TextareaAutosize
+                placeholder="Ar Note..."
+                onChange={handleChange}
+                value={formData.arDeanNote}
+                minRows={2}
+                size="md"
+                id="arDeanNote"
+                name="arDeanNote"
                 disabled
                 style={{
                   color: "#d3d3d3", // Change text color
@@ -399,7 +452,7 @@ export default function ArPage() {
                 placeholder="Dean Note..."
                 color="primary"
                 onChange={handleChange}
-                value={formData.arDeanNote}
+                value={formData.deanNote}
                 minRows={2}
                 size="md"
                 id="arDeanNote"
@@ -411,7 +464,7 @@ export default function ArPage() {
               <RadioGroup
                 row
                 name="setApprove"
-                value={String(formData.approveDeenAr)}
+                value={String(formData.approveDeen)}
                 onChange={handleApproveChange}
               >
                 <FormControlLabel
@@ -433,7 +486,7 @@ export default function ArPage() {
               onClick={submitDeanForm}
               fullWidth
             >
-              Proceed
+              Send To The Driver
             </Button>
           </form>
         </div>
@@ -448,10 +501,10 @@ export default function ArPage() {
         </Link>
         {/* <Link to="/vehiclelist">
           <button className="deenrequwst">Add Vehicle</button>
-        </Link>
-        <Link to="/userlistar">
-          <button className="deenrequwst">Add User</button>
-        </Link> */}
+        </Link>*/}
+        <Link to="/dean/allRequests">
+          <button className="deenrequwst">All Requests</button>
+        </Link> 
         <Link to="/user/feedback/review">
           <button className="deenrequwst">Driver Reviews</button>
         </Link>
