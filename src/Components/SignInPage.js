@@ -40,6 +40,7 @@ import { toast } from 'react-toastify';
     console.log(data)
     localStorage.setItem('token', data.token);
     localStorage.setItem('userId', data._id);
+    localStorage.setItem('userEmail', data.email);
     
     Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
     if (data.designation=="user") {
