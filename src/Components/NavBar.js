@@ -17,7 +17,7 @@ function Navbar() {
       const parsedUserInfo = JSON.parse(userInfoFromCookie);
       const { email, firstName } = parsedUserInfo; // Extract name from user data
       setUserEmail(email);
-      setUserName(firstName);
+      setUserName(firstName);     
     }
   }, []);
 

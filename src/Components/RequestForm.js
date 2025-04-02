@@ -21,62 +21,60 @@ import {
   Paper,
   Typography,
   Checkbox,
-  FormLabel
+  FormLabel,
+  Box,
 } from "@mui/material";
-import { toast } from 'react-toastify';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import { toast } from "react-toastify";
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 export default function RequestForm() {
-
   const [vehicleList, setVehicleList] = useState([]);
   const token = localStorage.getItem("token");
   const [date, setDate] = useState("");
   const [userEmail, setUserEmail] = useState(null);
   const [approveHead, setApproveHead] = useState(false);
   const [approveDeenAr, setApproveDeenAr] = useState(false);
-//const [requests, setRequest] = useState([]);
+  //const [requests, setRequest] = useState([]);
   useEffect(() => {
     // Retrieve user data from cookie
-    const userInfoFromCookie = Cookies.get('userInfo');
+    const userInfoFromCookie = Cookies.get("userInfo");
 
     // If user data exists in the cookie, parse it and set the state
     if (userInfoFromCookie) {
       const parsedUserInfo = JSON.parse(userInfoFromCookie);
-      console.log("info",parsedUserInfo);
+      console.log("info", parsedUserInfo);
       const { designation } = parsedUserInfo;
-      console.log("desig",designation);
+      console.log("desig", designation);
       if (designation === "dean" || designation === "ar") {
         setApproveDeenAr(true);
         setApproveHead(true);
       } else if (designation === "head") {
         setApproveHead(true);
       }
-      
-      console.log("head",approveHead);
-      console.log("deanAr",approveDeenAr);
+
+      console.log("head", approveHead);
+      console.log("deanAr", approveDeenAr);
       const { email } = parsedUserInfo; // Extract name from user data
       setUserEmail(email);
     }
 
-    axios.get(`${process.env.REACT_APP_API_URL}/request/RequestVehicles/${date}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-
-      },
-    })
-      .then(response => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/request/RequestVehicles/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
         setVehicleList(response.data);
         console.log("respose", response);
         // Assuming response.data is an array of vehicle names
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching vehicle list:", error);
       });
-      fetchReserDetail();
+    fetchReserDetail();
   }, [date]); // Run only once after component mount
-
-
 
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -97,15 +95,12 @@ export default function RequestForm() {
   const [isChecked, setIsChecked] = useState(false); // Default value for checkbox
   const [selectedVehicle, setSelectedVehicle] = React.useState(null);
 
-  
-  
-
   const addPassenger = () => {
     const newPassenger = {
       name: name,
       position: position,
       pickup: pickup,
-      drop: drop
+      drop: drop,
     };
 
     setPassengerList([...passengerList, newPassenger]);
@@ -124,18 +119,16 @@ export default function RequestForm() {
     setPassengerList(updatedPassengers);
   };
   const submitForm = async () => {
-
     try {
       // if (comeBack === "") {
       //  alert("Please select whether you want to come back in the same vehicle or not.");
       //   return;
-      // }         
+      // }
       // Assuming user data contains the logger name
 
-      const currentDate = new Date().toISOString().split('T')[0];
+      const currentDate = new Date().toISOString().split("T")[0];
 
       const formData = {
-
         date: date,
         startTime: startTime,
         endTime: endTime,
@@ -149,23 +142,24 @@ export default function RequestForm() {
         passengers: passengerList,
         applier: userEmail, // Set applier to current logger's name
         applyDate: currentDate,
-        approveDeenAr:approveDeenAr,
-        approveHead:approveHead
-
+        approveDeenAr: approveDeenAr,
+        approveHead: approveHead,
       };
 
       // Replace the URL with your actual endpoint
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/request/addrequest`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-
-        },
-      });
-      toast.success('Request submitted successfully!');
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/request/addrequest`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("Request submitted successfully!");
       //alert("Request submitted successfully!");
       // Handle the server response if needed
       console.log("Server Response:", response.data);
-
 
       setDate("");
       setStartTime("");
@@ -176,14 +170,13 @@ export default function RequestForm() {
       setComeBack(false);
       setDistance("");
       setPassengerList([]);
-      setDepatureLocation("")
-      setDestination("")
-      setVehicleList(null)
-setSelectedVehicle(null);
+      setDepatureLocation("");
+      setDestination("");
+      setVehicleList(null);
+      setSelectedVehicle(null);
     } catch (error) {
-
       console.error("Error submitting form:", error);
-      toast.error('Error submitting form. Please try again later!');
+      toast.error("Error submitting form. Please try again later!");
       //alert("Error submitting form. Please try again later.");
     }
   };
@@ -195,7 +188,7 @@ setSelectedVehicle(null);
         Name: passenger.name,
         Position: passenger.position,
         "Pickup From": passenger.pickup,
-        "Drop To": passenger.drop
+        "Drop To": passenger.drop,
       }))
     );
 
@@ -217,56 +210,55 @@ setSelectedVehicle(null);
 
   async function fetchReserDetail() {
     try {
-        // Retrieve the user information from the cookie
-        const userInfoFromCookie = Cookies.get('userInfo');
-        // Parse the user information if available
-        const parsedUserInfo = userInfoFromCookie ? JSON.parse(userInfoFromCookie) : null;
-        // Extract the user's email from the parsed user information
-        const userEmail = parsedUserInfo ? parsedUserInfo.email : null;
+      // Retrieve the user information from the cookie
+      const userInfoFromCookie = Cookies.get("userInfo");
+      // Parse the user information if available
+      const parsedUserInfo = userInfoFromCookie
+        ? JSON.parse(userInfoFromCookie)
+        : null;
+      // Extract the user's email from the parsed user information
+      const userEmail = parsedUserInfo ? parsedUserInfo.email : null;
 
-        // If the user's email is available, extract the domain
-        const loggedInUserDomain = userEmail ? userEmail.split('@')[1] : null;
-        console.log("logged",loggedInUserDomain);
-        
+      // If the user's email is available, extract the domain
+      const loggedInUserDomain = userEmail ? userEmail.split("@")[1] : null;
+      console.log("logged", loggedInUserDomain);
 
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/request/requests`);
-        console.log("response",response.data);
-        
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/request/requests`
+      );
+      console.log("response", response.data);
 
-        if(loggedInUserDomain==="engug.ruh.ac.lk"){
-          setApproveHead(true);
-          console.log("engug............");
-          
-        }
-        // const filteredRequests = response.data.filter(request => {
-        //     // Extract the domain from the applier's email address
-        //     const applierDomain = request.applier.split('@')[1];
-        //     console.log("applierDomain",applierDomain);
+      if (loggedInUserDomain === "engug.ruh.ac.lk") {
+        setApproveHead(true);
+        console.log("engug............");
+      }
+      // const filteredRequests = response.data.filter(request => {
+      //     // Extract the domain from the applier's email address
+      //     const applierDomain = request.applier.split('@')[1];
+      //     console.log("applierDomain",applierDomain);
 
-            
-        //     // Check if the applier's domain matches the logged-in user's domain
-        //     return applierDomain === loggedInUserDomain;
-        // }).filter(request => !request.approveHead);
+      //     // Check if the applier's domain matches the logged-in user's domain
+      //     return applierDomain === loggedInUserDomain;
+      // }).filter(request => !request.approveHead);
       //onsole.log("filter data",filteredRequests);
-        // Sort the filteredRequests array by applyDate in descending order
-       // filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
+      // Sort the filteredRequests array by applyDate in descending order
+      // filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
 
-
-        //setRequest(filteredRequests);
+      //setRequest(filteredRequests);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-}
-
+  }
 
   return (
-    <form class="vehicleRequestForm" title="Vehicle Request Form" >
-      <label for="Vehicle Request Forme" class="form-label">Vehicle Request Form </label>
-
+    <form class="vehicleRequestForm" title="Vehicle Request Form">
+      <label for="Vehicle Request Forme" class="form-label">
+        Vehicle Request Form{" "}
+      </label>
 
       <Typography component="label" htmlFor="Vehicle Request Forme" color="red">
-  * Select Date First
-</Typography>
+        * Select Date First
+      </Typography>
 
       <FormControl fullWidth margin="normal">
         <TextField
@@ -279,22 +271,21 @@ setSelectedVehicle(null);
       </FormControl>
 
       <FormControl fullWidth margin="normal">
-
-      
         <Autocomplete
-          options={vehicleList||[]}
+          options={vehicleList || []}
           disabled={!date}
           getOptionLabel={(option) =>
             `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
           }
           value={selectedVehicle}
-          onChange={(e, option) => {setSelectedVehicle(option);setVehicle(option ? option.id : "")}}
-          
-          renderInput={(params) => <TextField {...params} label="Select Vehicle" />
-        }
+          onChange={(e, option) => {
+            setSelectedVehicle(option);
+            setVehicle(option ? option.id : "");
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="Select Vehicle" />
+          )}
         />
-      
-
       </FormControl>
 
       <FormControl fullWidth margin="normal">
@@ -316,27 +307,6 @@ setSelectedVehicle(null);
         />
       </FormControl>
       <FormControl fullWidth margin="normal">
-        <InputLabel>Select Section</InputLabel>
-        <Select
-          value={section}
-          onChange={(e) => setSection(e.target.value)}
-        >
-          <MenuItem value="">Select</MenuItem>
-          <MenuItem value="Administrative">Administrative</MenuItem>
-          <MenuItem value="Mechanical">Mechanical</MenuItem>
-          <MenuItem value="Electrical">Electrical</MenuItem>
-          <MenuItem value="Civil">Civil</MenuItem>
-          <MenuItem value="Marine">Marine</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Reason"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-        />
-      </FormControl>
-      <FormControl fullWidth margin="normal">
         <TextField
           label="Departure From"
           value={depatureLocation}
@@ -350,23 +320,49 @@ setSelectedVehicle(null);
           onChange={(e) => setDestination(e.target.value)}
         />
       </FormControl>
-
-
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={comeBack}
-            onChange={(e) => setComeBack(e.target.checked)}
-            name="additionalOption"
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Select Section</InputLabel>
+        <Select value={section} onChange={(e) => setSection(e.target.value)}>
+          <MenuItem value="">Select</MenuItem>
+          <MenuItem value="Administrative">Administrative</MenuItem>
+          <MenuItem value="Mechanical">Mechanical</MenuItem>
+          <MenuItem value="Electrical">Electrical</MenuItem>
+          <MenuItem value="Civil">Civil</MenuItem>
+          <MenuItem value="Marine">Marine</MenuItem>
+          <MenuItem value="Marine">IS</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth margin="normal">
+        <TextField
+          label="Reason"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
+      </FormControl>
+      <Box sx={{ pl: 5 }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+              name="additionalOption"
+              
+            />
+            
+          }
+          label="Faculty Funded?"
+        />
+      </Box>
+      <Box sx={{ pl: 5 }}>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Other"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            disabled={isChecked}
           />
-        }
-        label="Do you want to come back in the same vehicle?"
-      />
-
-
-
-
+        </FormControl>
+      </Box>
 
       <FormControl fullWidth margin="normal">
         <TextField
@@ -376,6 +372,16 @@ setSelectedVehicle(null);
           onChange={(e) => setDistance(e.target.value)}
         />
       </FormControl>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={comeBack}
+            onChange={(e) => setComeBack(e.target.checked)}
+            name="additionalOption"
+          />
+        }
+        label="Do you want to come back in the same rout?"
+      />
       <Typography variant="h5" gutterBottom>
         Add Passenger
       </Typography>
@@ -388,10 +394,7 @@ setSelectedVehicle(null);
       </FormControl>
       <FormControl fullWidth margin="normal">
         <InputLabel>Select Position</InputLabel>
-        <Select
-          value={position}
-          onChange={(e) => setPosition(e.target.value)}
-        >
+        <Select value={position} onChange={(e) => setPosition(e.target.value)}>
           <MenuItem value="">Select</MenuItem>
           <MenuItem value="Academic Staff">Academic Staff</MenuItem>
           <MenuItem value="Non-Academic Staff">Non-Academic Staff</MenuItem>
@@ -415,7 +418,12 @@ setSelectedVehicle(null);
       <Button variant="contained" color="primary" onClick={addPassenger}>
         Add Passenger
       </Button>
-      <Button variant="contained" color="primary" onClick={exportToExcel} style={{ marginLeft: "10px" }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={exportToExcel}
+        style={{ marginLeft: "10px" }}
+      >
         Export to Excel
       </Button>
       <TableContainer component={Paper} margin="normal">
@@ -451,7 +459,6 @@ setSelectedVehicle(null);
             ))}
           </TableBody>
         </Table>
-
       </TableContainer>
       <Button
         variant="contained"
@@ -463,5 +470,5 @@ setSelectedVehicle(null);
         Send To Head For Approval
       </Button>
     </form>
-  )
+  );
 }
