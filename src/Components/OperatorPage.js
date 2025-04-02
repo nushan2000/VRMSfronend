@@ -172,7 +172,23 @@ function OperatorPage() {
       closeQrModal();
     }
   };
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
 
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/request/importUsers`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        alert(response.data.message);
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        alert(error.response?.data?.message || 'Failed to upload file');
+    }
+};
   return (
     <div>
      
@@ -202,6 +218,7 @@ function OperatorPage() {
             </TabList>
           </Box>
           <TabPanel value="1">
+          <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
             <Container>
               <Paper elevation={3} sx={{ padding: 3, marginTop: 4 }}>
                 <Box

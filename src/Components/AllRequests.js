@@ -9,7 +9,9 @@ import {
   TableContainer,
   Paper,
   Button,
+  FormControl,
   Table,
+  TextareaAutosize,
   TableHead,
   TableRow,
   TableCell,
@@ -26,7 +28,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green } from '@mui/material/colors';
 
-export default function HistryPage() {
+export default function AllRequestsPage() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [expandedRequestId, setExpandedRequestId] = useState(null);
@@ -152,9 +154,7 @@ export default function HistryPage() {
   return (
     <body>
       <div className="row">
-        <div className="columleft">
-          <Dashboard />
-        </div>
+        
 
         <div className="columnHistory">
           <h1>History</h1>
@@ -165,6 +165,7 @@ export default function HistryPage() {
       <TableHead>
         <TableRow>
           <TableCell />
+          <TableCell>Applier Name</TableCell>
           <TableCell>Date</TableCell>
           <TableCell>Route</TableCell>
           <TableCell>Status</TableCell>
@@ -172,7 +173,7 @@ export default function HistryPage() {
       </TableHead>
       <TableBody>
         {requests
-          .filter((request) => request.applier === userEmail)
+          
           .map((request) => (
             <Row key={request._id} request={request} fetchRequests={fetchRequests} />
           ))}
@@ -285,22 +286,37 @@ export default function HistryPage() {
 }
 function Row({ request ,fetchRequests}) {
   const [open, setOpen] = useState(false);
-  
-  const handleCancel = async (requestId) => {
+  const [formData, setFormData] = useState({
+      
+      approveHead: true,
+      approveDeenAr: true,
+      approveDeen:true,
+      driverStatus: "approved",
+      approveStatus:"deanApprove",
+      deanNote: "",
+    });
+  const token = localStorage.getItem("token");
+  const handleApprove = async (requestId) => {
     console.log("id",requestId);
     
-    if (!window.confirm('Are you sure you want to cancel this request?')) {
+    if (!window.confirm('Are you sure you want to approve this request?')) {
         return;
     }
 
     try {
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/request/requests/${requestId}`);
-        alert(response.data.message || 'Request cancelled successfully');
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/request/updateRequest1/${requestId}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        alert(response.data.message || 'Request approved successfully');
         fetchRequests();
         // You can refresh data here if needed, e.g., refetch requests list
     } catch (error) {
-        console.error('Failed to cancel request:', error);
-        alert(error.response?.data?.message || 'Failed to cancel request');
+        console.error('Failed to approve request:', error);
+        alert(error.response?.data?.message || 'Failed to approve request');
     }
 };
 
@@ -317,6 +333,7 @@ function Row({ request ,fetchRequests}) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
+        <TableCell>{request.applier}</TableCell>
         <TableCell>{request.date}</TableCell>
         <TableCell>
           {request.depatureLocation} to {request.destination}
@@ -362,16 +379,7 @@ function Row({ request ,fetchRequests}) {
                 Approval Steps
               </Typography></TableCell>
               
-              <TableCell>
-        <Button
-    variant="contained"
-    color="error"
-    onClick={() => handleCancel(request._id)}
-    disabled={request.driverStatus !== "notStart"}
->
-    Delete
-</Button>
-    </TableCell>
+             
               <Table size="small" aria-label="vehicle details">
                 <TableHead>
                   <TableRow>
@@ -396,6 +404,46 @@ function Row({ request ,fetchRequests}) {
                     <TableCell> {request.approveStatus==="driverStarted" ||request.approveStatus==="driverFinished"? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
                     <TableCell> {request.approveStatus==="driverFinished" ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
                   </TableRow>
+                  <TableRow>
+                  <TableCell>
+                  <FormControl fullWidth margin="normal">
+              <Typography
+                component="label"
+                htmlFor="Vehicle Request Forme"
+                color="red"
+              >
+                * Add a note
+              </Typography>
+              <TextareaAutosize
+                placeholder="Dean Note..."
+                color="primary"
+                onChange={(e)=>setFormData({
+                  ...formData,
+                  deanNote: e.target.value  // Updating only `deanNote`
+              })}
+                value={request.deanNote}
+                minRows={3}
+                
+                size="md"
+                id="arDeanNote"
+                name="arDeanNote"
+                //disabled={!formData.date}
+                disabled={request.approveStatus === "deanApproved"}
+              />
+              
+            </FormControl>
+            </TableCell>
+            <TableCell>
+        <Button
+    variant="contained"
+    color="success"
+    onClick={() => handleApprove(request._id)}
+    disabled={request.approveStatus === "deanApproved"}
+>
+    Approve
+</Button>
+    </TableCell>
+            </TableRow>
                 </TableBody>
               </Table>
             </Box>

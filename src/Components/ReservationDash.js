@@ -40,7 +40,7 @@ export default function ReservationDash({updateTrigger}) {
                 
                 // Check if the applier's domain matches the logged-in user's domain
                 return applierDomain === loggedInUserDomain;
-            }).filter(request => !request.approveHead&&request.driverStatus!=="reject");
+            }).filter(request => !request.approveHead&& !request.approveChecker&&request.driverStatus!=="reject");
             //console.log("filter data",filteredRequests);
             // Sort the filteredRequests array by applyDate in descending order
             filteredRequests.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));

@@ -55,6 +55,8 @@ import { toast } from 'react-toastify';
       navigate('/security');
     }else if (data.designation=="operator"){
       navigate('/operator');
+    }else if (data.designation=="checker"){
+      navigate('/checker');
     }else if (data.designation=="formHandler"){
       navigate('/formHandler');
     }

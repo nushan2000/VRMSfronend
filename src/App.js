@@ -29,6 +29,8 @@ import ProtectedRoute from './utils/ProtectedRoute';
 import { ReservationProvider } from './context/ReservationContext';
 import OperatorPage from './Components/OperatorPage';
 import FormHandlerPage from './Components/FormHandlerPage';
+import CherkerPage from './Components/CheckerPage';
+import AllRequestsPage from './Components/AllRequests';
 
 const AppContent = () => {
   // const location = useLocation();
@@ -75,10 +77,15 @@ function App() {
 
         <Route element={<ProtectedRoute allowedRole="dean"/>}>
         <Route path="/dean" element={<Dean />} />
+        <Route path="/dean/allRequests" element={<AllRequestsPage />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRole="head"/>}>
         <Route path="/head" element={<Head />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRole="checker"/>}>
+        <Route path="/checker" element={<CherkerPage />} />
         </Route>
         
        

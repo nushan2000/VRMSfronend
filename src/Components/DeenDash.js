@@ -28,7 +28,7 @@ export default function ReservationDash({updateTrigger}) {
 
       console.log(response);
       
-        const filteredRequests = response.data.filter(request =>  request.approveHead && !request.approveDeenAr&& request.approveChecker && request.driverStatus!=="reject"&& request.driverStatus!=="approved");
+        const filteredRequests = response.data.filter(request =>  request.approveHead && request.approveDeenAr&& request.approveChecker&& !request.approveDeen && request.driverStatus!=="reject"&& request.driverStatus!=="approved");
         setRequest(filteredRequests);
       
       } catch (error) {
