@@ -21,6 +21,11 @@ import {
   TableRow,
   FormLabel,
   TextareaAutosize,
+  Checkbox,
+  TableContainer,
+  Grid,
+  Box,
+  Autocomplete,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useReservation } from "../context/ReservationContext";
@@ -42,7 +47,7 @@ export default function ArPage() {
     distance: 0,
     approveHead: false,
     approveDeenAr: false,
-    approveDeen:false,
+    approveDeen: false,
     driverStatus: "notStart",
     applier: "",
     applyDate: "",
@@ -102,7 +107,7 @@ export default function ArPage() {
     setFormData({
       ...formData,
       approveDeen: value,
-      approveStatus:value ? "deanApproved" : "reject",
+      approveStatus: value ? "deanApproved" : "reject",
       driverStatus: value ? "approved" : "reject",
     });
   };
@@ -150,7 +155,7 @@ export default function ArPage() {
         distance: 0,
         approveHead: false,
         approveDeenAr: false,
-        approveDeen:false,
+        approveDeen: false,
         driverStatus: "notStart",
         applier: "",
         applyDate: "",
@@ -183,184 +188,231 @@ export default function ArPage() {
   // Format the date safely
   const formattedDate = formatDate(formData.date);
   return (
-    <div className="row min-vh-100">
-      <div className="column1 ">
-        <div className="requestbutton">
-          <div>
-            <DeenDash updateTrigger={updateTrigger} />
-          </div>
-        </div>
-      </div>
-      <div className="column21" style={{ backgroundColor: "#ccc" }}>
-        <div className="formhead">
-          <form
-            className="vehicleRequestForm1"
-            title="Vehicle Request Form"
-            onSubmit={submitDeanForm}
-          >
-            <Typography variant="h5" gutterBottom>
-              Vehicle Request Form
-            </Typography>
+    // <div className="row min-vh-100">
+    //   <div className="column1 ">
+    //     <div className="requestbutton">
+    //       <div>
 
-            <div className="RequestVehicle">
-              <TextField
-                label="Date"
-                type="date"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                name="date"
-                value={formattedDate}
-                onChange={handleChange}
-                margin="normal"
-                disabled
-              />
+    //       </div>
+    //     </div>
+    //   </div>
+    <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
+      {/* Left Column */}
+      <Grid item xs={12} md={3} sx={{ backgroundColor: "#f4cdd4" }}>
+        <DeenDash updateTrigger={updateTrigger} />
+      </Grid>
 
-              <FormControl fullWidth margin="normal">
-                <TextField
-                  label="Vehicle"
-                  value={vehicle.vehicleName}
-                  InputLabelProps={{ shrink: true }}
-                  onChange={handleChange}
-                  id={vehicle._id}
-                  disabled
-                />
-              </FormControl>
-            </div>
+      {/* Center Column */}
 
-            <div className="RequestVehicle">
-              <TextField
-                label="Start Time"
-                type="time"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleChange}
-                margin="normal"
-                disabled
-              />
-              <TextField
-                label="End Time"
-                type="time"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleChange}
-                margin="normal"
-                disabled
-              />
-            </div>
+      <Grid item xs={12} md={6}>
+        <Box
+          sx={{
+            p: 3,
+            backgroundColor: "#f9f9f9",
+            borderRadius: 2,
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Vehicle Request Form
+          </Typography>
 
+          <FormControl fullWidth margin="normal">
+            <TextField
+              label="Date"
+              type="date"
+              value={formData.date}
+              onChange={handleChange}
+              id="date"
+              InputLabelProps={{ shrink: true }}
+              disabled
+            />
+          </FormControl>
+
+          <FormControl fullWidth margin="normal">
             <FormControl fullWidth margin="normal">
-              <InputLabel>Select Section</InputLabel>
-              <Select
-                name="section"
-                value={formData.section}
+              <TextField
+                label="Vehicle"
+                value={vehicle.vehicleName}
+                InputLabelProps={{ shrink: true }}
                 onChange={handleChange}
+                id={vehicle._id}
                 disabled
-              >
-                <MenuItem value="">
-                  <em>Select</em>
-                </MenuItem>
-                {[
-                  "Administrative",
-                  "Finance",
-                  "Technical Officer",
-                  "Academic Staff",
-                  "AR Office",
-                ].map((section) => (
-                  <MenuItem key={section} value={section}>
-                    {section}
-                  </MenuItem>
-                ))}
-              </Select>
+              />
             </FormControl>
+          </FormControl>
 
+          <FormControl fullWidth margin="normal">
             <TextField
-              label="Reason"
-              fullWidth
-              name="reason"
-              value={formData.reason}
+              label="Start Time"
+              type="time"
+              value={formData.startTime}
               onChange={handleChange}
-              margin="normal"
+              id="startTime"
+              InputLabelProps={{ shrink: true }}
               disabled
             />
+          </FormControl>
 
+          <FormControl fullWidth margin="normal">
             <TextField
-              label="Departure From"
-              fullWidth
-              name="depatureLocation"
-              value={formData.depatureLocation}
+              label="End Time"
+              type="time"
+              value={formData.endTime}
               onChange={handleChange}
-              margin="normal"
+              id="endTime"
+              InputLabelProps={{ shrink: true }}
               disabled
             />
-
+          </FormControl>
+          {/* <Typography variant="h7" gutterBottom>
+                    Departure From
+                  </Typography> */}
+          {/* <Box sx={{ pl: 5 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                        disabled
+                          checked={formData.isChecked}
+                          onChange={handleChange}
+                          name="additionalOption"
+                        />
+                      }
+                      label="From Faculty?"
+                    />
+                  </Box> */}
+          <Box>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                disabled
+                label="Departure From"
+                value={formData.depatureLocation}
+                onChange={handleChange}
+                //disabled={isChecked}
+              />
+            </FormControl>
+          </Box>
+          <FormControl fullWidth margin="normal">
             <TextField
               label="Destination"
-              fullWidth
-              name="destination"
               value={formData.destination}
               onChange={handleChange}
-              margin="normal"
+              id="destination"
               disabled
             />
+          </FormControl>
 
-            <FormControl component="fieldset" margin="normal">
-              <FormLabel component="legend">
-                Do you want to come back in the same vehicle?
-              </FormLabel>
-              <RadioGroup
-                row
-                value={formData.comeBack}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    comeBack: e.target.value === "true",
-                  })
-                }
-                disabled
-              >
-                <FormControlLabel
-                  value="true"
-                  control={<Radio />}
-                  label="Yes"
-                />
-                <FormControlLabel
-                  value="false"
-                  control={<Radio />}
-                  label="No"
-                />
-              </RadioGroup>
-            </FormControl>
-
+          <FormControl fullWidth margin="normal">
             <TextField
-              label="Approximate Distance"
-              fullWidth
+              label="Section"
+              value={formData.section}
+              onChange={handleChange}
+              id="section"
+              disabled
+            />
+          </FormControl>
+          <Typography variant="h7" gutterBottom>
+            Supporting Document
+          </Typography>
+          <FormControl fullWidth margin="normal">
+            <input
+              type="file"
+              disabled
+              multiple
+              value={formData.filePath}
+              onChange={handleChange}
+              accept=".pdf,.doc,.docx,.jpg,.png"
+            />
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <TextField
+              label="Reason"
+              value={formData.reason}
+              onChange={handleChange}
+              id="reason"
+              disabled
+            />
+          </FormControl>
+
+          {/* <Box sx={{ pl: 5 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          disabled
+                          checked={true}
+                          onChange={handleChange}
+                          name="additionalOption"
+                        />
+                      }
+                      label="Faculty Funded?"
+                    />
+                  </Box> */}
+          <Box>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                disabled
+                label="Funded From"
+                value={formData.reasonFunded}
+                onChange={handleChange}
+                //disabled={isChecked2}
+              />
+            </FormControl>
+          </Box>
+
+          <FormControl component="fieldset" margin="normal">
+            <FormLabel>Return in same root?</FormLabel>
+            <RadioGroup
+              row
+              value={formData.comeBack}
+              onChange={(e) =>
+                handleChange({
+                  target: {
+                    name: "comeBack",
+                    value: e.target.value === "true",
+                  },
+                })
+              }
+            >
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label="Yes"
+                disabled
+              />
+              <FormControlLabel
+                value={false}
+                control={<Radio />}
+                label="No"
+                disabled
+              />
+            </RadioGroup>
+          </FormControl>
+
+          <FormControl fullWidth margin="normal">
+            <TextField
+              label="Approximate Distance (km)"
               type="number"
-              name="distance"
               value={formData.distance}
               onChange={handleChange}
-              margin="normal"
+              id="distance"
               disabled
             />
+          </FormControl>
 
-            <Typography variant="h6" gutterBottom>
-              Passengers
-            </Typography>
+          {/* Passenger Table */}
+          <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>No</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Position</TableCell>
-                  <TableCell>Pickup From</TableCell>
-                  <TableCell>Drop To</TableCell>
+                  <TableCell>#</TableCell>
+                  <TableCell>Passenger Name</TableCell>
+                  <TableCell>Designation</TableCell>
+                  <TableCell>Pickup Location</TableCell>
+                  <TableCell>Drop-off Location</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {formData.passengers.map((passenger, index) => (
+                {passengerList.map((passenger, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{passenger.name}</TableCell>
@@ -371,82 +423,58 @@ export default function ArPage() {
                 ))}
               </TableBody>
             </Table>
+          </TableContainer>
+
+          {/* Notes Section */}
+
+          <FormControl fullWidth margin="normal">
+            <Typography variant="h6" gutterBottom>
+              Head Note
+            </Typography>
+            <TextareaAutosize
+              placeholder="Head Note"
+              value={formData.departmentHeadNote}
+              minRows={2}
+              id="headNote"
+              name="headNote"
+              style={{ width: "100%", padding: "10px", fontSize: "1rem" }}
+              disabled
+            />
             <FormControl fullWidth margin="normal">
               <Typography variant="h6" gutterBottom>
-                          Department Head Note
-                          </Typography>
-              <TextareaAutosize
-                placeholder="Department Head Note..."
-                onChange={handleChange}
-                value={formData.departmentHeadNote}
-                minRows={2}
-                size="md"
-                id="departmentHeadNote"
-                name="departmentHeadNote"
-                disabled
-                style={{
-                  color: "#d3d3d3", // Change text color
-                  backgroundColor: "#f0f0f0", // Light gray background
-                  cursor: "not-allowed", // Optional: Show disabled cursor
-                  border: "1px solid #ccc", // Optional: Add border
-                  padding: "8px", // Improve spacing
-                  fontSize: "16px", // Adjust text size
-                }}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <Typography variant="h6" gutterBottom>
-                          Ckecker Note
-                          </Typography>
+                Checker Note
+              </Typography>
               <TextareaAutosize
                 placeholder="Checker Note..."
-                onChange={handleChange}
                 value={formData.checkerNote}
+                onChange={handleChange}
                 minRows={2}
-                size="md"
                 id="checkerNote"
                 name="checkerNote"
+                style={{ width: "100%", padding: "10px", fontSize: "1rem" }}
                 disabled
-                style={{
-                  color: "#d3d3d3", // Change text color
-                  backgroundColor: "#f0f0f0", // Light gray background
-                  cursor: "not-allowed", // Optional: Show disabled cursor
-                  border: "1px solid #ccc", // Optional: Add border
-                  padding: "8px", // Improve spacing
-                  fontSize: "16px", // Adjust text size
-                }}
               />
             </FormControl>
             <FormControl fullWidth margin="normal">
-            <Typography variant="h6" gutterBottom>
-                          Ar Note
-                          </Typography>
+              <Typography variant="h6" gutterBottom>
+                Ar Note
+              </Typography>
               <TextareaAutosize
                 placeholder="Ar Note..."
                 onChange={handleChange}
+                color="primary"
                 value={formData.arDeanNote}
                 minRows={2}
                 size="md"
                 id="arDeanNote"
                 name="arDeanNote"
+                style={{ width: "100%", padding: "10px", fontSize: "1rem" }}
                 disabled
-                style={{
-                  color: "#d3d3d3", // Change text color
-                  backgroundColor: "#f0f0f0", // Light gray background
-                  cursor: "not-allowed", // Optional: Show disabled cursor
-                  border: "1px solid #ccc", // Optional: Add border
-                  padding: "8px", // Improve spacing
-                  fontSize: "16px", // Adjust text size
-                }}
               />
             </FormControl>
             <FormControl fullWidth margin="normal">
-              <Typography
-                component="label"
-                htmlFor="Vehicle Request Forme"
-                color="red"
-              >
-                * Add a note
+              <Typography variant="h6" gutterBottom>
+                Dean Note
               </Typography>
               <TextareaAutosize
                 placeholder="Dean Note..."
@@ -455,60 +483,159 @@ export default function ArPage() {
                 value={formData.deanNote}
                 minRows={2}
                 size="md"
-                id="arDeanNote"
-                name="arDeanNote"
-                disabled={!formData.date}
+                id="deanNote"
+                name="deanNote"
+                style={{ width: "100%", padding: "10px", fontSize: "1rem" }}
               />
             </FormControl>
-            <FormControl component="fieldset" margin="normal">
-              <RadioGroup
-                row
-                name="setApprove"
-                value={String(formData.approveDeen)}
-                onChange={handleApproveChange}
-              >
-                <FormControlLabel
-                  value="true"
-                  control={<Radio />}
-                  label="Approved"
-                />
-                <FormControlLabel
-                  value="false"
-                  control={<Radio />}
-                  label="Rejected"
-                />
-              </RadioGroup>
-            </FormControl>
+          </FormControl>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={submitDeanForm}
-              fullWidth
+          {/* Approval */}
+          <FormControl component="fieldset" margin="normal">
+            <RadioGroup
+              row
+              value={formData.approveChecker}
+              onChange={handleApproveChange}
             >
-              Send To The Driver
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label="Approved"
+              />
+              <FormControlLabel
+                value={false}
+                control={<Radio />}
+                label="Rejected"
+              />
+            </RadioGroup>
+          </FormControl>
+
+          {/* Submit */}
+          <FormControl fullWidth margin="normal">
+            <Box display="flex" fullWidth gap={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={submitDeanForm}
+                fullWidth
+              >
+                Send To The Driver
+              </Button>
+            </Box>
+          </FormControl>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={3}>
+        <Box
+          sx={{ p: 2, backgroundColor: "#fff", borderRadius: 2, boxShadow: 1 }}
+        >
+          <Typography variant="h6">Dashboard</Typography>
+          <Link to="/request" style={{ textDecoration: "none" }}>
+            <Button fullWidth variant="outlined" sx={{ mt: 1 }}>
+              Add Reservation
             </Button>
-          </form>
-        </div>
-      </div>
-      <div className="column3" style={{ backgroundColor: "#fff" }}>
-        <h2>DashBoard</h2>
-        <Link style={{ textDecoration: "none" }} to="/request">
-          <button className="deenrequwst">Add Reservation</button>
-        </Link>
-        <Link to="/user">
-          <button className="deenrequwst">Your History</button>
-        </Link>
-        {/* <Link to="/vehiclelist">
-          <button className="deenrequwst">Add Vehicle</button>
-        </Link>*/}
-        <Link to="/dean/allRequests">
-          <button className="deenrequwst">All Requests</button>
-        </Link> 
-        <Link to="/user/feedback/review">
-          <button className="deenrequwst">Driver Reviews</button>
-        </Link>
-      </div>
-    </div>
+          </Link>
+          <Link to="/user" style={{ textDecoration: "none" }}>
+            <Button fullWidth variant="outlined" sx={{ mt: 1 }}>
+              Your History
+            </Button>
+          </Link>
+        </Box>
+      </Grid>
+    </Grid>
+
+    // <FormControl fullWidth margin="normal">
+    // <Typography variant="h6" gutterBottom>
+    //               Ar Note
+    //             </Typography>
+    // <TextareaAutosize
+    //   placeholder="Ar Note..."
+    //   onChange={handleChange}
+    //   value={formData.arDeanNote}
+    //   minRows={2}
+    //   size="md"
+    //   id="arDeanNote"
+    //   name="arDeanNote"
+    //   disabled
+    //   style={{
+    //     color: "#d3d3d3", // Change text color
+    //     backgroundColor: "#f0f0f0", // Light gray background
+    //     cursor: "not-allowed", // Optional: Show disabled cursor
+    //     border: "1px solid #ccc", // Optional: Add border
+    //     padding: "8px", // Improve spacing
+    //     fontSize: "16px", // Adjust text size
+    //   }}
+    // />
+    // </FormControl>
+    // <FormControl fullWidth margin="normal">
+    //   <Typography
+    //     component="label"
+    //     htmlFor="Vehicle Request Forme"
+    //     color="red"
+    //   >
+    //     * Add a note
+    //   </Typography>
+    //   <TextareaAutosize
+    //     placeholder="Dean Note..."
+    //     color="primary"
+    //     onChange={handleChange}
+    //     value={formData.deanNote}
+    //     minRows={2}
+    //     size="md"
+    //     id="deanNote"
+    //     name="deanNote"
+    //     disabled={!formData.date}
+    //   />
+    // </FormControl>
+    // <FormControl component="fieldset" margin="normal">
+    //   <RadioGroup
+    //     row
+    //     name="setApprove"
+    //     value={String(formData.approveDeen)}
+    //     onChange={handleApproveChange}
+    //   >
+    //     <FormControlLabel
+    //           value="true"
+    //           control={<Radio />}
+    //           label="Approved"
+    //         />
+    //         <FormControlLabel
+    //           value="false"
+    //           control={<Radio />}
+    //           label="Rejected"
+    //         />
+    //       </RadioGroup>
+    //     </FormControl>
+
+    //     <Button
+    //       variant="contained"
+    //       color="primary"
+    //       onClick={submitDeanForm}
+    //       fullWidth
+    //     >
+    //       Send To The Driver
+    //     </Button>
+    //   </form>
+    // </div>
+    // </div>
+    // <div className="column3" style={{ backgroundColor: "#fff" }}>
+    //   <h2>DashBoard</h2>
+    //   <Link style={{ textDecoration: "none" }} to="/request">
+    //     <button className="deenrequwst">Add Reservation</button>
+    //   </Link>
+    //   <Link to="/user">
+    //     <button className="deenrequwst">Your History</button>
+    //   </Link>
+    //     {/* <Link to="/vehiclelist">
+    //       <button className="deenrequwst">Add Vehicle</button>
+    //     </Link>*/}
+    //     {/* <Link to="/dean/allRequests">
+    //       <button className="deenrequwst">All Requests</button>
+    //     </Link>
+    //     <Link to="/user/feedback/review">
+    //       <button className="deenrequwst">Driver Reviews</button>
+    //     </Link>
+    //   </div>
+    // </div>  */}
   );
 }

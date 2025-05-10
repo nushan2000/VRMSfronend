@@ -39,6 +39,7 @@ export default function RequestForm() {
   useEffect(() => {
     // Retrieve user data from cookie
     const userInfoFromCookie = Cookies.get("userInfo");
+console.log(token);
 
     // If user data exists in the cookie, parse it and set the state
     if (userInfoFromCookie) {
@@ -92,7 +93,10 @@ export default function RequestForm() {
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [passengerList, setPassengerList] = useState([]);
-  const [isChecked, setIsChecked] = useState(false); // Default value for checkbox
+  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false); // Default value for checkbox
+   // Default value for checkbox
+   const [reasonFunded,setReasonFunded ] = useState("")
   const [selectedVehicle, setSelectedVehicle] = React.useState(null);
 
   const addPassenger = () => {
@@ -120,47 +124,83 @@ export default function RequestForm() {
   };
   const submitForm = async () => {
     try {
-      // if (comeBack === "") {
-      //  alert("Please select whether you want to come back in the same vehicle or not.");
-      //   return;
-      // }
-      // Assuming user data contains the logger name
-
       const currentDate = new Date().toISOString().split("T")[0];
-
-      const formData = {
-        date: date,
-        startTime: startTime,
-        endTime: endTime,
-        reason: reason,
-        section: section,
-        comeBack: comeBack,
-        vehicle: vehicle,
-        distance: distance,
-        depatureLocation: depatureLocation,
-        destination: destination,
-        passengers: passengerList,
-        applier: userEmail, // Set applier to current logger's name
+  
+      console.log("📌 Step 1: Preparing data...");
+  
+      // Log all form input values before appending
+      console.log("📝 Form Input Values:", {
+        date,
+        startTime,
+        endTime,
+        reason,
+        reasonFunded,
+        section,
+        comeBack,
+        vehicle,
+        distance,
+        depatureLocation,
+        destination,
+        applier: userEmail,
         applyDate: currentDate,
-        approveDeenAr: approveDeenAr,
-        approveHead: approveHead,
-      };
-
-      // Replace the URL with your actual endpoint
+        approveDeenAr,
+        approveHead,
+        passengerList,
+      });
+  
+      // Create FormData
+      const formData = new FormData();
+  
+      // Append each field (convert boolean and number fields to string if needed)
+      formData.append("date", date);
+      formData.append("startTime", startTime);
+      formData.append("endTime", endTime);
+      formData.append("reason", reason);
+      formData.append("reasonFunded", reasonFunded);
+      formData.append("section", section);
+      formData.append("comeBack", comeBack.toString()); // convert boolean to string
+      formData.append("vehicle", vehicle);
+      formData.append("distance", distance.toString()); // ensure distance is a string
+      formData.append("depatureLocation", depatureLocation);
+      formData.append("destination", destination);
+      formData.append("applier", userEmail);
+      formData.append("applyDate", currentDate);
+      formData.append("approveDeenAr", approveDeenAr.toString());
+      formData.append("approveHead", approveHead.toString());
+  
+      // Convert passengers array to JSON string
+      formData.append("passengers", JSON.stringify(passengerList));
+  
+      // Uncomment if using file uploads
+      if (supportingDocuments) {
+        formData.append("filePath", supportingDocuments);
+      }
+  
+      console.log("📌 Step 2: FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+  
+      // Uncomment validation if needed
+      if (!validation()) return;
+  
+      console.log("📤 Step 3: Sending request to backend...");
+  
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/request/addrequest`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            // Do NOT set Content-Type manually for FormData
           },
         }
       );
+  
+      console.log("✅ Server Response:", response.data);
       toast.success("Request submitted successfully!");
-      //alert("Request submitted successfully!");
-      // Handle the server response if needed
-      console.log("Server Response:", response.data);
-
+  
+      // Clear form
       setDate("");
       setStartTime("");
       setEndTime("");
@@ -174,12 +214,27 @@ export default function RequestForm() {
       setDestination("");
       setVehicleList(null);
       setSelectedVehicle(null);
+      setIsChecked(null);
+      setIsChecked2(null);
+      setSupportingDocuments(null);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("❌ Error submitting form:", error);
+      if (error.response) {
+        console.error("🧾 Server responded with:", error.response.data);
+      }
       toast.error("Error submitting form. Please try again later!");
-      //alert("Error submitting form. Please try again later.");
     }
   };
+  
+
+const validation = () => {
+  if (!passengerList || passengerList.length === 0) {
+    toast.error("Please add at least 1 passenger!");
+    return false;
+  }
+  return true;
+};
+
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
@@ -249,7 +304,11 @@ export default function RequestForm() {
       console.error(error);
     }
   }
+  const [supportingDocuments, setSupportingDocuments] = useState([]);
 
+  const handleFileChange = (e) => {
+    setSupportingDocuments([...e.target.files]);
+  };
   return (
     <form class="vehicleRequestForm" title="Vehicle Request Form">
       <label for="Vehicle Request Forme" class="form-label">
@@ -273,7 +332,7 @@ export default function RequestForm() {
       <FormControl fullWidth margin="normal">
         <Autocomplete
           options={vehicleList || []}
-          disabled={!date}
+          disabled
           getOptionLabel={(option) =>
             `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
           }
@@ -285,6 +344,7 @@ export default function RequestForm() {
           renderInput={(params) => (
             <TextField {...params} label="Select Vehicle" />
           )}
+          style={{ cursor: "not-allowed"}}
         />
       </FormControl>
 
@@ -306,13 +366,46 @@ export default function RequestForm() {
           InputLabelProps={{ shrink: true }}
         />
       </FormControl>
-      <FormControl fullWidth margin="normal">
+      {/* <FormControl fullWidth margin="normal">
         <TextField
           label="Departure From"
           value={depatureLocation}
           onChange={(e) => setDepatureLocation(e.target.value)}
         />
-      </FormControl>
+      </FormControl> */}
+      <Typography variant="h7" gutterBottom>
+      Departure From
+      </Typography>
+      <Box sx={{ pl: 5 }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isChecked}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsChecked(checked);
+                if (checked) {
+                  setDepatureLocation("From Faculty");
+                } else {
+                  setDepatureLocation(""); // Clear or reset if unchecked
+                }
+              }}
+              name="additionalOption"
+            />
+          }
+          label="From Faculty?"
+        />
+      </Box>
+      <Box sx={{ pl: 5 }}>
+        <FormControl fullWidth margin="normal">
+          <TextField
+            label="Other"
+            value={depatureLocation}
+            onChange={(e) => setDepatureLocation(e.target.value)}
+            disabled={isChecked}
+          />
+        </FormControl>
+      </Box>
       <FormControl fullWidth margin="normal">
         <TextField
           label="Destination"
@@ -320,6 +413,7 @@ export default function RequestForm() {
           onChange={(e) => setDestination(e.target.value)}
         />
       </FormControl>
+     
       <FormControl fullWidth margin="normal">
         <InputLabel>Select Section</InputLabel>
         <Select value={section} onChange={(e) => setSection(e.target.value)}>
@@ -332,6 +426,26 @@ export default function RequestForm() {
           <MenuItem value="Marine">IS</MenuItem>
         </Select>
       </FormControl>
+      <Typography variant="h7" gutterBottom>
+      Supporting Document
+      </Typography>
+      <FormControl fullWidth margin="normal">
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          accept=".pdf,.doc,.docx,.jpg,.png"
+        />
+      </FormControl>
+      {/* <FormControl fullWidth margin="normal">
+        {supportingDocuments.length > 0 && (
+          <ul>
+            {supportingDocuments.map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
+        )}
+      </FormControl> */}
       <FormControl fullWidth margin="normal">
         <TextField
           label="Reason"
@@ -343,12 +457,18 @@ export default function RequestForm() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={isChecked}
-              onChange={(e) => setIsChecked(e.target.checked)}
+            checked={isChecked2}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setIsChecked2(checked);
+              if (checked) {
+                setReasonFunded("Faculty Funded");
+              } else {
+                setReasonFunded(""); // Clear or reset if unchecked
+              }
+            }}
               name="additionalOption"
-              
             />
-            
           }
           label="Faculty Funded?"
         />
@@ -357,9 +477,9 @@ export default function RequestForm() {
         <FormControl fullWidth margin="normal">
           <TextField
             label="Other"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            disabled={isChecked}
+            value={reasonFunded}
+            onChange={(e) => setReasonFunded(e.target.value)}
+            disabled={isChecked2}
           />
         </FormControl>
       </Box>

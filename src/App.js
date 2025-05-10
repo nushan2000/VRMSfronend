@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './Components/NavBar';
 import Signin from './Components/SignInPage';
+import Signin2 from './Components/SignInPage2';
 import Dean from './Components/DeanePage';
 import ArPage from './Components/ArPage';
 import Head from './Components/DepartmentHeadPage';
@@ -30,6 +31,7 @@ import { ReservationProvider } from './context/ReservationContext';
 import OperatorPage from './Components/OperatorPage';
 import FormHandlerPage from './Components/FormHandlerPage';
 import CherkerPage from './Components/CheckerPage';
+import CherkerPage2 from './Components/CheckerPage2';
 import AllRequestsPage from './Components/AllRequests';
 
 const AppContent = () => {
@@ -53,6 +55,7 @@ function App() {
       <Routes>
 
         <Route path="/"  element={<Signin/>} />
+        <Route path="/sign"  element={<Signin2/>} />
         <Route path="/user" element={<HistryPage />} />
         
         <Route path="/ar" element={<ArPage />} />
@@ -85,7 +88,8 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoute allowedRole="checker"/>}>
-        <Route path="/checker" element={<CherkerPage />} />
+        {/* <Route path="/checker" element={<CherkerPage />} /> */}
+        <Route path="/checker" element={<CherkerPage2 />} />
         </Route>
         
        

@@ -404,6 +404,17 @@ export default function Checker() {
             </TableContainer>
 
             <FormControl fullWidth margin="normal">
+            <TextareaAutosize
+                placeholder="Head Note"
+                color="primary"
+                onChange={handleChange}
+                value={formData.departmentHeadNote}
+                minRows={2}
+                size="md"
+                id="headNote"
+                name="headNote"
+                disabled
+              />
               <Typography
                 component="label"
                 htmlFor="Vehicle Request Forme"
@@ -411,6 +422,7 @@ export default function Checker() {
               >
                 * Add a note
               </Typography>
+              
               <TextareaAutosize
                 placeholder="Checker Note..."
                 color="primary"
