@@ -47,15 +47,15 @@ console.log(token);
       console.log("info", parsedUserInfo);
       const { designation } = parsedUserInfo;
       console.log("desig", designation);
-      if (designation === "dean" || designation === "ar") {
-        setApproveDeenAr(true);
-        setApproveHead(true);
-      } else if (designation === "head") {
-        setApproveHead(true);
-      }
+      // if (designation === "dean" || designation === "ar") {
+      //   setApproveDeenAr(true);
+      //   setApproveHead(true);
+      // } else if (designation === "head") {
+      //   setApproveHead(true);
+      // }
 
-      console.log("head", approveHead);
-      console.log("deanAr", approveDeenAr);
+      // console.log("head", approveHead);
+      // console.log("deanAr", approveDeenAr);
       const { email } = parsedUserInfo; // Extract name from user data
       setUserEmail(email);
     }
@@ -165,8 +165,8 @@ console.log(token);
       formData.append("destination", destination);
       formData.append("applier", userEmail);
       formData.append("applyDate", currentDate);
-      formData.append("approveDeenAr", approveDeenAr.toString());
-      formData.append("approveHead", approveHead.toString());
+      //formData.append("approveDeenAr", approveDeenAr.toString());
+      //formData.append("approveHead", approveHead.toString());
   
       // Convert passengers array to JSON string
       formData.append("passengers", JSON.stringify(passengerList));
@@ -205,6 +205,7 @@ console.log(token);
       setStartTime("");
       setEndTime("");
       setReason("");
+      setReasonFunded("");
       setSection("");
       setVehicle("");
       setComeBack(false);

@@ -3,6 +3,7 @@ import "../Css/DepartmentHeadPageStyle.css";
 import CheckerDash from "./CheckerDash";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { generateVehicleRequestPDF } from '../utils/generateVehicleRequestPDF';
 import {
   TextField,
   Select,
@@ -269,7 +270,9 @@ export default function Checker() {
       toast.error("Error submitting form. Please try again later!");
     }
   };
-
+  const downloadForm = async () => {
+    await generateVehicleRequestPDF(formData, vehicle, passengerList);
+  }
   //const formattedDate = new Date(formData.date).toISOString().split("T")[0];
 
   return (
@@ -578,7 +581,7 @@ export default function Checker() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={submitHeadForm}
+                  onClick={downloadForm}
                 >
                   Download
                 </Button>
@@ -879,7 +882,7 @@ export default function Checker() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={submitHeadForm}
+                onClick={downloadForm}
               >
                 Download
               </Button>

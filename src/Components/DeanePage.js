@@ -53,6 +53,7 @@ export default function ArPage() {
     applyDate: "",
     passengers: [],
     deanNote: "",
+    arDeanNote:""
   });
   const [passengerList, setPassengerList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(false);

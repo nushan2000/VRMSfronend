@@ -67,7 +67,7 @@ export default function ReservationDash({ updateTrigger }) {
           request.approveDeenAr &&
           request.approveDeen &&
           request.driverStatus !== "reject" &&
-          request.driverStatus == "approved"
+          request.driverStatus == "approved"||request.driverStatus == "finish"||request.driverStatus == "started"
       );
       setApprovedRequest(approvedFilteredRequests);
     } catch (error) {
@@ -156,6 +156,7 @@ export default function ReservationDash({ updateTrigger }) {
                           <Typography variant="body2" color="text.secondary">
                             To: {request.destination} | Date: {request.date}
                           </Typography>
+                          
                         </Box>
                       </ListItem>
                       <Divider />
@@ -198,6 +199,9 @@ export default function ReservationDash({ updateTrigger }) {
                           <Typography variant="body1">{request.reason}</Typography>
                           <Typography variant="body2" color="text.secondary">
                             To: {request.destination} | Date: {request.date}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Staus: {request.driverStatus}
                           </Typography>
                         </Box>
                       </ListItem>

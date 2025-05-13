@@ -18,13 +18,13 @@ import {
   Collapse,
   Box,
   Typography,
-  TableRow as MuiTableRow
+  TableRow as MuiTableRow,
 } from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ErrorIcon from '@mui/icons-material/Error';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { green } from '@mui/material/colors';
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { green } from "@mui/material/colors";
 
 export default function HistryPage() {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export default function HistryPage() {
   const [co2, setCo2] = useState({});
   const [loading, setLoading] = useState(false); // Add loading state
   const token = localStorage.getItem("token");
-  
+
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
@@ -51,11 +51,9 @@ export default function HistryPage() {
   }, []);
 
   useEffect(() => {
-    
-
     fetchRequests();
   }, []);
-  
+
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
@@ -91,7 +89,7 @@ export default function HistryPage() {
         break;
     }
   };
-  
+
   // const handleExpandButtonClick = async (requestId) => {
   //   // Toggle the expanded section if the same request is clicked again
   //   if (expandedRequestId === requestId) {
@@ -161,23 +159,27 @@ export default function HistryPage() {
           <div className=" ">
             <div className="">
               <div className="request-row">
-              <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell />
-          <TableCell>Date</TableCell>
-          <TableCell>Route</TableCell>
-          <TableCell>Status</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {requests
-          .filter((request) => request.applier === userEmail)
-          .map((request) => (
-            <Row key={request._id} request={request} fetchRequests={fetchRequests} />
-          ))}
-      </TableBody>
-    </Table>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>Date</TableCell>
+                      <TableCell>Route</TableCell>
+                      <TableCell>Status</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {requests
+                      .filter((request) => request.applier === userEmail)
+                      .map((request) => (
+                        <Row
+                          key={request._id}
+                          request={request}
+                          fetchRequests={fetchRequests}
+                        />
+                      ))}
+                  </TableBody>
+                </Table>
 
                 {/* {expandedRequestId === request._id &&
                         (loading ? (
@@ -283,26 +285,28 @@ export default function HistryPage() {
     </body>
   );
 }
-function Row({ request ,fetchRequests}) {
+function Row({ request, fetchRequests }) {
   const [open, setOpen] = useState(false);
-  
+
   const handleCancel = async (requestId) => {
-    console.log("id",requestId);
-    
-    if (!window.confirm('Are you sure you want to cancel this request?')) {
-        return;
+    console.log("id", requestId);
+
+    if (!window.confirm("Are you sure you want to cancel this request?")) {
+      return;
     }
 
     try {
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/request/requests/${requestId}`);
-        alert(response.data.message || 'Request cancelled successfully');
-        fetchRequests();
-        // You can refresh data here if needed, e.g., refetch requests list
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/request/requests/${requestId}`
+      );
+      alert(response.data.message || "Request cancelled successfully");
+      fetchRequests();
+      // You can refresh data here if needed, e.g., refetch requests list
     } catch (error) {
-        console.error('Failed to cancel request:', error);
-        alert(error.response?.data?.message || 'Failed to cancel request');
+      console.error("Failed to cancel request:", error);
+      alert(error.response?.data?.message || "Failed to cancel request");
     }
-};
+  };
 
   return (
     <React.Fragment>
@@ -350,7 +354,6 @@ function Row({ request ,fetchRequests}) {
               : ""}
           </label>
         </TableCell>
-       
       </TableRow>
 
       {/* Collapsible Details Row */}
@@ -358,20 +361,23 @@ function Row({ request ,fetchRequests}) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-            <TableCell> <Typography variant="h6" gutterBottom component="div">
-                Approval Steps
-              </Typography></TableCell>
-              
               <TableCell>
-        <Button
-    variant="contained"
-    color="error"
-    onClick={() => handleCancel(request._id)}
-    disabled={request.driverStatus !== "notStart"}
->
-    Delete
-</Button>
-    </TableCell>
+                {" "}
+                <Typography variant="h6" gutterBottom component="div">
+                  Approval Steps
+                </Typography>
+              </TableCell>
+
+              <TableCell>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleCancel(request._id)}
+                  disabled={request.driverStatus !== "notStart"}
+                >
+                  Delete
+                </Button>
+              </TableCell>
               <Table size="small" aria-label="vehicle details">
                 <TableHead>
                   <TableRow>
@@ -386,15 +392,66 @@ function Row({ request ,fetchRequests}) {
                 <TableBody>
                   <TableRow>
                     <TableCell>
-            {request.approveStatus==="headApproved"||request.approveStatus==="arApproved"||request.approveStatus==="driverAssigned"||request.approveStatus==="deanApproved" ||request.approveStatus==="driverStarted"||request.approveStatus==="driverFinished" ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}
-          </TableCell>
-          <TableCell>
-            {request.approveStatus==="driverAssigned"||request.approveStatus==="arApproved"||request.approveStatus==="deanApproved" ||request.approveStatus==="driverStarted"||request.approveStatus==="driverFinished"  ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}
-          </TableCell>
-                    <TableCell> {request.approveStatus==="arApproved"||request.approveStatus==="deanApproved"||request.approveStatus==="driverStarted"||request.approveStatus==="driverFinished" ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
-                    <TableCell> {request.approveStatus==="deanApproved"||request.approveStatus==="driverStarted"||request.approveStatus==="driverFinished" ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
-                    <TableCell> {request.approveStatus==="driverStarted" ||request.approveStatus==="driverFinished"? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
-                    <TableCell> {request.approveStatus==="driverFinished" ? <CheckCircleIcon sx={{ color: green[500] }}/> : <ErrorIcon color="disabled"/>}</TableCell>
+                      {request.approveStatus === "headApproved" ||
+                      request.approveStatus === "arApproved" ||
+                      request.approveStatus === "driverAssigned" ||
+                      request.approveStatus === "deanApproved" ||
+                      request.approveStatus === "driverStarted" ||
+                      request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {request.approveStatus === "driverAssigned" ||
+                      request.approveStatus === "arApproved" ||
+                      request.approveStatus === "deanApproved" ||
+                      request.approveStatus === "driverStarted" ||
+                      request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      {request.approveStatus === "arApproved" ||
+                      request.approveStatus === "deanApproved" ||
+                      request.approveStatus === "driverStarted" ||
+                      request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      {request.approveStatus === "deanApproved" ||
+                      request.approveStatus === "driverStarted" ||
+                      request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      {request.approveStatus === "driverStarted" ||
+                      request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      {request.approveStatus === "driverFinished" ? (
+                        <CheckCircleIcon sx={{ color: green[500] }} />
+                      ) : (
+                        <ErrorIcon color="disabled" />
+                      )}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
