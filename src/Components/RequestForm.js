@@ -35,11 +35,15 @@ export default function RequestForm() {
   const [userEmail, setUserEmail] = useState(null);
   const [approveHead, setApproveHead] = useState(false);
   const [approveDeenAr, setApproveDeenAr] = useState(false);
+  const [file, setFile] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [uploadMessage, setUploadMessage] = useState("");
   //const [requests, setRequest] = useState([]);
+
   useEffect(() => {
     // Retrieve user data from cookie
     const userInfoFromCookie = Cookies.get("userInfo");
-console.log(token);
+    console.log(token);
 
     // If user data exists in the cookie, parse it and set the state
     if (userInfoFromCookie) {
@@ -84,7 +88,7 @@ console.log(token);
   const [vehicle, setVehicle] = useState("");
   const [comeBack, setComeBack] = useState(false);
   const [distance, setDistance] = useState("");
-
+  const [documentUrls, setDocumentUrls] = useState("");
   const [position, setPosition] = useState("");
   const [depatureLocation, setDepatureLocation] = useState("");
   const [passengerName, setPassengerName] = useState("");
@@ -95,8 +99,8 @@ console.log(token);
   const [passengerList, setPassengerList] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false); // Default value for checkbox
-   // Default value for checkbox
-   const [reasonFunded,setReasonFunded ] = useState("")
+  // Default value for checkbox
+  const [reasonFunded, setReasonFunded] = useState("");
   const [selectedVehicle, setSelectedVehicle] = React.useState(null);
 
   const addPassenger = () => {
@@ -122,12 +126,47 @@ console.log(token);
     );
     setPassengerList(updatedPassengers);
   };
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please select a file first");
+      return null;
+    }
+    console.log("file", file);
+    const formDataFile = new FormData();
+    formDataFile.append("document", file);
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/request/upload-document`,
+        formDataFile,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("data", response.data.data);
+      const { documentUrl } = response.data.data;
+
+      toast.success("Document uploaded successfully!");
+      return documentUrl;
+    } catch (error) {
+      toast.error("Failed to upload document");
+      return null;
+    }
+  };
   const submitForm = async () => {
     try {
+      const formData = new FormData();
+      const uploadedUrl = await handleUpload();
+      if (!uploadedUrl) return; // stop if upload failed
+      formData.append("documentUrls", uploadedUrl);
+
       const currentDate = new Date().toISOString().split("T")[0];
-  
+
       console.log("📌 Step 1: Preparing data...");
-  
+
       // Log all form input values before appending
       console.log("📝 Form Input Values:", {
         date,
@@ -146,11 +185,11 @@ console.log(token);
         approveDeenAr,
         approveHead,
         passengerList,
+        documentUrls,
       });
-  
+
       // Create FormData
-      const formData = new FormData();
-  
+
       // Append each field (convert boolean and number fields to string if needed)
       formData.append("date", date);
       formData.append("startTime", startTime);
@@ -165,27 +204,28 @@ console.log(token);
       formData.append("destination", destination);
       formData.append("applier", userEmail);
       formData.append("applyDate", currentDate);
+      //formData.append("documentUrl", uploadedFileName);
       //formData.append("approveDeenAr", approveDeenAr.toString());
       //formData.append("approveHead", approveHead.toString());
-  
+
       // Convert passengers array to JSON string
       formData.append("passengers", JSON.stringify(passengerList));
-  
+
       // Uncomment if using file uploads
       if (supportingDocuments) {
         formData.append("filePath", supportingDocuments);
       }
-  
+
       console.log("📌 Step 2: FormData contents:");
       for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }
-  
+
       // Uncomment validation if needed
       if (!validation()) return;
-  
+
       console.log("📤 Step 3: Sending request to backend...");
-  
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/request/addrequest`,
         formData,
@@ -196,10 +236,10 @@ console.log(token);
           },
         }
       );
-  
+
       console.log("✅ Server Response:", response.data);
       toast.success("Request submitted successfully!");
-  
+
       // Clear form
       setDate("");
       setStartTime("");
@@ -218,6 +258,9 @@ console.log(token);
       setIsChecked(null);
       setIsChecked2(null);
       setSupportingDocuments(null);
+      setUploadedFileName(null);
+      setDocumentUrls(null);
+      setFile(null);
     } catch (error) {
       console.error("❌ Error submitting form:", error);
       if (error.response) {
@@ -226,16 +269,14 @@ console.log(token);
       toast.error("Error submitting form. Please try again later!");
     }
   };
-  
 
-const validation = () => {
-  if (!passengerList || passengerList.length === 0) {
-    toast.error("Please add at least 1 passenger!");
-    return false;
-  }
-  return true;
-};
-
+  const validation = () => {
+    if (!passengerList || passengerList.length === 0) {
+      toast.error("Please add at least 1 passenger!");
+      return false;
+    }
+    return true;
+  };
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
@@ -262,6 +303,7 @@ const validation = () => {
 
     saveAs(dataBlob, "PassengerData.xlsx");
   };
+
   //Availabel sheets for every vehicle for according to date
 
   async function fetchReserDetail() {
@@ -308,8 +350,33 @@ const validation = () => {
   const [supportingDocuments, setSupportingDocuments] = useState([]);
 
   const handleFileChange = (e) => {
-    setSupportingDocuments([...e.target.files]);
+    //setSupportingDocuments([...e.target.files]);
+    console.log("uploaded", e.target.files[0]);
+
+    setFile(e.target.files[0]);
   };
+
+  const handleDelete = async () => {
+    if (!uploadedFileName) return;
+
+    try {
+      await axios.delete(`/delete-document/${uploadedFileName}`, {
+        headers: {
+          // Add Authorization header if needed
+        },
+      });
+
+      setUploadedFileName("");
+      setFile(null);
+      toast.success("Document deleted successfully!");
+      setUploadMessage("Document deleted successfully!");
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete document");
+      setUploadMessage("Failed to delete document");
+    }
+  };
+
   return (
     <form class="vehicleRequestForm" title="Vehicle Request Form">
       <label for="Vehicle Request Forme" class="form-label">
@@ -319,7 +386,6 @@ const validation = () => {
       <Typography component="label" htmlFor="Vehicle Request Forme" color="red">
         * Select Date First
       </Typography>
-
       <FormControl fullWidth margin="normal">
         <TextField
           label="Date"
@@ -329,8 +395,7 @@ const validation = () => {
           InputLabelProps={{ shrink: true }}
         />
       </FormControl>
-
-      <FormControl fullWidth margin="normal">
+      {/* <FormControl fullWidth margin="normal">
         <Autocomplete
           options={vehicleList || []}
           disabled
@@ -343,12 +408,13 @@ const validation = () => {
             setVehicle(option ? option.id : "");
           }}
           renderInput={(params) => (
+           
+
             <TextField {...params} label="Select Vehicle" />
           )}
-          style={{ cursor: "not-allowed"}}
+          style={{ cursor: "not-allowed" }}
         />
-      </FormControl>
-
+      </FormControl> */}
       <FormControl fullWidth margin="normal">
         <TextField
           label="Start Time"
@@ -375,7 +441,7 @@ const validation = () => {
         />
       </FormControl> */}
       <Typography variant="h7" gutterBottom>
-      Departure From
+        Departure From
       </Typography>
       <Box sx={{ pl: 5 }}>
         <FormControlLabel
@@ -414,7 +480,6 @@ const validation = () => {
           onChange={(e) => setDestination(e.target.value)}
         />
       </FormControl>
-     
       <FormControl fullWidth margin="normal">
         <InputLabel>Select Section</InputLabel>
         <Select value={section} onChange={(e) => setSection(e.target.value)}>
@@ -427,17 +492,31 @@ const validation = () => {
           <MenuItem value="Marine">IS</MenuItem>
         </Select>
       </FormControl>
-      <Typography variant="h7" gutterBottom>
-      Supporting Document
-      </Typography>
-      <FormControl fullWidth margin="normal">
+      {/* <Typography variant="h7" gutterBottom>
+        Supporting Document
+      </Typography> */}
+      <div>
+        <h2>Document Upload</h2>
+        <input type="file" onChange={handleFileChange} />
+        {/* <button type="submit" onClick={handleUpload}>Upload</button> */}
+
+        {uploadedFileName && (
+          <div style={{ marginTop: "10px" }}>
+            <p>Uploaded file: {uploadedFileName}</p>
+            <button onClick={handleDelete}>Delete</button>
+          </div>
+        )}
+
+        {uploadMessage && <p>{uploadMessage}</p>}
+      </div>
+      {/* <FormControl fullWidth margin="normal">
         <input
           type="file"
           multiple
           onChange={handleFileChange}
           accept=".pdf,.doc,.docx,.jpg,.png"
         />
-      </FormControl>
+      </FormControl> */}
       {/* <FormControl fullWidth margin="normal">
         {supportingDocuments.length > 0 && (
           <ul>
@@ -458,16 +537,16 @@ const validation = () => {
         <FormControlLabel
           control={
             <Checkbox
-            checked={isChecked2}
-            onChange={(e) => {
-              const checked = e.target.checked;
-              setIsChecked2(checked);
-              if (checked) {
-                setReasonFunded("Faculty Funded");
-              } else {
-                setReasonFunded(""); // Clear or reset if unchecked
-              }
-            }}
+              checked={isChecked2}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsChecked2(checked);
+                if (checked) {
+                  setReasonFunded("Faculty Funded");
+                } else {
+                  setReasonFunded(""); // Clear or reset if unchecked
+                }
+              }}
               name="additionalOption"
             />
           }
@@ -484,7 +563,6 @@ const validation = () => {
           />
         </FormControl>
       </Box>
-
       <FormControl fullWidth margin="normal">
         <TextField
           label="Approximate Distance (km)"

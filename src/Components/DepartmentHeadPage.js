@@ -31,7 +31,8 @@ import { useReservation } from "../context/ReservationContext";
 
 export default function Head() {
   const { selectedRequest } = useReservation();
-  const [vehicleList, setVehicleList] = useState([]);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  // const [vehicleList, setVehicleList] = useState([]);
   const [vehicle, setVehicle] = useState({});
   const token = localStorage.getItem("token");
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -59,25 +60,24 @@ export default function Head() {
     driverStatus: "reject",
   });
   const [passengerList, setPassengerList] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setVehicleList(response.data);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setVehicleList(response.data);
 
-        //toast.success("Request come successfully!"); // Assuming response.data is an array of vehicle names
-      })
-      .catch((error) => {
-        console.error("Error fetching vehicle list:", error);
-      });
-  }, []);
+  //       //toast.success("Request come successfully!"); // Assuming response.data is an array of vehicle names
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching vehicle list:", error);
+  //     });
+  // }, []);
 
   useEffect(() => {
-   
     if (selectedRequest) {
       setFormData((prevFormData) => ({
         ...selectedRequest, // Copy selectedRequest data
@@ -88,15 +88,15 @@ export default function Head() {
         ...selectedRequest,
         driverStatus: "reject",
       });
-      axios
-        .get(
-          `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
-        )
-        .then((response) => {
-          setVehicle(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => console.error("Error fetching vehicle:", error));
+      // axios
+      //   .get(
+      //     `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
+      //   )
+      //   .then((response) => {
+      //     setVehicle(response.data);
+      //     console.log(response.data);
+      //   })
+      //   .catch((error) => console.error("Error fetching vehicle:", error));
     }
   }, [selectedRequest]);
 
@@ -108,7 +108,14 @@ export default function Head() {
         ...formData,
         [name]: value,
       });
-    } 
+    }else {
+      // If the field being updated is "_id", preserve the existing _id value
+      setFormData({
+        ...formData,
+        _id: formData._id,
+        [name]: value,
+      });
+    }
   };
 
   // const addPassenger = () => {
@@ -148,7 +155,6 @@ export default function Head() {
 
   const submitHeadForm = async () => {
     // Perform validation first
-   
 
     try {
       if (!formValidation()) return;
@@ -195,6 +201,7 @@ export default function Head() {
         passengerList: [],
         approveHead: "",
         departmentHeadNote: "",
+        docuementUrls: "",
       });
 
       // Show success message
@@ -208,7 +215,33 @@ export default function Head() {
   };
 
   //const formattedDate = new Date(formData.date).toISOString().split("T")[0];
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/request/get-document/${formData.documentUrls}`,
+        {
+          responseType: "blob", // Important: tells Axios to treat the response as binary data
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data]);
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = formData.documentUrls; // this will set the filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl); // Clean up blob URL
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download file");
+    }
+  };
   return (
     <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
       {/* Left Column */}
@@ -329,14 +362,28 @@ export default function Head() {
             Supporting Document
           </Typography>
           <FormControl fullWidth margin="normal">
-            <input
+            {/* <input
               type="file"
               disabled
               multiple
               value={formData.filePath}
               onChange={handleChange}
               accept=".pdf,.doc,.docx,.jpg,.png"
-            />
+            /> */}
+          <div style={{ marginTop: "10px" }}>
+                {formData?.documentUrls?.trim() ? (
+                  <>
+                    <p>Uploaded file: {formData.documentUrls}</p>
+                    <button
+                      onClick={() => handleDownload(formData.documentUrls)}
+                    >
+                      Download
+                    </button>
+                  </>
+                ) : (
+                  <p>No file</p>
+                )}
+              </div>
           </FormControl>
           <FormControl fullWidth margin="normal">
             <TextField
@@ -368,7 +415,10 @@ export default function Head() {
                 label="Funded From"
                 value={formData.reasonFunded}
                 onChange={handleChange}
-                id="reasonFunded"
+                InputLabelProps={{
+                  shrink:!!formData.reasonFunded
+                }}
+                //id="reasonFunded"
                 //disabled={isChecked2}
               />
             </FormControl>

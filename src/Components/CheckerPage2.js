@@ -3,7 +3,7 @@ import "../Css/DepartmentHeadPageStyle.css";
 import CheckerDash from "./CheckerDash";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { generateVehicleRequestPDF } from '../utils/generateVehicleRequestPDF';
+import { generateVehicleRequestPDF } from "../utils/generateVehicleRequestPDF";
 import {
   TextField,
   Select,
@@ -62,22 +62,23 @@ export default function Checker() {
     driverStatus: "reject",
   });
   const [passengerList, setPassengerList] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setVehicleList(response.data);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_URL}/vehicle/vehicles`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setVehicleList(response.data);
+  //       console.log("vehicle data", response.data);
 
-        //toast.success("Request come successfully!"); // Assuming response.data is an array of vehicle names
-      })
-      .catch((error) => {
-        console.error("Error fetching vehicle list:", error);
-      });
-  }, []);
+  //       //toast.success("Request come successfully!"); // Assuming response.data is an array of vehicle names
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching vehicle list:", error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     // const handleForceUpdate = () => {
@@ -147,7 +148,7 @@ export default function Checker() {
           console.error("Error fetching vehicle list:", error);
         });
 
-        axios
+      axios
         .get(
           `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
         )
@@ -155,7 +156,6 @@ export default function Checker() {
           setVehicle(response.data);
         })
         .catch((error) => console.error("Error fetching vehicle:", error));
-    
     }
   }, [selectedRequest]);
 
@@ -270,9 +270,39 @@ export default function Checker() {
       toast.error("Error submitting form. Please try again later!");
     }
   };
+
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/request/get-document/${formData.documentUrls}`,
+        {
+          responseType: "blob", // Important: tells Axios to treat the response as binary data
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data]);
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = formData.documentUrls; // this will set the filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl); // Clean up blob URL
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download file");
+    }
+  };
+
   const downloadForm = async () => {
     await generateVehicleRequestPDF(formData, vehicle, passengerList);
-  }
+  };
+
   //const formattedDate = new Date(formData.date).toISOString().split("T")[0];
 
   return (
@@ -312,7 +342,6 @@ export default function Checker() {
             <FormControl fullWidth margin="normal">
               <Autocomplete
                 options={vehicleList || []}
-                
                 getOptionLabel={(option) =>
                   `${option.vehicleName} ("available sheets: "${option.availableSeats} , "maxCapacity: "${option.maxCapacity})`
                 }
@@ -322,9 +351,8 @@ export default function Checker() {
                   setVehicle(option ? option.id : "");
                   setFormData((prev) => ({
                     ...prev,
-                    vehicle: option ? option.id : ""
+                    vehicle: option ? option.id : "",
                   }));
-                  
                 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Select Vehicle" />
@@ -406,14 +434,28 @@ export default function Checker() {
               Supporting Document
             </Typography>
             <FormControl fullWidth margin="normal">
-              <input
+              {/* <input
                 type="file"
                 disabled
                 multiple
                 value={formData.filePath}
                 onChange={handleChange}
                 accept=".pdf,.doc,.docx,.jpg,.png"
-              />
+              /> */}
+              <div style={{ marginTop: "10px" }}>
+                {formData?.documentUrls?.trim() ? (
+                  <>
+                    <p>Uploaded file: {formData.documentUrls}</p>
+                    <button
+                      onClick={() => handleDownload(formData.documentUrls)}
+                    >
+                      Download
+                    </button>
+                  </>
+                ) : (
+                  <p>No file</p>
+                )}
+              </div>
             </FormControl>
             <FormControl fullWidth margin="normal">
               <TextField
@@ -438,7 +480,7 @@ export default function Checker() {
                 label="Faculty Funded?"
               />
             </Box> */}
-            <Box >
+            <Box>
               <FormControl fullWidth margin="normal">
                 <TextField
                   disabled
@@ -681,14 +723,20 @@ export default function Checker() {
               Supporting Document
             </Typography>
             <FormControl fullWidth margin="normal">
-              <input
-                type="file"
-                disabled
-                multiple
-                value={formData.filePath}
-                onChange={handleChange}
-                accept=".pdf,.doc,.docx,.jpg,.png"
-              />
+              <div style={{ marginTop: "10px" }}>
+                {formData?.documentUrls?.trim() ? (
+                  <>
+                    <p>Uploaded file: {formData.documentUrls}</p>
+                    <button
+                      onClick={() => handleDownload(formData.documentUrls)}
+                    >
+                      Download
+                    </button>
+                  </>
+                ) : (
+                  <p>No file</p>
+                )}
+              </div>
             </FormControl>
             <FormControl fullWidth margin="normal">
               <TextField
@@ -699,7 +747,7 @@ export default function Checker() {
                 disabled
               />
             </FormControl>
-            <Box >
+            <Box>
               <FormControl fullWidth margin="normal">
                 <TextField
                   disabled
@@ -710,7 +758,6 @@ export default function Checker() {
                 />
               </FormControl>
             </Box>
-           
 
             <FormControl component="fieldset" margin="normal">
               <FormLabel>Return in same root?</FormLabel>

@@ -65,8 +65,7 @@ export default function Checker() {
       })
       .then((response) => {
         setVehicleList(response.data);
-        
-        
+
         //toast.success("Request come successfully!"); // Assuming response.data is an array of vehicle names
       })
       .catch((error) => {
@@ -113,13 +112,18 @@ export default function Checker() {
         ...selectedRequest, // Copy selectedRequest data
         driverStatus: "reject", // Override driverStatus
       }));
-      setPassengerList(selectedRequest.passengers)
-      console.log("Updated form data:", { ...selectedRequest, driverStatus: "reject" });
+      setPassengerList(selectedRequest.passengers);
+      console.log("Updated form data:", {
+        ...selectedRequest,
+        driverStatus: "reject",
+      });
       axios
         .get(
           `${process.env.REACT_APP_API_URL}/vehicle/viewVehicle/${selectedRequest.vehicle}`
         )
-        .then((response) => {setVehicle(response.data)})
+        .then((response) => {
+          setVehicle(response.data);
+        })
         .catch((error) => console.error("Error fetching vehicle:", error));
     }
   }, [selectedRequest]);
@@ -159,12 +163,12 @@ export default function Checker() {
     //toast.success("Request approve successfully!");
     //  // Convert string to boolean
     console.log("radio vaue", value);
-    
+
     setFormData({
       ...formData,
       approveChecker: value,
-      approveStatus:value ? "driverAssigned" : "reject",
-      driverStatus: value ? "notStart" : "reject"
+      approveStatus: value ? "driverAssigned" : "reject",
+      driverStatus: value ? "notStart" : "reject",
     });
   };
   const formValidation = () => {
@@ -224,7 +228,6 @@ export default function Checker() {
         passengerList: [],
         approveHead: "",
         checkerNote: "",
-        
       });
 
       // Show success message
@@ -307,7 +310,34 @@ export default function Checker() {
                 disabled
               />
             </FormControl>
+            <Typography variant="h7" gutterBottom>
+              Supporting Document
+            </Typography>
+            <FormControl fullWidth margin="normal">
+              {/* <input
+              type="file"
+              disabled
+              multiple
+              value={formData.filePath}
+              onChange={handleChange}
+              accept=".pdf,.doc,.docx,.jpg,.png"
+            /> */}
+              <div>
+                {/* <h2>Document Upload</h2> */}
+                {/* <input type="file" onChange={handleFileChange} /> */}
+                {/* <button type="submit" onClick={handleUpload}>Upload</button> */}
 
+                <div style={{ marginTop: "10px" }}>
+                  {formData?.documentUrls?.trim() ? (
+                    <p>Uploaded file: {formData.documentUrls}</p>
+                  ) : (
+                    <p>No file</p>
+                  )}
+                </div>
+
+                {/* {uploadMessage && <p>{uploadMessage}</p>} */}
+              </div>
+            </FormControl>
             <FormControl fullWidth margin="normal">
               <TextField
                 label="Reason"
@@ -404,7 +434,7 @@ export default function Checker() {
             </TableContainer>
 
             <FormControl fullWidth margin="normal">
-            <TextareaAutosize
+              <TextareaAutosize
                 placeholder="Head Note"
                 color="primary"
                 onChange={handleChange}
@@ -422,7 +452,7 @@ export default function Checker() {
               >
                 * Add a note
               </Typography>
-              
+
               <TextareaAutosize
                 placeholder="Checker Note..."
                 color="primary"

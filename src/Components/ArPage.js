@@ -218,6 +218,36 @@ export default function ArPage() {
 
   // Format the date safely
   const formattedDate = formatDate(formData.date);
+
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/request/get-document/${formData.documentUrls}`,
+        {
+          responseType: "blob", // Important: tells Axios to treat the response as binary data
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data]);
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = formData.documentUrls; // this will set the filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl); // Clean up blob URL
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download file");
+    }
+  };
+
+
   return (
     <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
       {/* Left Column */}
@@ -338,14 +368,29 @@ export default function ArPage() {
             Supporting Document
           </Typography>
           <FormControl fullWidth margin="normal">
-            <input
+
+            {/* <input
               type="file"
               disabled
               multiple
               value={formData.filePath}
               onChange={handleChange}
               accept=".pdf,.doc,.docx,.jpg,.png"
-            />
+            /> */}
+         <div style={{ marginTop: "10px" }}>
+                {formData?.documentUrls?.trim() ? (
+                  <>
+                    <p>Uploaded file: {formData.documentUrls}</p>
+                    <button
+                      onClick={() => handleDownload(formData.documentUrls)}
+                    >
+                      Download
+                    </button>
+                  </>
+                ) : (
+                  <p>No file</p>
+                )}
+              </div>
           </FormControl>
           <FormControl fullWidth margin="normal">
             <TextField
@@ -523,7 +568,7 @@ export default function ArPage() {
             </Typography>
 
             <TextareaAutosize
-              placeholder="Department Head Note..."
+              placeholder="Checker Note..."
               color="primary"
               onChange={handleChange}
               value={formData.checkerNote}
