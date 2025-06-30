@@ -64,20 +64,20 @@ export default function RequestForm() {
       setUserEmail(email);
     }
 
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/request/RequestVehicles/${date}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setVehicleList(response.data);
-        console.log("respose", response);
-        // Assuming response.data is an array of vehicle names
-      })
-      .catch((error) => {
-        console.error("Error fetching vehicle list:", error);
-      });
+    // axios
+    //   .get(`${process.env.REACT_APP_API_URL}/request/RequestVehicles/${date}`, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setVehicleList(response.data);
+    //     console.log("respose", response);
+    //     // Assuming response.data is an array of vehicle names
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching vehicle list:", error);
+    //   });
     fetchReserDetail();
   }, [date]); // Run only once after component mount
 
@@ -378,8 +378,8 @@ export default function RequestForm() {
   };
 
   return (
-    <form class="vehicleRequestForm" title="Vehicle Request Form">
-      <label for="Vehicle Request Forme" class="form-label">
+    <form className="vehicleRequestForm" title="Vehicle Request Form">
+      <label for="Vehicle Request Forme" className="form-label">
         Vehicle Request Form{" "}
       </label>
 
