@@ -23,7 +23,7 @@ export default function SignInDash() {
     try {
       const apiBaseUrl = process.env.REACT_APP_API_URL;
       console.log("API Base URL:", apiBaseUrl); // Debugging
-      const response = await axios.get(`${apiBaseUrl}/vehicle/vehicles`);
+      const response = await axios.get(`http://10.50.227.121:3000/vehicle/vehicles`);
       setItems(response.data);
       console.log("API Base URL:", response.data);
 
