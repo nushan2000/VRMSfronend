@@ -1,4 +1,4 @@
-name: vrs-frontend 
+name: Deploy Frontend to VPS
 
 on:
   push:
@@ -10,20 +10,20 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout frontend
-        uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
       - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build and push frontend image
         run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push Docker Image (Frontend)
+        run: |
           docker build -t nushan2000/vrs:frontend-latest .
           docker push nushan2000/vrs:frontend-latest
 
-      - name: SSH into VPS and restart Docker Compose
-        uses: appleboy/ssh-action@master
+      - name: SSH into VPS and Deploy
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: 10.50.227.121
           username: vrsuser
