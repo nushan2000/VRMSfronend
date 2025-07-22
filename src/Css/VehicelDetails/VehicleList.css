@@ -1,0 +1,67 @@
+/* vehicleList.css */
+.vehicle-list-container {
+    
+    margin: 0 auto;
+    padding: 100px;
+    
+  }
+  
+  .vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    
+  }
+  
+  .vehicle-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+    
+  }
+  .vehicleDe{
+    max-height: 50px;
+  }
+  .vehicle-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+    
+  }
+  
+  .vehicle-table tr:hover {
+    background-color: #f2f2f2;
+    height: 50px;
+  }
+  
+  .add-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .update-button,
+  .delete-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+  }
+  
+  .add-button:hover,
+  .update-button:hover,
+  .delete-button:hover {
+    opacity: 0.8;
+  }
+  

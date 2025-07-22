@@ -1,0 +1,124 @@
+.Dashboard{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding-top: 100px;
+  list-style: none;
+}
+
+ .vehicleBtn{
+    border-radius: 15px;
+  } 
+
+ .detailSection{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10%;
+  } 
+.allVehicleDetails{
+    width: 50%;
+    height: auto;
+    background-color:transparent;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+  } 
+  
+   .buttondash{
+    border: 0cap;
+    background-color: transparent;
+    width: 100%;
+    height: 70px;
+    
+
+  } 
+  .rowbutton{
+    display: flex;
+  justify-content: space-between;
+    transition: background-color 0.3s ease;
+   
+  }
+  
+  .columnbuttonleft{
+    border-radius: 7px;
+ width: 30%;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background-color: #c2c1c1;
+  background-color: rgb(255, 255, 255);
+    
+  }
+   .vehiclebutton{
+    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-top: 10%;
+  
+ 
+  
+  
+  } 
+    .vehidetails{
+    background-color: white;
+    padding: 10px;
+    width: 90%;
+    border-radius: 10px;
+    margin: 10px;
+    border-style: solid;
+
+  }  
+  .vehilink{
+    color: rgb(106, 106, 106);
+    text-decoration: none;
+
+  }
+  
+ .sidetails:hover{
+  background-color: #cc912422;
+  transition: 0.5s;
+  color: black;
+  box-shadow: 0 5px 15px rgba(95, 22, 22, 0.1);
+  transform: translateY(-5px);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+ 
+} 
+.sidetails{
+  background-color: white;
+  transition: background-color 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  margin-right: 10px;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+.columnbuttonright{
+  font-size: 17px;
+  text-align: left;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  padding-top: 5px;
+  
+}
+.tabbed-text {
+  display: inline-block;
+  width: 170px; /* Adjust as needed */
+ 
+}
+
+
+@keyframes blink {
+  0% { background-color: #c2c1c1; }
+  50% { background-color: #FFFFFF; }
+  100% { background-color: #c2c1c1; }
+}
+
+.blinking {
+  animation: blink 3s infinite;
+}

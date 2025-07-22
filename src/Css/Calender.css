@@ -1,0 +1,111 @@
+.calendar-container {
+  display: flex;
+}
+
+.calendar-column {
+  flex: 1;
+  transition: flex 0.5s ease;
+}
+
+.details-column {
+  flex: 1;
+   /* Adjust spacing between calendar and details */
+  transition: flex 0.5s ease, width 0.5s ease;
+}
+
+/* Calendar styles */
+.react-calendar {
+  width: 200%;
+  color: #212529;
+  background-color: #635d5d;
+  max-width: 320px; /* Set the maximum width of the calendar */
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.212); /* Add shadow effect */
+}
+
+/* Reserved date styles */
+
+/* Calender.css */
+/* .react-calendar__tile:hover {
+  background-color: #3f97eeec; 
+  color: #000000;
+} */
+.react-calendar__tile--now {
+  background-color: #ffffff62; /* Orange background for today's date */
+  color: #000000; /* White text for today's date */
+  border-radius: 4px; /* Optional: Add rounded corners for consistency */
+  font-weight: bold; /* Optional: Make the text bold for emphasis */
+}
+
+
+.react-calendar__tile--active { 
+ 
+   background-color: #ff583300 !important;
+   border-radius: 4px; 
+ }
+
+
+.reserved-date {
+  background-color: #fddb74; /* Yellow background for reserved dates */
+  color: #212529; 
+  border-radius: 4px;/* Dark text for reserved dates */
+}
+.reserved-date.react-calendar__tile--active {
+  background-color: #fddb74 !important; /* Green background on selection */
+  color: white !important;
+}
+.status-date {
+  background-color: #a80802; /* Green background for status dates */
+  color: #ffffff;
+  border-radius: 4px; /* White text for status dates */
+}
+.status-date.react-calendar__tile--active {
+  background-color: rgb(204, 4, 4) !important; /* Green background on selection */
+  color: white !important;
+}
+/* Message box styles */
+.message-box {
+  background-color: #f8f9fa; /* Light background for reservation details */
+  color: #212529; /* Dark text for reservation details */
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.show-details .details-column {
+  flex: 1;
+  width: auto;
+}
+.dateTypes{
+  display: flex;
+  justify-content: space-between; /* Adjusts spacing between elements */
+    
+}
+.box {
+  width: 120px;
+  height: 60px;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 10px;
+  background-color: lightblue;
+  text-align: left;
+  font-size: medium;
+  
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: 50px auto; /* Two columns: label and value */
+  gap: 10px;
+  align-items: center;
+  
+}
+
+.label1 {
+  font-weight: bold;
+  text-align: left;
+  color: #b62828;
+}
+
+.value {
+  text-align: right;
+  color: #000000;
+}

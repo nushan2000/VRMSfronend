@@ -1,0 +1,54 @@
+/* SignInModern.css */
+
+.signin-modern-root {
+    min-height: 100vh;
+  }
+  
+  .signin-modern-left {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .signin-modern-image {
+    max-width: 90%;
+    height: auto;
+  }
+  
+  .signin-modern-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #FFF8E1;
+  }
+  
+  .signin-modern-form-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 8px 20px rgba(100, 27, 46, 0.15);
+  }
+  
+  .signin-modern-form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .signin-modern-btn {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    font-weight: 600;
+    background-color: #BE5B50;
+    color: white;
+    transition: background 0.3s ease;
+  }
+  
+  .signin-modern-btn:hover {
+    background-color: #8A2D3B;
+  }
+  

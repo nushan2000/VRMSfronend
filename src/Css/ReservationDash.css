@@ -1,0 +1,26 @@
+/* Base styles */
+.row {
+    width: 100%;
+}
+
+.tab-pane {
+    background-color: aqua;
+}
+
+.requestdash {
+    list-style: none;
+    padding: 0; /* Remove padding */
+    margin: 0;
+    width:max-content;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column; /* Stack rows vertically on small screens */
+    }
+
+    .col-4 {
+        width: 100%; /* Full width on small screens */
+    }
+}
