@@ -19,8 +19,8 @@ jobs:
 
       - name: Build and Push Docker Image (Frontend)
         run: |
-          docker build -t nushan2000/vrs:frontend-latest .
-          docker push nushan2000/vrs:frontend-latest
+          docker build -t nushan2000/vrs-frontend:latest .
+          docker push nushan2000/vrs-frontend:latest
 
       - name: SSH into VPS and Deploy
         uses: appleboy/ssh-action@v1.0.0
