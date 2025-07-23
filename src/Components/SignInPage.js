@@ -19,7 +19,13 @@ function Signin() {
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
-  
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("designation");
+    Cookies.remove("userInfo");
+  }, []);
 
   const sendData = async (e) => {
     console.log(email,password);
