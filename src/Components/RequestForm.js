@@ -98,9 +98,9 @@ export default function RequestForm() {
   const [drop, setDrop] = useState("");
   const [passengerList, setPassengerList] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false); // Default value for checkbox
+  const [isChecked2, setIsChecked2] = useState(true); // Default value for checkbox
   // Default value for checkbox
-  const [reasonFunded, setReasonFunded] = useState("");
+  const [reasonFunded, setReasonFunded] = useState("Faculty Funded");
   const [selectedVehicle, setSelectedVehicle] = React.useState(null);
 
   const addPassenger = () => {
@@ -127,10 +127,10 @@ export default function RequestForm() {
     setPassengerList(updatedPassengers);
   };
   const handleUpload = async () => {
-    if (!file) {
-      alert("Please select a file first");
-      return null;
-    }
+    // if (!file) {
+    //   alert("Please select a file first");
+    //   return null;
+    // }
     console.log("file", file);
     const formDataFile = new FormData();
     formDataFile.append("document", file);
@@ -159,9 +159,13 @@ export default function RequestForm() {
   const submitForm = async () => {
     try {
       const formData = new FormData();
+      if (file) {
       const uploadedUrl = await handleUpload();
-      if (!uploadedUrl) return; // stop if upload failed
+      if (!uploadedUrl) return;
       formData.append("documentUrls", uploadedUrl);
+    }
+       // stop if upload failed
+      
 
       const currentDate = new Date().toISOString().split("T")[0];
 
@@ -383,9 +387,9 @@ export default function RequestForm() {
         Vehicle Request Form{" "}
       </label>
 
-      <Typography component="label" htmlFor="Vehicle Request Forme" color="red">
+      {/* <Typography component="label" htmlFor="Vehicle Request Forme" color="red">
         * Select Date First
-      </Typography>
+      </Typography> */}
       <FormControl fullWidth margin="normal">
         <TextField
           label="Date"
@@ -484,12 +488,13 @@ export default function RequestForm() {
         <InputLabel>Select Section</InputLabel>
         <Select value={section} onChange={(e) => setSection(e.target.value)}>
           <MenuItem value="">Select</MenuItem>
+          
+          <MenuItem value="Mechanical">Mechanical and Manufacturing Engineering</MenuItem>
+          <MenuItem value="Electrical">Electrical and Information Engineering</MenuItem>
+          <MenuItem value="Civil">Civil and Environmental Engineering</MenuItem>
+          <MenuItem value="Marine">Marine Engineering and Naval Architecture</MenuItem>
+          <MenuItem value="Is">Interdisciplinary Studies</MenuItem>
           <MenuItem value="Administrative">Administrative</MenuItem>
-          <MenuItem value="Mechanical">Mechanical</MenuItem>
-          <MenuItem value="Electrical">Electrical</MenuItem>
-          <MenuItem value="Civil">Civil</MenuItem>
-          <MenuItem value="Marine">Marine</MenuItem>
-          <MenuItem value="Marine">IS</MenuItem>
         </Select>
       </FormControl>
       {/* <Typography variant="h7" gutterBottom>
