@@ -215,6 +215,10 @@ export default function Checker() {
   const submitHeadForm = async () => {
     // Perform validation first
     if (!formValidation()) return;
+    if (formData.vehicle === null || formData.vehicle === "") {
+      toast.error("Please select a vehicle!");
+      return false;
+    }
 
     try {
       console.log(formData);
@@ -352,6 +356,7 @@ export default function Checker() {
                   setFormData((prev) => ({
                     ...prev,
                     vehicle: option ? option.id : "",
+                    checkerNote: option ? `Selected Vehicle: ${option.vehicleName}` : "",
                   }));
                 }}
                 renderInput={(params) => (

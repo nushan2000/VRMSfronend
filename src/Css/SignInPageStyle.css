@@ -170,3 +170,104 @@
   align-items: center;
   z-index: 1000;
 }
+
+
+/* Container */
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  /* min-height: 100vh; */
+}
+
+@media (min-width: 768px) {
+  .signin-container {
+    flex-direction: row;
+  }
+}
+
+/* Left Side */
+.signin-left {
+  background-color: #f4cdd4; /* Tailwind blue-600 */
+  color: rgb(0, 0, 0);
+  flex: 0.5;
+  padding: 40px;
+  display: flex;
+  justify-content: flex-start; /* left align horizontally */
+  align-items: flex-start;
+}
+.signin-welcome {
+  width: 100%;
+  max-width: 600px;
+}
+.signin-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.signin-subtitle {
+  font-size: 1.2rem;
+}
+
+/* Right Side */
+.signin-right {
+  flex: 1.5;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+/* Form */
+.signin-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signin-form-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.signin-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.signin-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.signin-input:focus {
+  border-color: #2563eb;
+}
+
+/* Button */
+.signin-button {
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signin-button:hover {
+  background-color: #1e40af; /* Tailwind blue-800 */
+}

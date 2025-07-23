@@ -633,7 +633,7 @@ export default function ArPage() {
                 onClick={submitArForm}
                 fullWidth
               >
-                Send To The Checker
+                Send To The Dean
               </Button>
             </Box>
           </FormControl>

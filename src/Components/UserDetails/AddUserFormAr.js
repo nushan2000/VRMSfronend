@@ -68,6 +68,7 @@ const AddUserFormAr = ({ onClose }) => {
               <option value="Electrical">Electrical Department</option>
               <option value="Civil">Civil Department</option>
               <option value="Administration">Administration</option>
+              <option value="Is">Interdisciplinary Studies</option>
               {/* Add more options as needed */}
             </select></div>
           <div className="form-group">
