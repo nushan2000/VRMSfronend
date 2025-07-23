@@ -139,9 +139,9 @@ export default function SignInDash() {
           </li>
         ))}
       </ol>
-      {showPopup && (
+      {/* {showPopup && localStorage.getItem("designation") === "checker" && (
         <VehicleDetails vehicle={selectedVehicle} onClose={handleClosePopUp} />
-      )}
+      )} */}
     </div>
   );
 }
